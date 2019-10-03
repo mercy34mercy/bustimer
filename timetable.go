@@ -57,16 +57,34 @@ func ritsToMinakusa(w http.ResponseWriter, r *http.Request) {
 }
 
 func minakusaToRits(w http.ResponseWriter, r *http.Request) {
-	scrapeMinakusaToRits()
+	timeTable := scrapeMinakusaToRits()
+	data, _ := json.Marshal(timeTable)
+	w.Header().Set("Content-Type", "application/json")
+	w.Write(data)
 }
 
 func scrapeRitsToMinakusa() timeTable {
 	doc, err := goquery.NewDocument(urls[ritsToMinamikusatsu])
-	timeTable := newTimeTable()
 	if err != nil {
 		fmt.Println("スクレイピングにエラーが発生:", err)
-		return timeTable
+		return newTimeTable()
 	}
+	timeTable := scrapeTimeInfo(doc)
+	return timeTable
+}
+
+func scrapeMinakusaToRits() timeTable {
+	doc, err := goquery.NewDocument(urls[minamikusatsuToRitsu])
+	if err != nil {
+		fmt.Println("スクレイピングにエラーが発生:", err)
+		return newTimeTable()
+	}
+	timeTable := scrapeTimeInfo(doc)
+	return timeTable
+}
+
+func scrapeTimeInfo(doc *goquery.Document) timeTable {
+	timeTable := newTimeTable()
 	doc.Find(".time").Each(func(_ int, s *goquery.Selection) {
 		hour, err := strconv.Atoi(s.Text())
 		if err != nil {
@@ -119,21 +137,6 @@ func scrapeRitsToMinakusa() timeTable {
 				timeTable.Holiday[hour] = append(timeTable.Holiday[hour], oneTimeTable{Via: via, Min: min})
 			})
 		})
-	})
-	return timeTable
-}
-
-func scrapeMinakusaToRits() timeTable {
-	timeTable := newTimeTable()
-	doc, err := goquery.NewDocument(urls[minamikusatsuToRitsu])
-	if err != nil {
-		fmt.Println("スクレイピングにエラーが発生:", err)
-		return timeTable
-	}
-	doc.Find("td").Each(func(_ int, s *goquery.Selection) {
-		if attr, _ := s.Attr("class"); attr == "time" {
-			fmt.Println(s.Text())
-		}
 	})
 	return timeTable
 }
