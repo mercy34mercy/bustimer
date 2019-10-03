@@ -1,9 +1,14 @@
 package main
 
 import (
+	"crypto/md5"
+	"encoding/hex"
 	"encoding/json"
 	"fmt"
+	"io"
+	"io/ioutil"
 	"net/http"
+	"os"
 	"strconv"
 	"strings"
 
@@ -50,16 +55,66 @@ func scrapeTimeTable(w http.ResponseWriter, r *http.Request) {
 }
 
 func ritsToMinakusa(w http.ResponseWriter, r *http.Request) {
-	timeTable := scrapeRitsToMinakusa()
-	data, _ := json.Marshal(timeTable)
 	w.Header().Set("Content-Type", "application/json")
+	clientHash := r.URL.Query().Get("hash")
+	var hashString = ""
+	file, err := os.Open("ritsToMinakusa.json")
+	if err == nil {
+		byteData, err := ioutil.ReadAll(file)
+		if err == nil {
+			hash := md5.New()
+			file, err := os.Open("ritsToMinakusa.json")
+			if err == nil {
+				if _, err := io.Copy(hash, file); err == nil {
+					hashInBytes := hash.Sum(nil)
+					hashString = hex.EncodeToString(hashInBytes)
+					fmt.Println(hashString)
+				}
+				if hashString == clientHash {
+					w.Write(byteData)
+					return
+				}
+			}
+		}
+	}
+	timeTable := scrapeRitsToMinakusa()
+	data, err := json.Marshal(timeTable)
+	err = ioutil.WriteFile("ritsToMinakusa.json", data, 0644)
+	if err != nil {
+		fmt.Println("File save error:", err)
+	}
 	w.Write(data)
 }
 
 func minakusaToRits(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+	clientHash := r.URL.Query().Get("hash")
+	var hashString = ""
+	file, err := os.Open("minakusaToRits.json")
+	if err == nil {
+		byteData, err := ioutil.ReadAll(file)
+		if err == nil {
+			hash := md5.New()
+			file, err := os.Open("minakusaToRits.json")
+			if err == nil {
+				if _, err := io.Copy(hash, file); err == nil {
+					hashInBytes := hash.Sum(nil)
+					hashString = hex.EncodeToString(hashInBytes)
+					fmt.Println(hashString)
+				}
+				if hashString == clientHash {
+					w.Write(byteData)
+					return
+				}
+			}
+		}
+	}
 	timeTable := scrapeMinakusaToRits()
 	data, _ := json.Marshal(timeTable)
-	w.Header().Set("Content-Type", "application/json")
+	err = ioutil.WriteFile("minakusaToRits.json", data, 0644)
+	if err != nil {
+		fmt.Println("File save error:", err)
+	}
 	w.Write(data)
 }
 
