@@ -60,5 +60,6 @@ func main() {
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte("/bus/timeにGETリクエストを送ってください"))
 	})
+	http.HandleFunc("/bus/timetable", scrapeTimeTable)
 	http.ListenAndServe(":"+port, nil)
 }
