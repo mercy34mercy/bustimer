@@ -1,4 +1,4 @@
-package main
+package timetable
 
 import (
 	"crypto/md5"
@@ -12,12 +12,15 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/labstack/echo"
+
 	"github.com/PuerkitoBio/goquery"
 )
 
 const (
 	ritsToMinamikusatsu  = "立命館→南草津駅"
 	minamikusatsuToRitsu = "南草津駅→立命館"
+	url                  = "https://ohmitetudo-bus.jorudan.biz/diagrampoledtl"
 )
 
 var urls = map[string]string{ritsToMinamikusatsu: "https://ohmitetudo-bus.jorudan.biz/diagrampoledtl?mode=1&fr=立命館大学〔近江鉄道・湖国バス〕&frsk=B&tosk=&dgmpl=立命館大学〔近江鉄道・湖国バス〕:2:2&p=0,8,10",
@@ -44,14 +47,10 @@ func newTimeTable() timeTable {
 	}
 }
 
-func scrapeTimeTable(w http.ResponseWriter, r *http.Request) {
-	query := r.URL.Query().Get("mode")
-	switch query {
-	case "0":
-		ritsToMinakusa(w, r)
-	case "1":
-		minakusaToRits(w, r)
-	}
+// ScrapeTimeTable クエリで指定された出発地点->目的地へ向かう時刻表データを返す
+func ScrapeTimeTable(c echo.Context) error {
+	fr := c.QueryParam("fr")
+	dgmpl := c.QueryParam("dgmpl")
 }
 
 func ritsToMinakusa(w http.ResponseWriter, r *http.Request) {

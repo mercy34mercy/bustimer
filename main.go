@@ -7,6 +7,8 @@ import (
 	"os"
 	"regexp"
 
+	"github.com/labstack/echo"
+
 	"github.com/PuerkitoBio/goquery"
 )
 
@@ -54,12 +56,17 @@ func getTimeTable(w http.ResponseWriter, r *http.Request) {
 func main() {
 	port := os.Getenv("PORT")
 	if port == "" {
-		port = "8000"
+		port = ":8000"
 	}
-	http.HandleFunc("/bus/time", getTimeTable)
-	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		w.Write([]byte("/bus/timeにGETリクエストを送ってください"))
+	e := echo.New()
+	e.GET("/bus/timetable", func(c echo.Context) error {
+		return c.HTML(http.StatusOK, "<h1>Hello, World</h1>")
 	})
-	http.HandleFunc("/bus/timetable", scrapeTimeTable)
-	http.ListenAndServe(":"+port, nil)
+	// http.HandleFunc("/bus/time", getTimeTable)
+	// http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+	// 	w.Write([]byte("/bus/timeにGETリクエストを送ってください"))
+	// })
+	// http.HandleFunc("/bus/timetable", scrapeTimeTable)
+	// http.ListenAndServe(":"+port, nil)
+	e.Logger.Fatal(e.Start(port))
 }
