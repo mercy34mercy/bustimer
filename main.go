@@ -3,14 +3,8 @@ package main
 import (
 	"net/http"
 	"os"
-<<<<<<< HEAD
-	"regexp"
 
 	"github.com/labstack/echo"
-
-	"github.com/PuerkitoBio/goquery"
-=======
->>>>>>> 19ae5f635d38d3ff73aa7823cbabbe3f2f5057f2
 )
 
 var url = "https://ohmitetudo-bus.jorudan.biz/busstatedtl"
