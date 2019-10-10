@@ -5,6 +5,7 @@ import (
 
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
+	approach "github.com/shun-shun123/bus-timer/approach"
 	timetable "github.com/shun-shun123/bus-timer/timetable"
 )
 
@@ -21,14 +22,11 @@ func main() {
 		port = ":8000"
 	}
 	e := echo.New()
-	e.Debug = true
+	e.Debug = false
 	e.Use(middleware.Logger())
 	e.GET("/bus/timetable", timetable.ScrapeTimeTable)
+	e.GET("/bus/time", approach.ScrapeApproachInfo)
 	// http.HandleFunc("/bus/time", getTimeTable)
-	// http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-	// 	w.Write([]byte("/bus/timeにGETリクエストを送ってください"))
-	// })
-	// http.HandleFunc("/bus/timetable", scrapeTimeTable)
 	// http.ListenAndServe(":"+port, nil)
 	e.Logger.Fatal(e.Start(port))
 }
