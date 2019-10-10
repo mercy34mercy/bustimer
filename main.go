@@ -26,7 +26,5 @@ func main() {
 	e.Use(middleware.Logger())
 	e.GET("/bus/timetable", timetable.ScrapeTimeTable)
 	e.GET("/bus/time", approach.ScrapeApproachInfo)
-	// http.HandleFunc("/bus/time", getTimeTable)
-	// http.ListenAndServe(":"+port, nil)
 	e.Logger.Fatal(e.Start(port))
 }
