@@ -1,10 +1,11 @@
 package main
 
 import (
-	"net/http"
 	"os"
 
 	"github.com/labstack/echo"
+	"github.com/labstack/echo/middleware"
+	timetable "github.com/shun-shun123/bus-timer/timetable"
 )
 
 var url = "https://ohmitetudo-bus.jorudan.biz/busstatedtl"
@@ -20,9 +21,9 @@ func main() {
 		port = ":8000"
 	}
 	e := echo.New()
-	e.GET("/bus/timetable", func(c echo.Context) error {
-		return c.HTML(http.StatusOK, "<h1>Hello, World</h1>")
-	})
+	e.Debug = true
+	e.Use(middleware.Logger())
+	e.GET("/bus/timetable", timetable.ScrapeTimeTable)
 	// http.HandleFunc("/bus/time", getTimeTable)
 	// http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 	// 	w.Write([]byte("/bus/timeにGETリクエストを送ってください"))

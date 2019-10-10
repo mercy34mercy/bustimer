@@ -18,13 +18,10 @@ import (
 )
 
 const (
-	ritsToMinamikusatsu  = "立命館→南草津駅"
-	minamikusatsuToRitsu = "南草津駅→立命館"
-	url                  = "https://ohmitetudo-bus.jorudan.biz/diagrampoledtl"
+	url       = "https://ohmitetudo-bus.jorudan.biz/diagrampoledtl"
+	cachePath = "timetableCache"
+	cacheExt  = ".json"
 )
-
-var urls = map[string]string{ritsToMinamikusatsu: "https://ohmitetudo-bus.jorudan.biz/diagrampoledtl?mode=1&fr=立命館大学〔近江鉄道・湖国バス〕&frsk=B&tosk=&dgmpl=立命館大学〔近江鉄道・湖国バス〕:2:2&p=0,8,10",
-	minamikusatsuToRitsu: "https://ohmitetudo-bus.jorudan.biz/diagrampoledtl?mode=1&fr=南草津駅〔近江鉄道・湖国バス〕&frsk=B&tosk=&dgmpl=南草津駅〔近江鉄道・湖国バス〕:1:0&p=0,8,10"}
 
 var tdList = []string{".column_day1_t2", ".column_day2_t2", ".column_day3_t2"}
 
@@ -51,90 +48,58 @@ func newTimeTable() timeTable {
 func ScrapeTimeTable(c echo.Context) error {
 	fr := c.QueryParam("fr")
 	dgmpl := c.QueryParam("dgmpl")
-}
-
-func ritsToMinakusa(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "application/json")
-	clientHash := r.URL.Query().Get("hash")
-	var hashString = ""
-	file, err := os.Open("ritsToMinakusa.json")
+	clientHash := c.QueryParam("hash")
+	filePath := cachePath + "/" + fr + dgmpl + cacheExt
+	cacheHash, err := md5HashFromFile(filePath)
 	if err == nil {
-		byteData, err := ioutil.ReadAll(file)
-		if err == nil {
-			hash := md5.New()
-			file, err := os.Open("ritsToMinakusa.json")
+		if clientHash == cacheHash {
+			file, err := os.Open(filePath)
 			if err == nil {
-				if _, err := io.Copy(hash, file); err == nil {
-					hashInBytes := hash.Sum(nil)
-					hashString = hex.EncodeToString(hashInBytes)
-					fmt.Println(hashString)
-				}
-				if hashString == clientHash {
-					w.Write(byteData)
-					return
+				bytedata, err := ioutil.ReadAll(file)
+				if err == nil {
+					return c.JSONBlob(http.StatusOK, bytedata)
 				}
 			}
 		}
 	}
-	timeTable := scrapeRitsToMinakusa()
-	data, err := json.Marshal(timeTable)
-	err = ioutil.WriteFile("ritsToMinakusa.json", data, 0644)
+	fullURL := url + "?fr=" + fr + "&dgmpl=" + dgmpl
+	timeTable, err := scrapeFromURL(fullURL)
 	if err != nil {
-		fmt.Println("File save error:", err)
+		return err
 	}
-	w.Write(data)
+	c.Echo().Logger.Debug("Successfully scrape from " + fullURL)
+	err = saveCache(timeTable, filePath)
+	if err != nil {
+		return err
+	}
+	c.Echo().Logger.Debug("Successfully save file " + filePath)
+	return c.JSON(http.StatusOK, timeTable)
 }
 
-func minakusaToRits(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "application/json")
-	clientHash := r.URL.Query().Get("hash")
-	var hashString = ""
-	file, err := os.Open("minakusaToRits.json")
-	if err == nil {
-		byteData, err := ioutil.ReadAll(file)
-		if err == nil {
-			hash := md5.New()
-			file, err := os.Open("minakusaToRits.json")
-			if err == nil {
-				if _, err := io.Copy(hash, file); err == nil {
-					hashInBytes := hash.Sum(nil)
-					hashString = hex.EncodeToString(hashInBytes)
-					fmt.Println(hashString)
-				}
-				if hashString == clientHash {
-					w.Write(byteData)
-					return
-				}
-			}
-		}
-	}
-	timeTable := scrapeMinakusaToRits()
-	data, _ := json.Marshal(timeTable)
-	err = ioutil.WriteFile("minakusaToRits.json", data, 0644)
+func saveCache(data interface{}, fileName string) error {
+	file, err := os.Create(fileName)
 	if err != nil {
-		fmt.Println("File save error:", err)
+		return err
 	}
-	w.Write(data)
+	defer file.Close()
+	jsonData, err := json.Marshal(data)
+	if err != nil {
+		return err
+	}
+	_, err = file.Write(jsonData)
+	if err != nil {
+		return err
+	}
+	return nil
 }
 
-func scrapeRitsToMinakusa() timeTable {
-	doc, err := goquery.NewDocument(urls[ritsToMinamikusatsu])
+func scrapeFromURL(fullURL string) (timeTable, error) {
+	doc, err := goquery.NewDocument(fullURL)
 	if err != nil {
-		fmt.Println("スクレイピングにエラーが発生:", err)
-		return newTimeTable()
+		return timeTable{}, err
 	}
 	timeTable := scrapeTimeInfo(doc)
-	return timeTable
-}
-
-func scrapeMinakusaToRits() timeTable {
-	doc, err := goquery.NewDocument(urls[minamikusatsuToRitsu])
-	if err != nil {
-		fmt.Println("スクレイピングにエラーが発生:", err)
-		return newTimeTable()
-	}
-	timeTable := scrapeTimeInfo(doc)
-	return timeTable
+	return timeTable, nil
 }
 
 func scrapeTimeInfo(doc *goquery.Document) timeTable {
@@ -193,4 +158,20 @@ func scrapeTimeInfo(doc *goquery.Document) timeTable {
 		})
 	})
 	return timeTable
+}
+
+func md5HashFromFile(filePath string) (string, error) {
+	file, err := os.Open(filePath)
+	if err != nil {
+		return "", err
+	}
+	defer file.Close()
+	hash := md5.New()
+	if _, err := io.Copy(hash, file); err != nil {
+		return "", err
+	}
+	hashByte := hash.Sum(nil)
+	hashString := hex.EncodeToString(hashByte)
+	fmt.Println(hashString)
+	return hashString, nil
 }
