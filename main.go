@@ -3,6 +3,8 @@ package main
 import (
 	"os"
 
+	"net/http"
+
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
 	approach "github.com/shun-shun123/bus-timer/approach"
@@ -19,12 +21,15 @@ const (
 func main() {
 	port := os.Getenv("PORT")
 	if port == "" {
-		port = ":8000"
+		port = ":8080"
 	}
 	e := echo.New()
 	e.Debug = false
 	e.Use(middleware.Logger())
+	e.GET("/", func(c echo.Context) error {
+		return c.HTML(http.StatusOK, "<h1>バスです。API</h1>")
+	})
 	e.GET("/bus/timetable", timetable.ScrapeTimeTable)
 	e.GET("/bus/time", approach.ScrapeApproachInfo)
-	e.Logger.Fatal(e.Start(port))
+	e.Logger.Fatal(e.Start(":8080"))
 }

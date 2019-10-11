@@ -1,8 +1,7 @@
 package timetable
 
 import (
-	"crypto/md5"
-	"encoding/hex"
+	"context"
 	"encoding/json"
 	"fmt"
 	"io"
@@ -12,15 +11,15 @@ import (
 	"strconv"
 	"strings"
 
+	"cloud.google.com/go/storage"
 	"github.com/labstack/echo"
 
 	"github.com/PuerkitoBio/goquery"
 )
 
 const (
-	url       = "https://ohmitetudo-bus.jorudan.biz/diagrampoledtl"
-	cachePath = "timetableCache"
-	cacheExt  = ".json"
+	url      = "https://ohmitetudo-bus.jorudan.biz/diagrampoledtl"
+	cacheExt = ".json"
 )
 
 var tdList = []string{".column_day1_t2", ".column_day2_t2", ".column_day3_t2"}
@@ -49,7 +48,7 @@ func ScrapeTimeTable(c echo.Context) error {
 	fr := c.QueryParam("fr")
 	dgmpl := c.QueryParam("dgmpl")
 	clientHash := c.QueryParam("hash")
-	filePath := cachePath + "/" + fr + dgmpl + cacheExt
+	filePath := fr + dgmpl + cacheExt
 	cacheHash, err := md5HashFromFile(filePath)
 	if err == nil {
 		if clientHash == cacheHash {
@@ -76,20 +75,42 @@ func ScrapeTimeTable(c echo.Context) error {
 	return c.JSON(http.StatusOK, timeTable)
 }
 
-func saveCache(data interface{}, fileName string) error {
-	file, err := os.Create(fileName)
+func connectCloudStorage(data []byte, fileName string) {
+	ctx := context.Background()
+	client, err := storage.NewClient(ctx)
 	if err != nil {
-		return err
+		fmt.Println("Client create error:", err)
 	}
-	defer file.Close()
+	bkt := client.Bucket("analog-subset-179214.appspot.com")
+	attrs, err := bkt.Attrs(ctx)
+	if err != nil {
+		fmt.Println("Error attrs: ", err)
+	}
+	fmt.Printf("bucket %s created at %s, is located in %s with storage class %s\n", attrs.Name, attrs.Created, attrs.Location, attrs.StorageClass)
+	obj := bkt.Object(fileName)
+	w := obj.NewWriter(ctx)
+	if _, err := w.Write(data); err != nil {
+		fmt.Println("Write error: ", err)
+	}
+	if err := w.Close(); err != nil {
+		fmt.Println("writer close error: ", err)
+	}
+	r, err := obj.NewReader(ctx)
+	if err != nil {
+		fmt.Println("Reader create error: ", err)
+	}
+	defer r.Close()
+	if _, err = io.Copy(os.Stdout, r); err != nil {
+		fmt.Println("read error:", err)
+	}
+}
+
+func saveCache(data interface{}, fileName string) error {
 	jsonData, err := json.Marshal(data)
 	if err != nil {
 		return err
 	}
-	_, err = file.Write(jsonData)
-	if err != nil {
-		return err
-	}
+	connectCloudStorage(jsonData, fileName)
 	return nil
 }
 
@@ -161,17 +182,18 @@ func scrapeTimeInfo(doc *goquery.Document) timeTable {
 }
 
 func md5HashFromFile(filePath string) (string, error) {
-	file, err := os.Open(filePath)
-	if err != nil {
-		return "", err
-	}
-	defer file.Close()
-	hash := md5.New()
-	if _, err := io.Copy(hash, file); err != nil {
-		return "", err
-	}
-	hashByte := hash.Sum(nil)
-	hashString := hex.EncodeToString(hashByte)
-	fmt.Println(hashString)
-	return hashString, nil
+	// file, err := os.Open(filePath)
+	// if err != nil {
+	// return "", err
+	// }
+	// defer file.Close()
+	// hash := md5.New()
+	// if _, err := io.Copy(hash, file); err != nil {
+	// 	return "", err
+	// }
+	// hashByte := hash.Sum(nil)
+	// hashString := hex.EncodeToString(hashByte)
+	// fmt.Println(hashString)
+	// return hashString, nil
+	return "hogehogehugahuga", nil
 }
