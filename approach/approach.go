@@ -12,6 +12,9 @@ const (
 	url = "https://ohmitetudo-bus.jorudan.biz/busstatedtl"
 )
 
+var dgmplMap = map[string][]string{"南草津駅〔近江鉄道・湖国バス〕": []string{"南草津駅〔近江鉄道・湖国バス〕:1", "南草津駅〔近江鉄道・湖国バス〕:3", "南草津駅〔近江鉄道・湖国バス〕:4"},
+	"立命館大学〔近江鉄道・湖国バス〕": []string{"立命館大学〔近江鉄道・湖国バス〕:2"}}
+
 type approachInfo struct {
 	// あと何分で到着か
 	MoreMin string `json:"more_min"`
@@ -26,13 +29,16 @@ type approachInfo struct {
 // ScrapeApproachInfo バスの接近情報をスクレイピングする
 func ScrapeApproachInfo(c echo.Context) error {
 	fr := c.QueryParam("fr")
-	dgmpl := c.QueryParam("dgmpl")
-	fullURL := url + "?fr=" + fr + "&dgmpl=" + dgmpl
-	approachInfo, err := scrapeFromURL(fullURL)
-	if err != nil {
-		return err
+	dgmpl := dgmplMap[fr]
+	approachInfo := map[string][]approachInfo{}
+	for _, v := range dgmpl {
+		fullURL := url + "?fr=" + fr + "&dgmpl=" + v
+		info, err := scrapeFromURL(fullURL)
+		if err == nil {
+			approachInfo["res"] = append(approachInfo["res"], info)
+		}
+		c.Echo().Logger.Debug("Scrape from " + fullURL)
 	}
-	c.Echo().Logger.Debug("Scrape from " + fullURL)
 	return c.JSON(http.StatusOK, approachInfo)
 }
 
