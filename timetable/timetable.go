@@ -21,6 +21,8 @@ const (
 )
 
 var tdList = []string{".column_day1_t2", ".column_day2_t2", ".column_day3_t2"}
+var dgmplMap = map[string][]string{"立命館大学〔近江鉄道・湖国バス〕": []string{"立命館大学〔近江鉄道・湖国バス〕:2"},
+	"南草津駅〔近江鉄道・湖国バス〕": []string{"南草津駅〔近江鉄道・湖国バス〕:1", "南草津駅〔近江鉄道・湖国バス〕:3", "南草津駅〔近江鉄道・湖国バス〕:4"}}
 
 type timeTable struct {
 	WeekDays map[int][]oneTimeTable `json:"weekdays"`
@@ -29,8 +31,9 @@ type timeTable struct {
 }
 
 type oneTimeTable struct {
-	Via string `json:"via"`
-	Min string `json:"min"`
+	Via     string `json:"via"`
+	Min     string `json:"min"`
+	BusStop string `json:"bus_stop"`
 }
 
 func newTimeTable() timeTable {
@@ -44,9 +47,8 @@ func newTimeTable() timeTable {
 // ScrapeTimeTable クエリで指定された出発地点->目的地へ向かう時刻表データを返す
 func ScrapeTimeTable(c echo.Context) error {
 	fr := c.QueryParam("fr")
-	dgmpl := c.QueryParam("dgmpl")
 	clientHash := c.QueryParam("hash")
-	fileName := fr + dgmpl + cacheExt
+	fileName := fr + cacheExt
 	data, err := fetchFromCloudStorage(fileName)
 	if err == nil {
 		cacheHash, err := md5HashFromData(data)
@@ -56,12 +58,15 @@ func ScrapeTimeTable(c echo.Context) error {
 			}
 		}
 	}
-	fullURL := url + "?fr=" + fr + "&dgmpl=" + dgmpl
-	timeTable, err := scrapeFromURL(fullURL)
-	if err != nil {
-		return err
+	timeTable := newTimeTable()
+	for _, v := range dgmplMap[fr] {
+		fullURL := url + "?fr=" + fr + "&dgmpl=" + v
+		err = scrapeFromURL(fullURL, &timeTable, string(v[len(v)-1]))
+		if err != nil {
+			return err
+		}
+		c.Echo().Logger.Debug("Successfully scrape from " + fullURL)
 	}
-	c.Echo().Logger.Debug("Successfully scrape from " + fullURL)
 	err = saveCache(timeTable, fileName)
 	if err != nil {
 		return err
@@ -82,17 +87,16 @@ func saveCache(data interface{}, fileName string) error {
 	return nil
 }
 
-func scrapeFromURL(fullURL string) (timeTable, error) {
+func scrapeFromURL(fullURL string, timeTable *timeTable, busStop string) error {
 	doc, err := goquery.NewDocument(fullURL)
 	if err != nil {
-		return timeTable{}, err
+		return err
 	}
-	timeTable := scrapeTimeInfo(doc)
-	return timeTable, nil
+	scrapeTimeInfo(doc, timeTable, busStop)
+	return nil
 }
 
-func scrapeTimeInfo(doc *goquery.Document) timeTable {
-	timeTable := newTimeTable()
+func scrapeTimeInfo(doc *goquery.Document, timeTable *timeTable, busStop string) {
 	doc.Find(".time").Each(func(_ int, s *goquery.Selection) {
 		hour, err := strconv.Atoi(s.Text())
 		if err != nil {
@@ -114,7 +118,7 @@ func scrapeTimeInfo(doc *goquery.Document) timeTable {
 				} else {
 					min = split[len(split)-1]
 				}
-				timeTable.WeekDays[hour] = append(timeTable.WeekDays[hour], oneTimeTable{Via: via, Min: min})
+				timeTable.WeekDays[hour] = append(timeTable.WeekDays[hour], oneTimeTable{Via: via, Min: min, BusStop: busStop})
 			})
 		})
 		// 土曜の情報をスクレイピング
@@ -128,7 +132,7 @@ func scrapeTimeInfo(doc *goquery.Document) timeTable {
 				} else {
 					min = split[len(split)-1]
 				}
-				timeTable.Saturday[hour] = append(timeTable.Saturday[hour], oneTimeTable{Via: via, Min: min})
+				timeTable.Saturday[hour] = append(timeTable.Saturday[hour], oneTimeTable{Via: via, Min: min, BusStop: busStop})
 			})
 		})
 		// 休日の情報をスクレイピング
@@ -142,11 +146,10 @@ func scrapeTimeInfo(doc *goquery.Document) timeTable {
 				} else {
 					min = split[len(split)-1]
 				}
-				timeTable.Holiday[hour] = append(timeTable.Holiday[hour], oneTimeTable{Via: via, Min: min})
+				timeTable.Holiday[hour] = append(timeTable.Holiday[hour], oneTimeTable{Via: via, Min: min, BusStop: busStop})
 			})
 		})
 	})
-	return timeTable
 }
 
 // md5HashFromFile fileNameで示されるfileからmd5でハッシュ値を算出する
