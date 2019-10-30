@@ -9,7 +9,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/labstack/echo"
+	"github.com/labstack/echo/v4"
 
 	"github.com/PuerkitoBio/goquery"
 )
@@ -17,7 +17,7 @@ import (
 const (
 	url      = "https://ohmitetudo-bus.jorudan.biz/diagrampoledtl"
 	cacheExt = ".json"
-	bucket   = "analog-subset-179214.appspot.com"
+	bucket   = "analog-subset-179214-busdes"
 )
 
 var tdList = []string{".column_day1_t2", ".column_day2_t2", ".column_day3_t2"}
@@ -25,6 +25,7 @@ var dgmplMap = map[string][]string{"立命館大学〔近江鉄道・湖国バ�
 	"南草津駅〔近江鉄道・湖国バス〕": []string{"南草津駅〔近江鉄道・湖国バス〕:1", "南草津駅〔近江鉄道・湖国バス〕:3", "南草津駅〔近江鉄道・湖国バス〕:4"}}
 
 type timeTable struct {
+	Version  string                 `json:"version"`
 	WeekDays map[int][]oneTimeTable `json:"weekdays"`
 	Saturday map[int][]oneTimeTable `json:"saturday"`
 	Holiday  map[int][]oneTimeTable `json:"holiday"`
@@ -38,6 +39,7 @@ type oneTimeTable struct {
 
 func newTimeTable() timeTable {
 	return timeTable{
+		Version:  "1",
 		WeekDays: map[int][]oneTimeTable{},
 		Saturday: map[int][]oneTimeTable{},
 		Holiday:  map[int][]oneTimeTable{},
@@ -48,12 +50,13 @@ func newTimeTable() timeTable {
 func ScrapeTimeTable(c echo.Context) error {
 	fr := c.QueryParam("fr")
 	clientHash := c.QueryParam("hash")
+	version := c.QueryParam("version")
 	fileName := fr + cacheExt
 	data, err := fetchFromCloudStorage(fileName)
 	if err == nil {
 		cacheHash, err := md5HashFromData(data)
 		if err == nil {
-			if clientHash == cacheHash {
+			if clientHash == cacheHash || version == "1" {
 				return c.JSONBlob(http.StatusOK, data)
 			}
 		}
@@ -72,6 +75,7 @@ func ScrapeTimeTable(c echo.Context) error {
 		return err
 	}
 	c.Echo().Logger.Debug("Successfully save file " + fileName)
+	c.Echo().Logger.Debug("Version: " + timeTable.Version)
 	return c.JSON(http.StatusOK, timeTable)
 }
 
