@@ -4,8 +4,10 @@ import (
 	"net/http"
 	"strings"
 
+	"regexp"
+
 	"github.com/PuerkitoBio/goquery"
-	"github.com/labstack/echo"
+	"github.com/labstack/echo/v4"
 )
 
 const (
@@ -30,6 +32,9 @@ type approachInfo struct {
 func ScrapeApproachInfo(c echo.Context) error {
 	fr := c.QueryParam("fr")
 	dgmpl := dgmplMap[fr]
+	if len(dgmpl) == 0 {
+		return c.JSON(http.StatusBadRequest, map[string]string{"result": "query param for fr: " + fr + "is not defined"})
+	}
 	approachInfo := map[string][]approachInfo{}
 	for _, v := range dgmpl {
 		fullURL := url + "?fr=" + fr + "&dgmpl=" + v
@@ -38,6 +43,10 @@ func ScrapeApproachInfo(c echo.Context) error {
 			approachInfo["res"] = append(approachInfo["res"], info)
 		}
 		c.Echo().Logger.Debug("Scrape from " + fullURL)
+	}
+	// 接近情報があるかどうかを判断する
+	if len(approachInfo["res"]) == 0 {
+		return c.JSON(http.StatusMovedPermanently, approachInfo)
 	}
 	return c.JSON(http.StatusOK, approachInfo)
 }
@@ -62,7 +71,8 @@ func scrapeApproachInfo(doc *goquery.Document) (approachInfo, error) {
 		case 1:
 			approachInfo.MoreMin = strings.TrimSpace(s.Text())
 		case 2:
-			approachInfo.RealArrivalTime = strings.TrimSpace(s.Text())
+			r := regexp.MustCompile(`[0-9][0-9]:[0-9][0-9]`)
+			approachInfo.RealArrivalTime = r.FindStringSubmatch(strings.TrimSpace(s.Text()))[0]
 		case 3:
 			trimed := strings.Trim(strings.Trim(s.Text(), "\n"), " ")
 			splited := strings.Split(trimed, "\n")
