@@ -5,8 +5,8 @@ import (
 
 	"net/http"
 
-	"github.com/labstack/echo"
-	"github.com/labstack/echo/middleware"
+	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v4/middleware"
 	approach "github.com/shun-shun123/bus-timer/approach"
 	timetable "github.com/shun-shun123/bus-timer/timetable"
 )
@@ -21,7 +21,7 @@ const (
 func main() {
 	port := os.Getenv("PORT")
 	if port == "" {
-		port = ":8080"
+		port = ":1323"
 	}
 	e := echo.New()
 	e.Debug = false
@@ -31,5 +31,5 @@ func main() {
 	})
 	e.GET("/bus/timetable", timetable.ScrapeTimeTable)
 	e.GET("/bus/time", approach.ScrapeApproachInfo)
-	e.Logger.Fatal(e.Start(":8080"))
+	e.Logger.Fatal(e.Start(":1323"))
 }
