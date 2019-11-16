@@ -21,7 +21,7 @@ const (
 func main() {
 	port := os.Getenv("PORT")
 	if port == "" {
-		port = ":1323"
+		port = "1323"
 	}
 	e := echo.New()
 	e.Debug = false
@@ -31,5 +31,5 @@ func main() {
 	})
 	e.GET("/bus/timetable", timetable.ScrapeTimeTable)
 	e.GET("/bus/time", approach.ScrapeApproachInfo)
-	e.Logger.Fatal(e.Start(":1323"))
+	e.Logger.Fatal(e.Start(":" + port))
 }

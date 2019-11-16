@@ -35,20 +35,20 @@ func ScrapeApproachInfo(c echo.Context) error {
 	if len(dgmpl) == 0 {
 		return c.JSON(http.StatusBadRequest, map[string]string{"result": "query param for fr: " + fr + "is not defined"})
 	}
-	approachInfo := map[string][]approachInfo{}
+	approach := map[string][]approachInfo{}
 	for _, v := range dgmpl {
 		fullURL := url + "?fr=" + fr + "&dgmpl=" + v
 		info, err := scrapeFromURL(fullURL)
-		if err == nil {
-			approachInfo["res"] = append(approachInfo["res"], info)
+		if err == nil && info.MoreMin != "" {
+			approach["res"] = append(approach["res"], info)
 		}
 		c.Echo().Logger.Debug("Scrape from " + fullURL)
 	}
 	// 接近情報があるかどうかを判断する
-	if len(approachInfo["res"]) == 0 {
-		return c.JSON(http.StatusMovedPermanently, approachInfo)
+	if len(approach["res"]) == 0 {
+		return c.JSON(http.StatusNoContent, approach)
 	}
-	return c.JSON(http.StatusOK, approachInfo)
+	return c.JSON(http.StatusOK, approach)
 }
 
 func scrapeFromURL(fullURL string) (approachInfo, error) {
