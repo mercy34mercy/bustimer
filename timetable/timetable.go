@@ -24,8 +24,10 @@ var tdList = []string{".column_day1_t2", ".column_day2_t2", ".column_day3_t2"}
 var dgmplMap = map[string][]string{"立命館大学〔近江鉄道・湖国バス〕": []string{"立命館大学〔近江鉄道・湖国バス〕:2"},
 	"南草津駅〔近江鉄道・湖国バス〕": []string{"南草津駅〔近江鉄道・湖国バス〕:1", "南草津駅〔近江鉄道・湖国バス〕:3", "南草津駅〔近江鉄道・湖国バス〕:4"}}
 
-var currentVersion = 1
-var currentHash = ""
+var currentFromRitsVersion = 1
+var currentFromMinakusaVersion = 1
+var currentFromRitsHash = ""
+var currentFromMinakusaHash = ""
 
 type timeTable struct {
 	Version  int                    `json:"version"`
@@ -67,7 +69,18 @@ func ScrapeTimeTable(c echo.Context) error {
 	// }
 
 	// バージョンを確認して高速化する場合
-	if version == currentVersion {
+	var currentVersion *int
+	var currentHash *string
+	if fr == "立命館大学〔近江鉄道・湖国バス〕" {
+		currentVersion = &currentFromRitsVersion
+		currentHash = &currentFromRitsHash
+	} else if fr == "南草津駅〔近江鉄道・湖国バス〕" {
+		currentVersion = &currentFromMinakusaVersion
+		currentHash = &currentFromMinakusaHash
+	} else {
+		return c.JSON(http.StatusBadRequest, map[string]string{"result": "クエリfrを確認してください"})
+	}
+	if version == *currentVersion {
 		return c.JSON(http.StatusNotModified, map[string]string{"reuslt": "Not modified"})
 	}
 	timeTable := newTimeTable()
@@ -82,12 +95,12 @@ func ScrapeTimeTable(c echo.Context) error {
 	byteData, _ := json.Marshal(timeTable)
 	newHash, _ := md5HashFromData(byteData)
 	c.Echo().Logger.Debug("newHashData: " + newHash)
-	c.Echo().Logger.Debug("currentHash: " + currentHash)
-	if newHash != currentHash {
-		currentVersion++
-		currentHash = newHash
+	c.Echo().Logger.Debug("currentHash: " + *currentHash)
+	if newHash != *currentHash {
+		*currentVersion++
+		*currentHash = newHash
 	}
-	timeTable.Version = currentVersion
+	timeTable.Version = *currentVersion
 	// err := saveCache(timeTable, fileName)
 	// if err != nil {
 	// return err
