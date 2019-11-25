@@ -42,7 +42,7 @@ type oneTimeTable struct {
 
 func newTimeTable() timeTable {
 	return timeTable{
-		Version:  currentVersion,
+		Version:  0,
 		WeekDays: map[int][]oneTimeTable{},
 		Saturday: map[int][]oneTimeTable{},
 		Holiday:  map[int][]oneTimeTable{},
@@ -81,10 +81,13 @@ func ScrapeTimeTable(c echo.Context) error {
 	}
 	byteData, _ := json.Marshal(timeTable)
 	newHash, _ := md5HashFromData(byteData)
+	c.Echo().Logger.Debug("newHashData: " + newHash)
+	c.Echo().Logger.Debug("currentHash: " + currentHash)
 	if newHash != currentHash {
 		currentVersion++
 		currentHash = newHash
 	}
+	timeTable.Version = currentVersion
 	// err := saveCache(timeTable, fileName)
 	// if err != nil {
 	// return err
