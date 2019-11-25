@@ -24,8 +24,11 @@ var tdList = []string{".column_day1_t2", ".column_day2_t2", ".column_day3_t2"}
 var dgmplMap = map[string][]string{"立命館大学〔近江鉄道・湖国バス〕": []string{"立命館大学〔近江鉄道・湖国バス〕:2"},
 	"南草津駅〔近江鉄道・湖国バス〕": []string{"南草津駅〔近江鉄道・湖国バス〕:1", "南草津駅〔近江鉄道・湖国バス〕:3", "南草津駅〔近江鉄道・湖国バス〕:4"}}
 
+var currentVersion = 1
+var currentHash = ""
+
 type timeTable struct {
-	Version  string                 `json:"version"`
+	Version  int                    `json:"version"`
 	WeekDays map[int][]oneTimeTable `json:"weekdays"`
 	Saturday map[int][]oneTimeTable `json:"saturday"`
 	Holiday  map[int][]oneTimeTable `json:"holiday"`
@@ -39,7 +42,7 @@ type oneTimeTable struct {
 
 func newTimeTable() timeTable {
 	return timeTable{
-		Version:  "1",
+		Version:  0,
 		WeekDays: map[int][]oneTimeTable{},
 		Saturday: map[int][]oneTimeTable{},
 		Holiday:  map[int][]oneTimeTable{},
@@ -49,33 +52,48 @@ func newTimeTable() timeTable {
 // ScrapeTimeTable クエリで指定された出発地点->目的地へ向かう時刻表データを返す
 func ScrapeTimeTable(c echo.Context) error {
 	fr := c.QueryParam("fr")
-	clientHash := c.QueryParam("hash")
-	version := c.QueryParam("version")
-	fileName := fr + cacheExt
-	data, err := fetchFromCloudStorage(fileName)
-	if err == nil {
-		cacheHash, err := md5HashFromData(data)
-		if err == nil {
-			if clientHash == cacheHash || version == "1" {
-				return c.JSONBlob(http.StatusOK, data)
-			}
-		}
+	// clientHash := c.QueryParam("hash")
+	version, _ := strconv.Atoi(c.QueryParam("version"))
+	// サーバ側でクラウドストレージによるキャッシュを用いて高速化する場合
+	// fileName := fr + cacheExt
+	// data, err := fetchFromCloudStorage(fileName)
+	// if err == nil {
+	// 	cacheHash, err := md5HashFromData(data)
+	// 	if err == nil {
+	// 		if clientHash == cacheHash || version == "1" {
+	// 			return c.JSONBlob(http.StatusOK, data)
+	// 		}
+	// 	}
+	// }
+
+	// バージョンを確認して高速化する場合
+	if version == currentVersion {
+		return c.JSON(http.StatusNotModified, map[string]string{"reuslt": "Not modified"})
 	}
 	timeTable := newTimeTable()
 	for _, v := range dgmplMap[fr] {
 		fullURL := url + "?fr=" + fr + "&dgmpl=" + v
-		err = scrapeFromURL(fullURL, &timeTable, string(v[len(v)-1]))
+		err := scrapeFromURL(fullURL, &timeTable, string(v[len(v)-1]))
 		if err != nil {
 			return err
 		}
 		c.Echo().Logger.Debug("Successfully scrape from " + fullURL)
 	}
-	err = saveCache(timeTable, fileName)
-	if err != nil {
-		return err
+	byteData, _ := json.Marshal(timeTable)
+	newHash, _ := md5HashFromData(byteData)
+	c.Echo().Logger.Debug("newHashData: " + newHash)
+	c.Echo().Logger.Debug("currentHash: " + currentHash)
+	if newHash != currentHash {
+		currentVersion++
+		currentHash = newHash
 	}
-	c.Echo().Logger.Debug("Successfully save file " + fileName)
-	c.Echo().Logger.Debug("Version: " + timeTable.Version)
+	timeTable.Version = currentVersion
+	// err := saveCache(timeTable, fileName)
+	// if err != nil {
+	// return err
+	// }
+	// c.Echo().Logger.Debug("Successfully save file " + fileName)
+	// c.Echo().Logger.Debug("Version: " + timeTable.Version)
 	return c.JSON(http.StatusOK, timeTable)
 }
 
