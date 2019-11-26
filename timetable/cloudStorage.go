@@ -3,6 +3,7 @@ package timetable
 import (
 	"bytes"
 	"context"
+	"encoding/json"
 	"io"
 
 	"cloud.google.com/go/storage"
@@ -43,6 +44,18 @@ func saveToCloudStorage(data []byte, fileName string) error {
 		return err
 	}
 	if err := w.Close(); err != nil {
+		return err
+	}
+	return nil
+}
+
+func saveCache(data interface{}, fileName string) error {
+	jsonData, err := json.Marshal(data)
+	if err != nil {
+		return err
+	}
+	err = saveToCloudStorage(jsonData, fileName)
+	if err != nil {
 		return err
 	}
 	return nil
