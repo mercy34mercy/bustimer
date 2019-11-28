@@ -1,9 +1,10 @@
 package approach
 
 const (
-	url        = "https://ohmitetudo-bus.jorudan.biz/busstatedtl"
-	frRits     = "立命館大学〔近江鉄道・湖国バス〕"
-	frMinakusa = "南草津駅〔近江鉄道・湖国バス〕"
+	url          = "https://ohmitetudo-bus.jorudan.biz/busstatedtl"
+	frRits       = "立命館大学〔近江鉄道・湖国バス〕"
+	frMinakusa   = "南草津駅〔近江鉄道・湖国バス〕"
+	MAX_RESPONSE = 3
 )
 
 // frクエリに対応するdgmplクエリのスライス

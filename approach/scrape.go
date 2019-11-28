@@ -19,7 +19,7 @@ func ScrapeApproachInfo(c echo.Context) error {
 	}
 	approach := map[string][]approachInfo{}
 	if fr == frRits {
-		for i := 0; i < 3; i++ {
+		for i := 0; i < MAX_RESPONSE; i++ {
 			fullURL := url + "?fr=" + fr + "&dgmpl=" + dgmpl[0]
 			info, err := scrapeFromURL(fullURL, i)
 			if err == nil && info.MoreMin != "" {
@@ -30,11 +30,21 @@ func ScrapeApproachInfo(c echo.Context) error {
 	} else if fr == frMinakusa {
 		for _, v := range dgmpl {
 			fullURL := url + "?fr=" + fr + "&dgmpl=" + v
-			info, err := scrapeFromURL(fullURL, 0)
-			if err == nil && info.MoreMin != "" {
-				approach["res"] = append(approach["res"], info)
+			if v == dgmplMap[frMinakusa][2] && len(approach["res"]) != MAX_RESPONSE-1 {
+				for i := 0; i < MAX_RESPONSE-len(approach["res"]); i++ {
+					info, err := scrapeFromURL(fullURL, i)
+					if err == nil && info.MoreMin != "" {
+						approach["res"] = append(approach["res"], info)
+					}
+					c.Echo().Logger.Debug("Scrape from " + fullURL)
+				}
+			} else {
+				info, err := scrapeFromURL(fullURL, 0)
+				if err == nil && info.MoreMin != "" {
+					approach["res"] = append(approach["res"], info)
+				}
+				c.Echo().Logger.Debug("Scrape From " + fullURL)
 			}
-			c.Echo().Logger.Debug("Scrape From " + fullURL)
 		}
 	}
 	// 接近情報があるかどうかを判断する
