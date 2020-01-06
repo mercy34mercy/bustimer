@@ -15,4 +15,5 @@ func routing(e *echo.Echo) {
 	})
 	e.GET("/bus/timetable", timetable.ScrapeTimeTable)
 	e.GET("/bus/time", approach.ScrapeApproachInfo)
+	e.GET("/bus/time/v2", approach.ScrapeApproachInfoV2)
 }
