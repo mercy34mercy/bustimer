@@ -15,7 +15,10 @@ const (
 var dgmplMap = map[string][]string{frMinakusa: []string{"南草津駅〔近江鉄道・湖国バス〕:1", "南草津駅〔近江鉄道・湖国バス〕:3", "南草津駅〔近江鉄道・湖国バス〕:4"},
 	frRits: []string{"立命館大学〔近江鉄道・湖国バス〕:2"}}
 
-var frList = map[string]string{"野路": "野路〔近江鉄道・湖国バス〕",
+var frList = map[string]string{
+	rits:       frRits,
+	minakusa:   frMinakusa,
+	"野路":       "野路〔近江鉄道・湖国バス〕",
 	"南田山":      "南田山〔近江鉄道・湖国バス〕",
 	"玉川小学校前":   "玉川小学校前〔近江鉄道・湖国バス〕",
 	"小野山":      "小野山〔近江鉄道・湖国バス〕",
@@ -35,7 +38,10 @@ var frList = map[string]string{"野路": "野路〔近江鉄道・湖国バス�
 	"若草北口":     "若草北口〔近江鉄道・湖国バス〕",
 	"立命館大学正門前": "立命館大学正門前〔近江鉄道・湖国バス〕"}
 
-var dgmplList = map[string]map[string][]string{"野路": {rits: {"野路〔近江鉄道・湖国バス〕:1"}, minakusa: {"野路〔近江鉄道・湖国バス〕:2"}},
+var dgmplList = map[string]map[string][]string{
+	rits:           {minakusa: {"立命館大学〔近江鉄道・湖国バス〕:2"}},
+	minakusa:       {rits: {"南草津駅〔近江鉄道・湖国バス〕:1", "南草津駅〔近江鉄道・湖国バス〕:3", "南草津駅〔近江鉄道・湖国バス〕:4"}},
+	"野路":           {rits: {"野路〔近江鉄道・湖国バス〕:1"}, minakusa: {"野路〔近江鉄道・湖国バス〕:2"}},
 	"南田山":          {rits: {"南田山〔近江鉄道・湖国バス〕:1"}, minakusa: {"南田山〔近江鉄道・湖国バス〕:2"}},
 	"玉川小学校前":       {rits: {"玉川小学校前〔近江鉄道・湖国バス〕:1"}, minakusa: {"玉川小学校前〔近江鉄道・湖国バス〕:2"}},
 	"小野山":          {rits: {"小野山〔近江鉄道・湖国バス〕:3"}, minakusa: {"小野山〔近江鉄道・湖国バス〕:2"}},

@@ -66,10 +66,12 @@ func ScrapeApproachInfoV2(c echo.Context) error {
 	approach := map[string][]approachInfo{}
 	for _, v := range dgmpl {
 		fullURL := url + "?fr=" + fr + "&dgmpl=" + v
-		info, err := scrapeFromURL(fullURL, 0)
-		if err == nil && info.MoreMin != "" {
-			approach["res"] = append(approach["res"], info)
-			c.Echo().Logger.Debug("Scrape From " + fullURL)
+		for i := 0; i < MAX_RESPONSE; i++ {
+			info, err := scrapeFromURL(fullURL, i)
+			if err == nil && info.MoreMin != "" {
+				approach["res"] = append(approach["res"], info)
+				c.Echo().Logger.Info("Scrape From " + fullURL)
+			}
 		}
 	}
 	// 接近情報があるかどうかを判断する
