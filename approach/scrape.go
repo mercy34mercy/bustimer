@@ -54,6 +54,33 @@ func ScrapeApproachInfo(c echo.Context) error {
 	return c.JSON(http.StatusOK, approach)
 }
 
+// ScrapeApproachInfoV2 バスの接近情報をスクレイピングするversion2.0用
+func ScrapeApproachInfoV2(c echo.Context) error {
+	fr := c.QueryParam("fr")
+	to := c.QueryParam("to")
+	dgmpl := dgmplList[fr][to]
+	fr = frList[fr]
+	if len(dgmpl) == 0 {
+		return c.JSON(http.StatusBadRequest, map[string]string{"result": "frクエリに対応するdgmplが定義されていません。frクエリの内容を確認してください"})
+	}
+	approach := map[string][]approachInfo{}
+	for _, v := range dgmpl {
+		fullURL := url + "?fr=" + fr + "&dgmpl=" + v
+		for i := 0; i < MAX_RESPONSE; i++ {
+			info, err := scrapeFromURL(fullURL, i)
+			if err == nil && info.MoreMin != "" {
+				approach["res"] = append(approach["res"], info)
+				c.Echo().Logger.Info("Scrape From " + fullURL)
+			}
+		}
+	}
+	// 接近情報があるかどうかを判断する
+	if len(approach["res"]) == 0 {
+		return c.JSON(http.StatusNoContent, approach)
+	}
+	return c.JSON(http.StatusOK, approach)
+}
+
 func scrapeFromURL(fullURL string, index int) (approachInfo, error) {
 	approachInfo := approachInfo{}
 	doc, err := goquery.NewDocument(fullURL)
