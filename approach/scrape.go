@@ -1,6 +1,7 @@
 package approach
 
 import (
+	"errors"
 	"fmt"
 	"net/http"
 	"regexp"
@@ -70,9 +71,9 @@ func ScrapeApproachInfoV2(c echo.Context) error {
 			info, err := scrapeFromURL(fullURL, i)
 			if err == nil && info.MoreMin != "" {
 				approach["res"] = append(approach["res"], info)
-				c.Echo().Logger.Info("Scrape From " + fullURL)
 			}
 		}
+		fmt.Println("Scrape from " + fullURL)
 	}
 	// 接近情報があるかどうかを判断する
 	if len(approach["res"]) == 0 {
@@ -129,5 +130,8 @@ func scrapeApproachInfo(doc *goquery.Document, index int) (approachInfo, error) 
 			})
 		}
 	})
+	if approachInfo.Descent == "" && approachInfo.Direction == "" {
+		return approachInfo, errors.New("空のデータをスクレイピングしています")
+	}
 	return approachInfo, nil
 }
