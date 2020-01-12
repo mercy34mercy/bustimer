@@ -133,7 +133,11 @@ func scrapeApproachInfo(doc *goquery.Document, index int) (approachInfo, error) 
 	doc.Find(".moreArea").Each(func(i int, s *goquery.Selection) {
 		if i == index {
 			s.Find(".bsmidashi").Each(func(j int, li *goquery.Selection) {
-				if j == 1 {
+				if j == 0 {
+					r := regexp.MustCompile(`[0-9][0-9]:[0-9][0-9]`)
+					target := r.FindStringSubmatch(li.Parent().Text())
+					approachInfo.ScheduledTime = target[0]
+				} else if j == 1 {
 					approachInfo.Delay = li.Text()
 				}
 			})

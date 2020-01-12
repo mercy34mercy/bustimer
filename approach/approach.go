@@ -72,6 +72,8 @@ type approachInfo struct {
 	Descent string `json:"descent"`
 	// 行き先
 	Direction string `json:"direction"`
+	// 定刻の時間
+	ScheduledTime string `json:"scheduled_time"`
 	// 遅延時間
 	Delay string `json:"delay"`
 }
