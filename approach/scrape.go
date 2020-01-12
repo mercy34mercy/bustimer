@@ -130,6 +130,15 @@ func scrapeApproachInfo(doc *goquery.Document, index int) (approachInfo, error) 
 			})
 		}
 	})
+	doc.Find(".moreArea").Each(func(i int, s *goquery.Selection) {
+		if i == index {
+			s.Find(".bsmidashi").Each(func(j int, li *goquery.Selection) {
+				if j == 1 {
+					approachInfo.Delay = li.Text()
+				}
+			})
+		}
+	})
 	if approachInfo.Descent == "" && approachInfo.Direction == "" {
 		return approachInfo, errors.New("空のデータをスクレイピングしています")
 	}

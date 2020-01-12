@@ -72,4 +72,6 @@ type approachInfo struct {
 	Descent string `json:"descent"`
 	// 行き先
 	Direction string `json:"direction"`
+	// 遅延時間
+	Delay string `json:"delay"`
 }
