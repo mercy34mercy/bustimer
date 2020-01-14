@@ -71,6 +71,8 @@ func ScrapeApproachInfoV2(c echo.Context) error {
 			info, err := scrapeFromURL(fullURL, i)
 			if err == nil && info.MoreMin != "" {
 				approach["res"] = append(approach["res"], info)
+			} else if err != nil {
+				c.Echo().Logger.Debug(err)
 			}
 		}
 		fmt.Println("Scrape from " + fullURL)
@@ -101,7 +103,7 @@ func scrapeApproachInfo(doc *goquery.Document, index int) (approachInfo, error) 
 		if i == index {
 			target := strings.TrimSpace(s.Text())
 			approachInfo.MoreMin = target
-			fmt.Println(target)
+			fmt.Println("MoreMin: " + target)
 		}
 	})
 	doc.Find(".time").Each(func(i int, s *goquery.Selection) {
@@ -109,7 +111,7 @@ func scrapeApproachInfo(doc *goquery.Document, index int) (approachInfo, error) 
 			r := regexp.MustCompile(`[0-9][0-9]:[0-9][0-9]`)
 			target := r.FindStringSubmatch(strings.TrimSpace(s.Text()))
 			approachInfo.RealArrivalTime = target[0]
-			fmt.Println(target[0])
+			fmt.Println("ReadArrivalTime: " + target[0])
 		}
 	})
 	doc.Find(".tableDetail").Each(func(i int, s *goquery.Selection) {
