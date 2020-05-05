@@ -17,6 +17,3 @@ func RequestApproachInfos(urls []string, fetcher IFetchApproachInfos) domain.App
 	fastThree.ApproachInfo = append(fastThree.ApproachInfo, domain.ApproachInfo{})
 	return fastThree
 }
-
-
-
