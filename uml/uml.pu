@@ -1,0 +1,73 @@
+@startuml アーキテクチャ設計
+package domain {
+    class ApproachInfo {
+        + string MoreMin
+        + string RealArrivalTime
+        + string Direction
+        + string Via
+        + string ScheduledTime 
+        + string Delay
+        + string BusStop
+    }
+
+    class ApproachInfos {
+        + ApproachInfo[] ApproachInfos
+    }
+
+    class TimeTable {
+        + map[int][]OneBusTime Weekdays
+        + map[int][]OneBusTime Saturdays
+        + map[int][]OneBusTime Holidays
+    }
+
+    class OneBusTime {
+        + string Via
+        + string Min
+        + string BusStop
+    }
+}
+
+package presenter {
+    class ApproachInfoPresenter {
+        + ApproachInfos RequestApproachInfos(urls []string)
+    }
+
+    interface IFetchApproachInfos {
+        + ApproachInfos FetchApproachInfos(url string)
+    }
+}
+
+package infra {
+    class ApproachRequestView {
+        + error ApproachInfoRequest(c context)
+    }
+
+    class ApproachInfoFetcher {
+        + ApproachInfos FetchApproachInfos(url string)
+    }
+
+    interface Context {
+        + []string GetApproachInfoUlr()
+        + error Response(int, interface{})
+    }
+}
+
+package main {
+    class main.Context {
+        + (string, string) GetTwoPoint()
+    }
+
+    class Router {
+        + void Routing()
+    }
+}
+
+main.Context ..|> Context
+main.Context ..> ApproachRequestView
+ApproachRequestView ..> Context
+Router ..> ApproachRequestView
+ApproachRequestView ..> ApproachInfoPresenter
+ApproachInfoPresenter ..> IFetchApproachInfos
+ApproachInfoFetcher ..|> IFetchApproachInfos
+
+@enduml
