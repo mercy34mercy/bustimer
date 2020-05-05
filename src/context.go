@@ -1,44 +1,43 @@
-package approach
+package main
+
+import (
+	"github.com/labstack/echo/v4"
+)
 
 const (
 	url        = "https://ohmitetudo-bus.jorudan.biz/busstatedtl"
-	frRits     = "立命館大学〔近江鉄道・湖国バス〕"
-	frMinakusa = "南草津駅〔近江鉄道・湖国バス〕"
 	// 「立命館大学」の固定文字列
 	rits = "立命館大学"
 	// 「南草津駅」の固定文字列
 	minakusa     = "南草津駅"
-	MAX_RESPONSE = 3
 )
 
-// frクエリに対応するdgmplクエリのスライス
-var dgmplMap = map[string][]string{frMinakusa: []string{"南草津駅〔近江鉄道・湖国バス〕:1", "南草津駅〔近江鉄道・湖国バス〕:3", "南草津駅〔近江鉄道・湖国バス〕:4"},
-	frRits: []string{"立命館大学〔近江鉄道・湖国バス〕:2"}}
-
+// frクエリからスクレイピングURL用のfrに変換するマップ
 var frList = map[string]string{
-	rits:           frRits,
-	minakusa:       frMinakusa,
-	"野路":           "野路〔近江鉄道・湖国バス〕",
-	"南田山":          "南田山〔近江鉄道・湖国バス〕",
-	"玉川小学校前":       "玉川小学校前〔近江鉄道・湖国バス〕",
-	"小野山":          "小野山〔近江鉄道・湖国バス〕",
-	"パナソニック東口":     "パナソニック東口〔近江鉄道・湖国バス〕",
-	"パナソニック前":      "パナソニック前〔近江鉄道・湖国バス〕",
-	"パナソニック西口":     "パナソニック西口〔近江鉄道・湖国バス〕",
-	"笠山東":          "笠山東〔近江鉄道・湖国バス〕",
-	"笹の口":          "笹の口〔近江鉄道・湖国バス〕",
-	"クレスト草津前":      "クレスト草津前〔近江鉄道・湖国バス〕",
-	"BKCグリーンフィールド": "ＢＫＣグリーンフィールド〔近江鉄道・湖国バス〕",
-	"野路北口":         "野路北口〔近江鉄道・湖国バス〕",
-	"草津クレアホール":     "草津クレアホール〔近江鉄道・湖国バス〕",
-	"東矢倉南":         "東矢倉南〔近江鉄道・湖国バス〕",
-	"東矢倉職員住宅":      "東矢倉職員住宅〔近江鉄道・湖国バス〕",
-	"向山ニュータウン":     "向山ニュータウン〔近江鉄道・湖国バス〕",
-	"丸尾":           "丸尾〔近江鉄道・湖国バス〕",
-	"若草北口":         "若草北口〔近江鉄道・湖国バス〕",
-	"立命館大学正門前":     "立命館大学正門前〔近江鉄道・湖国バス〕",
+	rits:            "立命館大学〔近江鉄道・湖国バス〕",
+	minakusa:       	   "南草津駅〔近江鉄道・湖国バス〕",
+	"野路":           	   "野路〔近江鉄道・湖国バス〕",
+	"南田山":         	   "南田山〔近江鉄道・湖国バス〕",
+	"玉川小学校前": 		   "玉川小学校前〔近江鉄道・湖国バス〕",
+	"小野山":       		   "小野山〔近江鉄道・湖国バス〕",
+	"パナソニック東口": 	   "パナソニック東口〔近江鉄道・湖国バス〕",
+	"パナソニック前":   	   "パナソニック前〔近江鉄道・湖国バス〕",
+	"パナソニック西口":   	   "パナソニック西口〔近江鉄道・湖国バス〕",
+	"笠山東":       	       "笠山東〔近江鉄道・湖国バス〕",
+	"笹の口":        	   "笹の口〔近江鉄道・湖国バス〕",
+	"クレスト草津前":     	   "クレスト草津前〔近江鉄道・湖国バス〕",
+	"BKCグリーンフィールド":  "ＢＫＣグリーンフィールド〔近江鉄道・湖国バス〕",
+	"野路北口":             "野路北口〔近江鉄道・湖国バス〕",
+	"草津クレアホール":      "草津クレアホール〔近江鉄道・湖国バス〕",
+	"東矢倉南":             "東矢倉南〔近江鉄道・湖国バス〕",
+	"東矢倉職員住宅":        "東矢倉職員住宅〔近江鉄道・湖国バス〕",
+	"向山ニュータウン":      "向山ニュータウン〔近江鉄道・湖国バス〕",
+	"丸尾":                "丸尾〔近江鉄道・湖国バス〕",
+	"若草北口":             "若草北口〔近江鉄道・湖国バス〕",
+	"立命館大学正門前":      "立命館大学正門前〔近江鉄道・湖国バス〕",
 }
 
+// frクエリとtoクエリからdgmplクエリを取り出すマップ
 var dgmplList = map[string]map[string][]string{
 	rits:           {minakusa: {"立命館大学〔近江鉄道・湖国バス〕:2"}},
 	minakusa:       {rits: {"南草津駅〔近江鉄道・湖国バス〕:1", "南草津駅〔近江鉄道・湖国バス〕:3", "南草津駅〔近江鉄道・湖国バス〕:4"}},
@@ -63,18 +62,31 @@ var dgmplList = map[string]map[string][]string{
 	"立命館大学正門前":     {rits: {"立命館大学正門前〔近江鉄道・湖国バス〕:2"}, minakusa: {"立命館大学正門前〔近江鉄道・湖国バス〕:1"}},
 }
 
-// approachInfo 1件の接近情報を表す構造体
-type approachInfo struct {
-	// あと何分で到着か
-	MoreMin string `json:"more_min"`
-	// 実際の到着予定時刻(遅延を考慮する)
-	RealArrivalTime string `json:"real_arrive_time"`
-	// 系統
-	Descent string `json:"descent"`
-	// 行き先
-	Direction string `json:"direction"`
-	// 定刻の時間
-	ScheduledTime string `json:"scheduled_time"`
-	// 遅延時間
-	Delay string `json:"delay"`
+type CustomContext struct {
+	echo.Context
+}
+
+// echo.Contextからクエリ情報を取り出して接近情報のスクレイピングをするためのURLを生成する
+func (c *CustomContext) GetApproachInfoUrl() []string {
+	// クエリの抽出
+	fr := c.Context.QueryParam("fr")
+	to := c.Context.QueryParam("to")
+
+	// リクエストクエリからスクレイピング用のURLに含めるクエリに変換する
+	from := frList[fr]
+	dgmpl := dgmplList[fr][to]
+
+	// URLスライス作成（複数ある場合があるので）
+	urls := make([]string, 0)
+
+	// URLを作成
+	for _, v := range dgmpl {
+		urls = append(urls, url + "?fr=" + from + "&dgmpl=" + v)
+	}
+	return urls
+}
+
+// echo.Context経由のレスポンスをラップした
+func (c *CustomContext) Response(statusCode int, param interface{}) error {
+	return c.JSON(statusCode, param)
 }

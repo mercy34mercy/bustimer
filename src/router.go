@@ -12,7 +12,10 @@ func Routing() {
 	e.GET("/", func(c echo.Context) error {
 		return c.HTML(http.StatusOK, "<h1>Busdes! Clean Architecture API</h1>")
 	})
-	e.GET("/bus/time/v3", infrastructure.RequestApproachInfo)
+	e.GET("/bus/time/v3", func(c echo.Context) error {
+		cc := &CustomContext{c}
+		return infrastructure.ApproachInfoRequest(cc)
+	})
 }
 
 

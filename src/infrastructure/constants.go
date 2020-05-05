@@ -1,4 +1,4 @@
-package approach
+package infrastructure
 
 const (
 	url        = "https://ohmitetudo-bus.jorudan.biz/busstatedtl"
@@ -61,20 +61,4 @@ var dgmplList = map[string]map[string][]string{
 	"丸尾":           {rits: {"丸尾〔近江鉄道・湖国バス〕:1"}, minakusa: {"丸尾〔近江鉄道・湖国バス〕:2"}},
 	"若草北口":         {rits: {"若草北口〔近江鉄道・湖国バス〕:1"}, minakusa: {"若草北口〔近江鉄道・湖国バス〕:2"}},
 	"立命館大学正門前":     {rits: {"立命館大学正門前〔近江鉄道・湖国バス〕:2"}, minakusa: {"立命館大学正門前〔近江鉄道・湖国バス〕:1"}},
-}
-
-// approachInfo 1件の接近情報を表す構造体
-type approachInfo struct {
-	// あと何分で到着か
-	MoreMin string `json:"more_min"`
-	// 実際の到着予定時刻(遅延を考慮する)
-	RealArrivalTime string `json:"real_arrive_time"`
-	// 系統
-	Descent string `json:"descent"`
-	// 行き先
-	Direction string `json:"direction"`
-	// 定刻の時間
-	ScheduledTime string `json:"scheduled_time"`
-	// 遅延時間
-	Delay string `json:"delay"`
 }
