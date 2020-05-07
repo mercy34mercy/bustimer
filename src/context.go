@@ -5,7 +5,8 @@ import (
 )
 
 const (
-	url        = "https://ohmitetudo-bus.jorudan.biz/busstatedtl"
+	approachUrl        = "https://ohmitetudo-bus.jorudan.biz/busstatedtl"
+	viaUrl 	   		   = "https://ohmitetudo-bus.jorudan.biz/diagrampoledtl"
 	// 「立命館大学」の固定文字列
 	rits = "立命館大学"
 	// 「南草津駅」の固定文字列
@@ -67,7 +68,7 @@ type CustomContext struct {
 }
 
 // echo.Contextからクエリ情報を取り出して接近情報のスクレイピングをするためのURLを生成する
-func (c *CustomContext) GetApproachInfoUrl() []string {
+func (c *CustomContext) GetApproachInfoUrls() ([]string, []string) {
 	// クエリの抽出
 	fr := c.Context.QueryParam("fr")
 	to := c.Context.QueryParam("to")
@@ -77,13 +78,15 @@ func (c *CustomContext) GetApproachInfoUrl() []string {
 	dgmpl := dgmplList[fr][to]
 
 	// URLスライス作成（複数ある場合があるので）
-	urls := make([]string, 0)
+	approachInfoUrls := make([]string, 0)
+	viaUrls := make([]string, 0)
 
 	// URLを作成
 	for _, v := range dgmpl {
-		urls = append(urls, url + "?fr=" + from + "&dgmpl=" + v)
+		approachInfoUrls = append(approachInfoUrls, approachUrl + "?fr=" + from + "&dgmpl=" + v)
+		viaUrls = append(viaUrls, viaUrl + "?fr=" + from + "&dgmpl=" + v)
 	}
-	return urls
+	return approachInfoUrls, viaUrls
 }
 
 // echo.Context経由のレスポンスをラップした
