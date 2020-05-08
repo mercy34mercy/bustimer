@@ -5,6 +5,7 @@ import (
 	"github.com/PuerkitoBio/goquery"
 	"github.com/shun-shun123/bus-timer/src/domain"
 	"regexp"
+	"strconv"
 	"strings"
 )
 
@@ -24,7 +25,6 @@ func (doc *CustomDocument) fetchApproachInfo() ([]string, []string, []string, []
 	Direction := make([]string, 0)
 	ScheduledTime := make([]string, 0)
 	Delay := make([]string, 0)
-	fmt.Println("hogehoge")
 	doc.Find(".tableDetail").Each(func(i int, s *goquery.Selection) {
 		if i >= dataCount {
 			return
@@ -70,6 +70,22 @@ func (doc *CustomDocument) fetchViaAndBusStop(hour, min int) (string, string) {
 		}
 	})
 	return via, busStop
+}
+
+func (doc *CustomDocument) fetchVia(hour, min int) string {
+	via := ""
+	doc.Find(".timetable tr").Each(func(tr int, s *goquery.Selection) {
+		if hour == (tr + 5) {
+			s.Find(".column_day1_t2 li ").Each(func(i int, li *goquery.Selection) {
+				trimed := strings.TrimSpace(li.Text())
+				minute, _ := strconv.Atoi(trimed)
+				if minute == min {
+					via = li.Find(".legend span").First().Text()
+				}
+			})
+		}
+	})
+	return via
 }
 
 func findMinLen(dataset ...[]string) int {
