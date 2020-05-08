@@ -1,6 +1,7 @@
 package infrastructure
 
 import (
+	"fmt"
 	"github.com/PuerkitoBio/goquery"
 	"github.com/shun-shun123/bus-timer/src/domain"
 	"regexp"
@@ -16,67 +17,42 @@ type CustomDocument struct {
 
 var dataCount = 3
 
-func (doc *CustomDocument) fetchMoreMin() []string {
+// 接近情報のサイトから取れる下記の情報をまとめてスクレイピングする
+func (doc *CustomDocument) fetchApproachInfo() ([]string, []string, []string, []string, []string) {
 	moreMin := make([]string, 0)
-	doc.Find(".more_min").Each(func(i int, s *goquery.Selection) {
-		if i >= dataCount {
-			return
-		}
-		target := strings.TrimSpace(s.Text())
-		moreMin = append(moreMin, target)
-	})
-	return moreMin
-}
-
-func (doc *CustomDocument) fetchRealArrivalTime() []string {
 	realArrivalTime := make([]string, 0)
-	doc.Find(".time").Each(func(i int, s *goquery.Selection) {
-		if i >= dataCount {
-			return
-		}
-		r := regexp.MustCompile(`[0-9][0-9]:[0-9][0-9]`)
-		target := r.FindStringSubmatch(strings.TrimSpace(s.Text()))
-		realArrivalTime = append(realArrivalTime, target[0])
-	})
-	return realArrivalTime
-}
-
-func (doc *CustomDocument) fetchDirection() []string {
-	directions := make([]string, 0)
+	Direction := make([]string, 0)
+	ScheduledTime := make([]string, 0)
+	Delay := make([]string, 0)
+	fmt.Println("hogehoge")
 	doc.Find(".tableDetail").Each(func(i int, s *goquery.Selection) {
 		if i >= dataCount {
 			return
 		}
-		s.Find(".bsul").First().Find("li").Each(func(j int, li *goquery.Selection) {
+		moreMin = append(moreMin, s.Find(".more_min").Text())
+		r := regexp.MustCompile(`[0-9][0-9]:[0-9][0-9]`)
+		arrivalTime := r.FindString(s.Find(".time").Text())
+		realArrivalTime = append(realArrivalTime, arrivalTime)
+		s.Find(".bsul li").Each(func(j int, li *goquery.Selection) {
 			if j == 4 {
-				trimed := strings.Trim(strings.Trim(li.Text(), "\n"), " ")
-				splited := strings.Split(trimed, "\n")
-				content := strings.Trim(splited[1], " ")
-				directions = append(directions, content)
+				trimed := strings.TrimSpace(strings.Split(li.Text(), "\n")[2])
+				Direction = append(Direction, trimed)
 			}
 		})
-	})
-	return directions
-}
-
-func (doc *CustomDocument) fetchScheduledTimeAndDelay() ([]string, []string) {
-	scheduledTime := make([]string, 0)
-	delay := make([]string, 0)
-	doc.Find(".moreArea").Each(func(i int, s *goquery.Selection) {
-		if i >= dataCount {
-			return
-		}
-		s.Find(".bsmidashi").Each(func(j int, li *goquery.Selection) {
-			if j == 0 {
-				r := regexp.MustCompile(`[0-9][0-9]:[0-9][0-9]`)
-				target := r.FindStringSubmatch(li.Parent().Text())
-				scheduledTime = append(scheduledTime, target[0])
-			} else if j == 1 {
-				delay = append(delay, li.Text())
+		s.Find(".moreArea .bsul li").Each(func(j int, li *goquery.Selection) {
+			r := regexp.MustCompile(`[0-9][0-9]:[0-9][0-9]`)
+			scheduledTime := r.FindStringSubmatch(li.Text())
+			if scheduledTime != nil {
+				ScheduledTime = append(ScheduledTime, scheduledTime[0])
 			}
+			li.Find(".bsmidashi").Each(func(k int, span *goquery.Selection) {
+				if k == 1 {
+					Delay = append(Delay, span.Text())
+				}
+			})
 		})
 	})
-	return scheduledTime, delay
+	return moreMin, realArrivalTime, Direction, ScheduledTime, Delay
 }
 
 func (doc *CustomDocument) fetchViaAndBusStop(hour, min int) (string, string) {
@@ -96,30 +72,40 @@ func (doc *CustomDocument) fetchViaAndBusStop(hour, min int) (string, string) {
 	return via, busStop
 }
 
+func findMinLen(dataset ...[]string) int {
+	min := 10000
+	for _, v := range dataset {
+		if len(v) < min {
+			min = len(v)
+		}
+	}
+	return min
+}
+
 func (fetcher ApproachInfoFetcher) FetchApproachInfos(approachInfoUrl, viaUrl string) domain.ApproachInfos {
 	approachInfos := domain.ApproachInfos{
-		ApproachInfo: make([]domain.ApproachInfo, 3),
+		ApproachInfo: make([]domain.ApproachInfo, 0),
 	}
 	approachDoc, err := goquery.NewDocument(approachInfoUrl)
 	if err != nil {
 		// TODO: スクレイピングが失敗した場合の処理
 		// 近江鉄道バスサーバ死亡説...
-		log.Fatal(approachInfoUrl, " has no content or invalid format. unable to scrape")
+		fmt.Println(approachInfoUrl, " has no content or invalid format. unable to scrape")
 		return domain.ApproachInfos{}
 	}
 	customDoc := CustomDocument{approachDoc}
-	moreMin := customDoc.fetchMoreMin()
-	realArrivalTime := customDoc.fetchRealArrivalTime()
-	directions := customDoc.fetchDirection()
-	scheduledTime, delay := customDoc.fetchScheduledTimeAndDelay()
+	moreMin, realArrivalTime, directions, scheduledTime, delay := customDoc.fetchApproachInfo()
 
 	// TODO: viaUrlの実装はまだで、とりあえずログに出してるだけ
-	for i := 0; i < dataCount; i++ {
-		approachInfos.ApproachInfo[i].MoreMin = moreMin[i]
-		approachInfos.ApproachInfo[i].RealArrivalTime = realArrivalTime[i]
-		approachInfos.ApproachInfo[i].Direction = directions[i]
-		approachInfos.ApproachInfo[i].ScheduledTime = scheduledTime[i]
-		approachInfos.ApproachInfo[i].Delay = delay[i]
+	iterateCount := findMinLen(moreMin, realArrivalTime, directions, scheduledTime, delay)
+	for i := 0; i < iterateCount; i++ {
+		approachInfos.ApproachInfo = append(approachInfos.ApproachInfo, domain.ApproachInfo{
+			MoreMin: moreMin[i],
+			RealArrivalTime: realArrivalTime[i],
+			Direction: directions[i],
+			ScheduledTime: scheduledTime[i],
+			Delay: delay[i],
+		})
 	}
 	return approachInfos
 }
