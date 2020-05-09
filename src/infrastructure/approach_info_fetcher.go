@@ -82,12 +82,14 @@ func (doc *CustomDocument) fetchVia(hour, min int, isHoliday bool) string {
 		if hour == (i + 5) {
 			tab.Find("li").Each(func(j int, li *goquery.Selection) {
 				trimed := strings.Fields(li.Text())
-				minute, err := strconv.Atoi(trimed[1])
-				if err != nil {
-					fmt.Println("Conversion failed")
-				}
-				if minute == min {
-					via = trimed[0]
+				if len(trimed) >= 1 {
+					minute, err := strconv.Atoi(trimed[1])
+					if err != nil {
+						fmt.Println("Conversion failed")
+					}
+					if minute == min {
+						via = trimed[0]
+					}
 				}
 			})
 		}

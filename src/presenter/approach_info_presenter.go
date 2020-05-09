@@ -12,8 +12,10 @@ func RequestApproachInfos(approachInfoUrls []string, viaUrls []string, fetcher I
 	// TODO: 上位三つの早いものを取り出す処理
 	fastThree := domain.ApproachInfos{}
 	// FIXME: 一旦それっぽいデータを埋めてる
-	fastThree.ApproachInfo = append(fastThree.ApproachInfo, approachInfos[0].ApproachInfo[0])
-	fastThree.ApproachInfo = append(fastThree.ApproachInfo, approachInfos[0].ApproachInfo[1])
-	fastThree.ApproachInfo = append(fastThree.ApproachInfo, approachInfos[0].ApproachInfo[2])
+	for _, v := range approachInfos {
+		for _, vinfo := range v.ApproachInfo {
+			fastThree.ApproachInfo = append(fastThree.ApproachInfo, vinfo)
+		}
+	}
 	return fastThree
 }
