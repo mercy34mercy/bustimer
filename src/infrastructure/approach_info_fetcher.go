@@ -72,15 +72,22 @@ func (doc *CustomDocument) fetchViaAndBusStop(hour, min int) (string, string) {
 	return via, busStop
 }
 
-func (doc *CustomDocument) fetchVia(hour, min int) string {
+func (doc *CustomDocument) fetchVia(hour, min int, isHoliday bool) string {
 	via := ""
-	doc.Find(".timetable tr").Each(func(tr int, s *goquery.Selection) {
-		if hour == (tr + 5) {
-			s.Find(".column_day1_t2 li ").Each(func(i int, li *goquery.Selection) {
-				trimed := strings.TrimSpace(li.Text())
-				minute, _ := strconv.Atoi(trimed)
+	searchPath := ".timetable tr .column_day1_t2"
+	if isHoliday {
+		searchPath = ".timetable tr .column_day2_t2"
+	}
+	doc.Find(searchPath).Each(func(i int, tab *goquery.Selection) {
+		if hour == (i + 5) {
+			tab.Find("li").Each(func(j int, li *goquery.Selection) {
+				trimed := strings.Fields(li.Text())
+				minute, err := strconv.Atoi(trimed[1])
+				if err != nil {
+					fmt.Println("Conversion failed")
+				}
 				if minute == min {
-					via = li.Find(".legend span").First().Text()
+					via = trimed[0]
 				}
 			})
 		}
@@ -109,18 +116,33 @@ func (fetcher ApproachInfoFetcher) FetchApproachInfos(approachInfoUrl, viaUrl st
 		fmt.Println(approachInfoUrl, " has no content or invalid format. unable to scrape")
 		return domain.ApproachInfos{}
 	}
+	// 接近情報のWebから取れる情報をスクレイピングする
 	customDoc := CustomDocument{approachDoc}
 	moreMin, realArrivalTime, directions, scheduledTime, delay := customDoc.fetchApproachInfo()
 
-	// TODO: viaUrlの実装はまだで、とりあえずログに出してるだけ
 	iterateCount := findMinLen(moreMin, realArrivalTime, directions, scheduledTime, delay)
+	if len(viaUrl) > 0 {
+		viaDoc, err := goquery.NewDocument(viaUrl)
+		if err == nil {
+			customDoc = CustomDocument{viaDoc}
+		}
+	}
+	via := ""
 	for i := 0; i < iterateCount; i++ {
+		if len(viaUrl) > 0 {
+			//TODO: 経由情報のスクレイピング
+			//TODO: viaUrlの実装はまだ
+			hour, _ := strconv.Atoi(scheduledTime[i][:2])
+			min, _ := strconv.Atoi(scheduledTime[i][3:])
+			via = customDoc.fetchVia(hour, min, true)
+		}
 		approachInfos.ApproachInfo = append(approachInfos.ApproachInfo, domain.ApproachInfo{
 			MoreMin: moreMin[i],
 			RealArrivalTime: realArrivalTime[i],
 			Direction: directions[i],
 			ScheduledTime: scheduledTime[i],
 			Delay: delay[i],
+			Via: via,
 		})
 	}
 	return approachInfos

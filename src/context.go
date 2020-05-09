@@ -84,7 +84,9 @@ func (c *CustomContext) GetApproachInfoUrls() ([]string, []string) {
 	// URLを作成
 	for _, v := range dgmpl {
 		approachInfoUrls = append(approachInfoUrls, approachUrl + "?fr=" + from + "&dgmpl=" + v)
-		viaUrls = append(viaUrls, viaUrl + "?fr=" + from + "&dgmpl=" + v)
+		if fr == minakusa {
+			viaUrls = append(viaUrls,  viaUrl+ "?fr=南草津駅〔近江鉄道・湖国バス〕&dgmpl=南草津駅〔近江鉄道・湖国バス〕:1:0")
+		}
 	}
 	return approachInfoUrls, viaUrls
 }

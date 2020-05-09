@@ -84,7 +84,7 @@ func TestScrapeApproachInfo(t *testing.T) {
 func TestScrapeApproachInfoLessBus(t *testing.T) {
 	fetcher := infrastructure.ApproachInfoFetcher{}
 	approachInfoUrl := "http://localhost:8000/minakusa_to_rits_less_bus.html"
-	viaUrl := ""
+	viaUrl := "https://ohmitetudo-bus.jorudan.biz/diagrampoledtl?mode=1&fr=南草津駅〔近江鉄道・湖国バス〕&dgmpl=南草津駅〔近江鉄道・湖国バス〕:1:0"
 	approachInfos := fetcher.FetchApproachInfos(approachInfoUrl, viaUrl)
 	if len(approachInfos.ApproachInfo) == 0 {
 		t.Fatal("正しくスクレピングできていません.")
@@ -112,6 +112,10 @@ func TestScrapeApproachInfoLessBus(t *testing.T) {
 
 	if approachInfo.Delay != "(定時運行)" {
 		t.Fatalf("[0].Delayが正しくありません。%v", approachInfo.Delay)
+	}
+
+	if approachInfo.Via != "西" {
+		t.Fatalf("[0].Viaが正しくありません。%v", approachInfo.Via)
 	}
 }
 
