@@ -7,7 +7,6 @@ import (
 
 const (
 	approachUrl        = "https://ohmitetudo-bus.jorudan.biz/busstatedtl"
-	viaUrl 	   		   = "https://ohmitetudo-bus.jorudan.biz/diagrampoledtl"
 	// 「立命館大学」の固定文字列
 	rits = "立命館大学"
 	// 「南草津駅」の固定文字列
@@ -85,13 +84,11 @@ func (c *CustomContext) GetApproachInfoUrls() ([]string, string) {
 	for _, v := range dgmpl {
 		approachInfoUrls = append(approachInfoUrls, approachUrl + "?fr=" + from + "&dgmpl=" + v)
 	}
-	viaFrom := infrastructure.FrRits
-	if from == minakusa {
+	viaFrom := ""
+	if fr == minakusa {
 		viaFrom = infrastructure.FrMinakusa
-	} else if from == rits {
+	} else if fr == rits {
 		viaFrom = infrastructure.FrRits
-	} else {
-		viaFrom = ""
 	}
 	return approachInfoUrls, viaFrom
 }

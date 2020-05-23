@@ -1,8 +1,8 @@
 package infrastructure
 
 import (
-	"fmt"
 	"github.com/PuerkitoBio/goquery"
+	"github.com/google/martian/log"
 	"github.com/shun-shun123/bus-timer/src/domain"
 	"regexp"
 	"strconv"
@@ -55,48 +55,6 @@ func (doc *CustomDocument) fetchApproachInfo() ([]string, []string, []string, []
 	return moreMin, realArrivalTime, Direction, ScheduledTime, Delay
 }
 
-func (doc *CustomDocument) fetchViaAndBusStop(hour, min int) (string, string) {
-	via := ""
-	busStop := ""
-	doc.Find(".time").Each(func(i int, s *goquery.Selection) {
-		h := i + 4	// HTMLの要素+3がちょうど時間(hour)になる
-		if h == hour {
-			// TODO: 経由とバス停情報をスクレイピングしないといけない
-			// TODO: 本当は平日以外も対応したい
-			s.Parent().Find(".column_day1_t2 .ttList li").Each(func(j int, s *goquery.Selection) {
-				fmt.Println("s.Text(): ", s.Text())
-			})
-			return
-		}
-	})
-	return via, busStop
-}
-
-func (doc *CustomDocument) fetchVia(hour, min int, isHoliday bool) string {
-	via := ""
-	searchPath := ".timetable tr .column_day1_t2"
-	if isHoliday {
-		searchPath = ".timetable tr .column_day2_t2"
-	}
-	doc.Find(searchPath).Each(func(i int, tab *goquery.Selection) {
-		if hour == (i + 5) {
-			tab.Find("li").Each(func(j int, li *goquery.Selection) {
-				trimed := strings.Fields(li.Text())
-				if len(trimed) >= 1 {
-					minute, err := strconv.Atoi(trimed[1])
-					if err != nil {
-						fmt.Println("Conversion failed")
-					}
-					if minute == min {
-						via = trimed[0]
-					}
-				}
-			})
-		}
-	})
-	return via
-}
-
 func findMinLen(dataset ...[]string) int {
 	min := 10000
 	for _, v := range dataset {
@@ -108,33 +66,39 @@ func findMinLen(dataset ...[]string) int {
 }
 
 func (fetcher ApproachInfoFetcher) FetchApproachInfos(approachInfoUrl, from string) domain.ApproachInfos {
+	// 返り値で返す変数を初期化
 	approachInfos := domain.ApproachInfos{
 		ApproachInfo: make([]domain.ApproachInfo, 0),
 	}
+
+	// 接近情報があるURLでスクレイピングする
 	approachDoc, err := goquery.NewDocument(approachInfoUrl)
 	if err != nil {
-		// TODO: スクレイピングが失敗した場合の処理
-		// 近江鉄道バスサーバ死亡説...
-		fmt.Println(approachInfoUrl, " has no content or invalid format. unable to scrape")
-		return domain.ApproachInfos{}
+		log.Errorf("%v は不正なフォーマットか、コンテントがありません。スクレイプに失敗しました。", approachInfoUrl)
+		return approachInfos
 	}
-	// 接近情報のWebから取れる情報をスクレイピングする
+
+	// CustomDocument型に変換する
 	customDoc := CustomDocument{approachDoc}
 	moreMin, realArrivalTime, directions, scheduledTime, delay := customDoc.fetchApproachInfo()
 
+	// どれかが空の場合もあるので、最小の数を探す
 	iterateCount := findMinLen(moreMin, realArrivalTime, directions, scheduledTime, delay)
 	via := ""
 	for i := 0; i < iterateCount; i++ {
 		//TODO: 経由情報のスクレイピング
-		//TODO: viaUrlの実装はまだ
+
+		// hh:mmの表記でくる
 		hour, _ := strconv.Atoi(scheduledTime[i][:2])
-		min := scheduledTime[i][3:]
+		min, _ := strconv.Atoi(scheduledTime[i][3:])
 		tt, ok := TimeTable[from]
 		if ok {
-			timeTableData := tt.Weekdays
+			timeTableData := tt.Saturdays
 			for _, v := range timeTableData[hour] {
-				if v.Min == min {
-					via = v.Via
+				if convMin, err := strconv.Atoi(v.Min); err == nil {
+					if convMin == min {
+						via = v.Via
+					}
 				}
 			}
 		}

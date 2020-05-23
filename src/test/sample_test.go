@@ -1,9 +1,17 @@
 package test
 
 import (
+	"fmt"
 	"github.com/shun-shun123/bus-timer/src/infrastructure"
 	"testing"
+	"time"
 )
+
+func TestMain(m *testing.M) {
+	fmt.Println("テスト前の初期化処理")
+	go infrastructure.TimeTableCacheStart()
+	time.Sleep(10 * time.Second)
+}
 
 func TestScrapeApproachInfo(t *testing.T) {
 	fetcher := infrastructure.ApproachInfoFetcher{}
