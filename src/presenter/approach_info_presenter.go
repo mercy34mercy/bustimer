@@ -4,10 +4,10 @@ import (
 	"github.com/shun-shun123/bus-timer/src/domain"
 )
 
-func RequestApproachInfos(approachInfoUrls []string, viaUrls []string, fetcher IFetchApproachInfos) domain.ApproachInfos {
+func RequestApproachInfos(approachInfoUrls []string, from string, fetcher IFetchApproachInfos) domain.ApproachInfos {
 	approachInfos := make([]domain.ApproachInfos, len(approachInfoUrls))
 	for i, v := range approachInfoUrls {
-		approachInfos[i] = fetcher.FetchApproachInfos(v, viaUrls[i])
+		approachInfos[i] = fetcher.FetchApproachInfos(v, from)
 	}
 	// TODO: 上位三つの早いものを取り出す処理
 	fastThree := domain.ApproachInfos{}

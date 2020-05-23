@@ -7,12 +7,12 @@ import (
 
 func ApproachInfoRequest(c Context) error {
 	// リクエストURLを作成
-	approachInfoUrls, viaUrls := c.GetApproachInfoUrls()
+	approachInfoUrls, from := c.GetApproachInfoUrls()
 
 	// URLからデータを取得するFetcherを作成
 	fetcher := ApproachInfoFetcher{}
 
 	// Presenterに処理をリクエスト
-	approachInfos := presenter.RequestApproachInfos(approachInfoUrls, viaUrls, fetcher)
+	approachInfos := presenter.RequestApproachInfos(approachInfoUrls, from, fetcher)
 	return c.Response(http.StatusOK, approachInfos)
 }

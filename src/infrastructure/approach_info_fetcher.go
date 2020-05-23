@@ -107,7 +107,7 @@ func findMinLen(dataset ...[]string) int {
 	return min
 }
 
-func (fetcher ApproachInfoFetcher) FetchApproachInfos(approachInfoUrl, viaUrl string) domain.ApproachInfos {
+func (fetcher ApproachInfoFetcher) FetchApproachInfos(approachInfoUrl, from string) domain.ApproachInfos {
 	approachInfos := domain.ApproachInfos{
 		ApproachInfo: make([]domain.ApproachInfo, 0),
 	}
@@ -123,20 +123,20 @@ func (fetcher ApproachInfoFetcher) FetchApproachInfos(approachInfoUrl, viaUrl st
 	moreMin, realArrivalTime, directions, scheduledTime, delay := customDoc.fetchApproachInfo()
 
 	iterateCount := findMinLen(moreMin, realArrivalTime, directions, scheduledTime, delay)
-	if len(viaUrl) > 0 {
-		viaDoc, err := goquery.NewDocument(viaUrl)
-		if err == nil {
-			customDoc = CustomDocument{viaDoc}
-		}
-	}
 	via := ""
 	for i := 0; i < iterateCount; i++ {
-		if len(viaUrl) > 0 {
-			//TODO: 経由情報のスクレイピング
-			//TODO: viaUrlの実装はまだ
-			hour, _ := strconv.Atoi(scheduledTime[i][:2])
-			min, _ := strconv.Atoi(scheduledTime[i][3:])
-			via = customDoc.fetchVia(hour, min, true)
+		//TODO: 経由情報のスクレイピング
+		//TODO: viaUrlの実装はまだ
+		hour, _ := strconv.Atoi(scheduledTime[i][:2])
+		min := scheduledTime[i][3:]
+		tt, ok := TimeTable[from]
+		if ok {
+			timeTableData := tt.Weekdays
+			for _, v := range timeTableData[hour] {
+				if v.Min == min {
+					via = v.Via
+				}
+			}
 		}
 		approachInfos.ApproachInfo = append(approachInfos.ApproachInfo, domain.ApproachInfo{
 			MoreMin: moreMin[i],

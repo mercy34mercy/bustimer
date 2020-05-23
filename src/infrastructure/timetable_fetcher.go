@@ -21,7 +21,6 @@ const (
 
 var tdList = []string{"td.schedule.column_day1_t2", "td.schedule.column_day2_t2", "td.schedule.column_day3_t2"}
 
-
 func (fetcher TimetableFetcher) FetchTimetable(from string) domain.TimeTable {
 	timetable := domain.TimeTable{
 		Weekdays: make(map[int][]domain.OneBusTime),

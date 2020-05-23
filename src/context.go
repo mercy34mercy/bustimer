@@ -2,6 +2,7 @@ package main
 
 import (
 	"github.com/labstack/echo/v4"
+	"github.com/shun-shun123/bus-timer/src/infrastructure"
 )
 
 const (
@@ -68,7 +69,7 @@ type CustomContext struct {
 }
 
 // echo.Contextからクエリ情報を取り出して接近情報のスクレイピングをするためのURLを生成する
-func (c *CustomContext) GetApproachInfoUrls() ([]string, []string) {
+func (c *CustomContext) GetApproachInfoUrls() ([]string, string) {
 	// クエリの抽出
 	fr := c.Context.QueryParam("fr")
 	to := c.Context.QueryParam("to")
@@ -79,23 +80,23 @@ func (c *CustomContext) GetApproachInfoUrls() ([]string, []string) {
 
 	// URLスライス作成（複数ある場合があるので）
 	approachInfoUrls := make([]string, 0)
-	viaUrls := make([]string, 0)
 
 	// URLを作成
 	for _, v := range dgmpl {
 		approachInfoUrls = append(approachInfoUrls, approachUrl + "?fr=" + from + "&dgmpl=" + v)
-		if fr == minakusa {
-			viaUrls = append(viaUrls,  viaUrl+ "?fr=南草津駅〔近江鉄道・湖国バス〕&dgmpl=南草津駅〔近江鉄道・湖国バス〕:1:0")
-		}
 	}
-	return approachInfoUrls, viaUrls
+	viaFrom := infrastructure.FrRits
+	if from == minakusa {
+		viaFrom = infrastructure.FrMinakusa
+	} else if from == rits {
+		viaFrom = infrastructure.FrRits
+	} else {
+		viaFrom = ""
+	}
+	return approachInfoUrls, viaFrom
 }
 
 // echo.Context経由のレスポンスをラップした
 func (c *CustomContext) Response(statusCode int, param interface{}) error {
 	return c.JSON(statusCode, param)
-}
-
-func (c *CustomContext) GetTimeTableFrom() string {
-	return c.Context.QueryParam("fr")
 }

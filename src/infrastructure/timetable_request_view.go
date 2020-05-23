@@ -3,7 +3,7 @@ package infrastructure
 import "net/http"
 
 func TimeTableRequest(c Context) error {
-	fr := c.GetTimeTableFrom()
+	_, fr := c.GetApproachInfoUrls()
 	timeTable, ok := TimeTable[fr]
 	if ok == false {
 		return c.Response(http.StatusBadRequest, timeTable)
