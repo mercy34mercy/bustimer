@@ -95,3 +95,7 @@ func (c *CustomContext) GetApproachInfoUrls() ([]string, []string) {
 func (c *CustomContext) Response(statusCode int, param interface{}) error {
 	return c.JSON(statusCode, param)
 }
+
+func (c *CustomContext) GetTimeTableFrom() string {
+	return c.Context.QueryParam("fr")
+}
