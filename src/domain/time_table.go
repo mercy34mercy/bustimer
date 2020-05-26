@@ -13,3 +13,11 @@ type OneBusTime struct {
 	Min 	string `json:"min"`
 	BusStop string `json:"bus_stop"`
 }
+
+func CreateNewTimeTable() TimeTable {
+	return TimeTable{
+		Weekdays: make(map[int][]OneBusTime),
+		Saturdays: make(map[int][]OneBusTime),
+		Holidays: make(map[int][]OneBusTime),
+	}
+}

@@ -1,19 +1,20 @@
 package infrastructure
 
 import (
-	"fmt"
+	"github.com/shun-shun123/bus-timer/src/config"
 	"github.com/shun-shun123/bus-timer/src/domain"
 	"time"
 )
 
-var TimeTable = make(map[string]domain.TimeTable)
+var TimeTable = make(map[config.From]domain.TimeTable)
 
+// 時刻表データのキャッシュを作成する
+// goroutineで実行すれば、configで設定されているタイマーの頻度でデータを更新する
 func TimeTableCacheStart() {
+	fetcher := TimetableFetcher{}
 	for ;; {
-		fmt.Println("時刻表の更新をします")
-		fetcher := TimetableFetcher{}
-		TimeTable[FrRits] = fetcher.FetchTimetable(FrRits)
-		TimeTable[FrMinakusa] = fetcher.FetchTimetable(FrMinakusa)
-		time.Sleep(30 * time.Second)
+		TimeTable[config.FromRits] = fetcher.FetchTimetable(config.FrRits)
+		TimeTable[config.FromMinakusa] = fetcher.FetchTimetable(config.FrMinakusa)
+		time.Sleep(config.TimeTableCacheUpdateDuration)
 	}
 }
