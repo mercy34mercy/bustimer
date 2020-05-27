@@ -1,13 +1,13 @@
 package config
 
-import "github.com/google/martian/log"
+import "log"
 
 // frクエリからスクレイピングする際のfrクエリに変換する
 // 該当するものがない場合は空文字列を返す
 func GetFromKey(fr string) string {
 	from, ok := frList[fr]
 	if ok == false {
-		log.Errorf("fr=%v に対応するfromが設定されていません", fr)
+		log.Printf("fr=%v に対応するfromが設定されていません", fr)
 		return ""
 	}
 	return from
@@ -18,12 +18,12 @@ func GetFromKey(fr string) string {
 func GetDgmplList(fr, to string) []string {
 	dgmplMap, ok := dgmplList[fr]
 	if ok == false {
-		log.Errorf("fr=%v に対応するdgmplMapが設定されていません", fr)
+		log.Printf("fr=%v に対応するdgmplMapが設定されていません", fr)
 		return make([]string, 0)
 	}
 	dgmplList, ok := dgmplMap[to]
 	if ok == false {
-		log.Errorf("to=%v に対応するdgmplListが設定されていません", to)
+		log.Printf("to=%v に対応するdgmplListが設定されていません", to)
 		return make([]string, 0)
 	}
 	return dgmplList
@@ -33,12 +33,163 @@ func CreateApproachInfoUrl(from, dgmpl string) string {
 	return ApproachURL + "?fr=" + from + "&dgmpl=" + dgmpl
 }
 
-func CreateTimeTableUrl(from string) string {
+func CreateTimeTableUrl(from From, to To) string {
+	fr := FrRits
 	dgmpl := dgmplMap[FrRits][0]
 	if from == FrMinakusa {
 		dgmpl = dgmplMap[FrMinakusa][0]
 	}
-	return TimeTableURL + "?fr=" + from + "&dgmpl=" + dgmpl
+	switch from {
+	case FromRits:
+	case FromMinakusa:
+
+	case FromNoji:
+		if to == ToRits {
+			return ""
+		} else if to == ToMinakusa {
+			return ""
+		} else {
+			return ""
+		}
+	case FromNandayama:
+		if to == ToRits {
+			return ""
+		} else if to == ToMinakusa {
+			return ""
+		} else {
+			return ""
+		}
+	case FromTamagawashogakkomae:
+	case FromOnoyama:
+		if to == ToRits {
+			return ""
+		} else if to == ToMinakusa {
+			return ""
+		} else {
+			return ""
+		}
+	case FromPanaHigashi:
+		if to == ToRits {
+			return ""
+		} else if to == ToMinakusa {
+			return ""
+		} else {
+			return ""
+		}
+	case config.FromPanaMae:
+		if to == ToRits {
+			return ""
+		} else if to == ToMinakusa {
+			return ""
+		} else {
+			return ""
+		}
+	case config.FromPanaNishi:
+		if to == ToRits {
+			return ""
+		} else if to == ToMinakusa {
+			return ""
+		} else {
+			return ""
+		}
+	case config.FromKasayamaHigashi:
+		if to == ToRits {
+			return ""
+		} else if to == ToMinakusa {
+			return ""
+		} else {
+			return ""
+		}
+	case config.FromSasanoguchi:
+		if to == ToRits {
+			return ""
+		} else if to == ToMinakusa {
+			return ""
+		} else {
+			return ""
+		}
+	case config.FromKuresutoKusatsumae:
+		if to == ToRits {
+			return ""
+		} else if to == ToMinakusa {
+			return ""
+		} else {
+			return ""
+		}
+	case config.FromBkcGreenField:
+		if to == ToRits {
+			return ""
+		} else if to == ToMinakusa {
+			return ""
+		} else {
+			return ""
+		}
+	case config.FromNojiKigaguchi:
+		if to == ToRits {
+			return ""
+		} else if to == ToMinakusa {
+			return ""
+		} else {
+			return ""
+		}
+	case config.FromKusatsuKureaHole:
+		if to == ToRits {
+			return ""
+		} else if to == ToMinakusa {
+			return ""
+		} else {
+			return ""
+		}
+	case config.FromHigashiyakuraMinami:
+		if to == ToRits {
+			return ""
+		} else if to == ToMinakusa {
+			return ""
+		} else {
+			return ""
+		}
+	case config.FromHigashiyakuraShokuinnjutaku:
+		if to == ToRits {
+			return ""
+		} else if to == ToMinakusa {
+			return ""
+		} else {
+			return ""
+		}
+	case config.FromMukoyamaNewTown:
+		if to == ToRits {
+			return ""
+		} else if to == ToMinakusa {
+			return ""
+		} else {
+			return ""
+		}
+	case config.FromMaruo:
+		if to == ToRits {
+			return ""
+		} else if to == ToMinakusa {
+			return ""
+		} else {
+			return ""
+		}
+	case config.FromWakakusaKitaguchi:
+		if to == ToRits {
+			return ""
+		} else if to == ToMinakusa {
+			return ""
+		} else {
+			return ""
+		}
+	case config.FromRitsumeikanUnivMae:
+		if to == ToRits {
+			return ""
+		} else if to == ToMinakusa {
+			return ""
+		} else {
+			return ""
+		}
+	}
+	return TimeTableURL + "?fr=" + fr + "&dgmpl=" + dgmpl
 }
 
 func ConvertFromFrQuery(fr string) From {
@@ -86,8 +237,20 @@ func ConvertFromFrQuery(fr string) From {
 	case "立命館大学正門前":
 		return FromRitsumeikanUnivMae
 	default:
-		log.Errorf("fr: %v に該当するVIA_FROMは設定されていません", fr)
+		log.Printf("fr: %v に該当するVIA_FROMは設定されていません", fr)
 		return Unknown
+	}
+}
+
+func ConvertFromToQuery(to string) To {
+	switch to {
+	case rits:
+		return ToRits
+	case minakusa:
+		return ToMinakusa
+	default:
+		log.Printf("to: %v に該当するToは設定されていません", to)
+		return ToUnknown
 	}
 }
 

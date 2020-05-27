@@ -38,6 +38,14 @@ const (
 	FromRitsumeikanUnivMae
 )
 
+type To int
+
+const (
+	ToUnknown To = iota
+	ToRits
+	ToMinakusa
+)
+
 // privateなconst
 const (
 	rits = "立命館大学"

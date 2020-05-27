@@ -13,3 +13,9 @@ type ApproachInfo struct {
 type ApproachInfos struct {
 	ApproachInfo []ApproachInfo `json:"approach_infos"`
 }
+
+func CreateApproachInfos() ApproachInfos {
+	return ApproachInfos{
+		ApproachInfo: make([]ApproachInfo, 0),
+	}
+}

@@ -2,14 +2,18 @@ package infrastructure
 
 import (
 	"github.com/PuerkitoBio/goquery"
-	"github.com/google/martian/log"
+	"github.com/shun-shun123/bus-timer/src/config"
 	"github.com/shun-shun123/bus-timer/src/domain"
+	"log"
+	"net/http"
 	"regexp"
 	"strconv"
 	"strings"
 )
 
 type ApproachInfoFetcher struct {
+	from config.From
+	to config.To
 }
 
 type CustomDocument struct {
@@ -65,16 +69,22 @@ func findMinLen(dataset ...[]string) int {
 	return min
 }
 
-func (fetcher ApproachInfoFetcher) FetchApproachInfos(approachInfoUrl, from string) domain.ApproachInfos {
+func (fetcher ApproachInfoFetcher) FetchApproachInfos(approachInfoUrl string) domain.ApproachInfos {
 	// 返り値で返す変数を初期化
-	approachInfos := domain.ApproachInfos{
-		ApproachInfo: make([]domain.ApproachInfo, 0),
-	}
+	approachInfos := domain.CreateApproachInfos()
 
-	// 接近情報があるURLでスクレイピングする
-	approachDoc, err := goquery.NewDocument(approachInfoUrl)
+	// ページの情報を取得する
+	resp, err := http.Get(approachInfoUrl)
 	if err != nil {
-		log.Errorf("%v は不正なフォーマットか、コンテントがありません。スクレイプに失敗しました。", approachInfoUrl)
+		log.Printf("Http/GET failed to %v because of %v", approachInfoUrl, err)
+		return approachInfos
+	}
+	defer resp.Body.Close()
+
+	// io.Reader経由でドキュメントにパースする
+	approachDoc, err := goquery.NewDocumentFromReader(resp.Body)
+	if err != nil {
+		log.Printf("goquery.NewDocumentFromReader failed because of %v", err)
 		return approachInfos
 	}
 
@@ -91,7 +101,7 @@ func (fetcher ApproachInfoFetcher) FetchApproachInfos(approachInfoUrl, from stri
 		// hh:mmの表記でくる
 		hour, _ := strconv.Atoi(scheduledTime[i][:2])
 		min, _ := strconv.Atoi(scheduledTime[i][3:])
-		tt, ok := TimeTable[from]
+		tt, ok := TimeTable[fetcher.from]
 		if ok {
 			timeTableData := tt.Saturdays
 			for _, v := range timeTableData[hour] {
@@ -101,6 +111,8 @@ func (fetcher ApproachInfoFetcher) FetchApproachInfos(approachInfoUrl, from stri
 					}
 				}
 			}
+		} else if fetcher.from != config.Unknown {
+			via = ""
 		}
 		approachInfos.ApproachInfo = append(approachInfos.ApproachInfo, domain.ApproachInfo{
 			MoreMin: moreMin[i],
@@ -112,4 +124,162 @@ func (fetcher ApproachInfoFetcher) FetchApproachInfos(approachInfoUrl, from stri
 		})
 	}
 	return approachInfos
+}
+
+// TODO: 使うかもしれない。各バス停での経由情報を考えるのに全バス停の時刻表データを持たないといけないかもしれない
+func (fetcher *ApproachInfoFetcher) getViaFromToPattern() string {
+	switch fetcher.from {
+	case config.FromNoji:
+		if fetcher.to == config.ToRits {
+			return ""
+		} else if fetcher.to == config.ToMinakusa {
+			return ""
+		} else {
+			return ""
+		}
+	case config.FromNandayama:
+		if fetcher.to == config.ToRits {
+			return ""
+		} else if fetcher.to == config.ToMinakusa {
+			return ""
+		} else {
+			return ""
+		}
+	case config.FromTamagawashogakkomae:
+		if fetcher.to == config.ToRits {
+			return ""
+		} else if fetcher.to == config.ToMinakusa {
+			return ""
+		} else {
+			return ""
+		}
+	case config.FromOnoyama:
+		if fetcher.to == config.ToRits {
+			return ""
+		} else if fetcher.to == config.ToMinakusa {
+			return ""
+		} else {
+			return ""
+		}
+	case config.FromPanaHigashi:
+		if fetcher.to == config.ToRits {
+			return ""
+		} else if fetcher.to == config.ToMinakusa {
+			return ""
+		} else {
+			return ""
+		}
+	case config.FromPanaMae:
+		if fetcher.to == config.ToRits {
+			return ""
+		} else if fetcher.to == config.ToMinakusa {
+			return ""
+		} else {
+			return ""
+		}
+	case config.FromPanaNishi:
+		if fetcher.to == config.ToRits {
+			return ""
+		} else if fetcher.to == config.ToMinakusa {
+			return ""
+		} else {
+			return ""
+		}
+	case config.FromKasayamaHigashi:
+		if fetcher.to == config.ToRits {
+			return ""
+		} else if fetcher.to == config.ToMinakusa {
+			return ""
+		} else {
+			return ""
+		}
+	case config.FromSasanoguchi:
+		if fetcher.to == config.ToRits {
+			return ""
+		} else if fetcher.to == config.ToMinakusa {
+			return ""
+		} else {
+			return ""
+		}
+	case config.FromKuresutoKusatsumae:
+		if fetcher.to == config.ToRits {
+			return ""
+		} else if fetcher.to == config.ToMinakusa {
+			return ""
+		} else {
+			return ""
+		}
+	case config.FromBkcGreenField:
+		if fetcher.to == config.ToRits {
+			return ""
+		} else if fetcher.to == config.ToMinakusa {
+			return ""
+		} else {
+			return ""
+		}
+	case config.FromNojiKigaguchi:
+		if fetcher.to == config.ToRits {
+			return ""
+		} else if fetcher.to == config.ToMinakusa {
+			return ""
+		} else {
+			return ""
+		}
+	case config.FromKusatsuKureaHole:
+		if fetcher.to == config.ToRits {
+			return ""
+		} else if fetcher.to == config.ToMinakusa {
+			return ""
+		} else {
+			return ""
+		}
+	case config.FromHigashiyakuraMinami:
+		if fetcher.to == config.ToRits {
+			return ""
+		} else if fetcher.to == config.ToMinakusa {
+			return ""
+		} else {
+			return ""
+		}
+	case config.FromHigashiyakuraShokuinnjutaku:
+		if fetcher.to == config.ToRits {
+			return ""
+		} else if fetcher.to == config.ToMinakusa {
+			return ""
+		} else {
+			return ""
+		}
+	case config.FromMukoyamaNewTown:
+		if fetcher.to == config.ToRits {
+			return ""
+		} else if fetcher.to == config.ToMinakusa {
+			return ""
+		} else {
+			return ""
+		}
+	case config.FromMaruo:
+		if fetcher.to == config.ToRits {
+			return ""
+		} else if fetcher.to == config.ToMinakusa {
+			return ""
+		} else {
+			return ""
+		}
+	case config.FromWakakusaKitaguchi:
+		if fetcher.to == config.ToRits {
+			return ""
+		} else if fetcher.to == config.ToMinakusa {
+			return ""
+		} else {
+			return ""
+		}
+	case config.FromRitsumeikanUnivMae:
+		if fetcher.to == config.ToRits {
+			return ""
+		} else if fetcher.to == config.ToMinakusa {
+			return ""
+		} else {
+			return ""
+		}
+	}
 }

@@ -15,7 +15,7 @@ type TimetableFetcher struct {
 
 var tdList = []string{"td.schedule.column_day1_t2", "td.schedule.column_day2_t2", "td.schedule.column_day3_t2"}
 
-func (fetcher TimetableFetcher) FetchTimetable(from string) domain.TimeTable {
+func (fetcher TimetableFetcher) FetchTimetable(from config.From, to config.To) domain.TimeTable {
 	timetable := domain.CreateNewTimeTable()
 	scrapeUrl := config.CreateTimeTableUrl(from)
 
