@@ -12,9 +12,9 @@ var TimeTable = make(map[config.From]domain.TimeTable)
 // goroutineで実行すれば、configで設定されているタイマーの頻度でデータを更新する
 func TimeTableCacheStart() {
 	fetcher := TimetableFetcher{}
-	for ;; {
-		TimeTable[config.FromRits] = fetcher.FetchTimetable(config.FrRits)
-		TimeTable[config.FromMinakusa] = fetcher.FetchTimetable(config.FrMinakusa)
+	for {
+		TimeTable[config.FromRits] = fetcher.FetchTimetable(config.FromRits, config.ToMinakusa)
+		TimeTable[config.FromMinakusa] = fetcher.FetchTimetable(config.FromMinakusa, config.ToRits)
 		time.Sleep(config.TimeTableCacheUpdateDuration)
 	}
 }

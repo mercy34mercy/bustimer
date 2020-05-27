@@ -112,7 +112,7 @@ func (fetcher ApproachInfoFetcher) FetchApproachInfos(approachInfoUrl string) do
 				}
 			}
 		} else if fetcher.from != config.Unknown {
-			via = ""
+			via = config.GetVia(fetcher.from)
 		}
 		approachInfos.ApproachInfo = append(approachInfos.ApproachInfo, domain.ApproachInfo{
 			MoreMin: moreMin[i],
@@ -121,165 +121,9 @@ func (fetcher ApproachInfoFetcher) FetchApproachInfos(approachInfoUrl string) do
 			ScheduledTime: scheduledTime[i],
 			Delay: delay[i],
 			Via: via,
+			BusStop: config.GetBusStop(fetcher.from, fetcher.to),
 		})
 	}
 	return approachInfos
 }
 
-// TODO: 使うかもしれない。各バス停での経由情報を考えるのに全バス停の時刻表データを持たないといけないかもしれない
-func (fetcher *ApproachInfoFetcher) getViaFromToPattern() string {
-	switch fetcher.from {
-	case config.FromNoji:
-		if fetcher.to == config.ToRits {
-			return ""
-		} else if fetcher.to == config.ToMinakusa {
-			return ""
-		} else {
-			return ""
-		}
-	case config.FromNandayama:
-		if fetcher.to == config.ToRits {
-			return ""
-		} else if fetcher.to == config.ToMinakusa {
-			return ""
-		} else {
-			return ""
-		}
-	case config.FromTamagawashogakkomae:
-		if fetcher.to == config.ToRits {
-			return ""
-		} else if fetcher.to == config.ToMinakusa {
-			return ""
-		} else {
-			return ""
-		}
-	case config.FromOnoyama:
-		if fetcher.to == config.ToRits {
-			return ""
-		} else if fetcher.to == config.ToMinakusa {
-			return ""
-		} else {
-			return ""
-		}
-	case config.FromPanaHigashi:
-		if fetcher.to == config.ToRits {
-			return ""
-		} else if fetcher.to == config.ToMinakusa {
-			return ""
-		} else {
-			return ""
-		}
-	case config.FromPanaMae:
-		if fetcher.to == config.ToRits {
-			return ""
-		} else if fetcher.to == config.ToMinakusa {
-			return ""
-		} else {
-			return ""
-		}
-	case config.FromPanaNishi:
-		if fetcher.to == config.ToRits {
-			return ""
-		} else if fetcher.to == config.ToMinakusa {
-			return ""
-		} else {
-			return ""
-		}
-	case config.FromKasayamaHigashi:
-		if fetcher.to == config.ToRits {
-			return ""
-		} else if fetcher.to == config.ToMinakusa {
-			return ""
-		} else {
-			return ""
-		}
-	case config.FromSasanoguchi:
-		if fetcher.to == config.ToRits {
-			return ""
-		} else if fetcher.to == config.ToMinakusa {
-			return ""
-		} else {
-			return ""
-		}
-	case config.FromKuresutoKusatsumae:
-		if fetcher.to == config.ToRits {
-			return ""
-		} else if fetcher.to == config.ToMinakusa {
-			return ""
-		} else {
-			return ""
-		}
-	case config.FromBkcGreenField:
-		if fetcher.to == config.ToRits {
-			return ""
-		} else if fetcher.to == config.ToMinakusa {
-			return ""
-		} else {
-			return ""
-		}
-	case config.FromNojiKigaguchi:
-		if fetcher.to == config.ToRits {
-			return ""
-		} else if fetcher.to == config.ToMinakusa {
-			return ""
-		} else {
-			return ""
-		}
-	case config.FromKusatsuKureaHole:
-		if fetcher.to == config.ToRits {
-			return ""
-		} else if fetcher.to == config.ToMinakusa {
-			return ""
-		} else {
-			return ""
-		}
-	case config.FromHigashiyakuraMinami:
-		if fetcher.to == config.ToRits {
-			return ""
-		} else if fetcher.to == config.ToMinakusa {
-			return ""
-		} else {
-			return ""
-		}
-	case config.FromHigashiyakuraShokuinnjutaku:
-		if fetcher.to == config.ToRits {
-			return ""
-		} else if fetcher.to == config.ToMinakusa {
-			return ""
-		} else {
-			return ""
-		}
-	case config.FromMukoyamaNewTown:
-		if fetcher.to == config.ToRits {
-			return ""
-		} else if fetcher.to == config.ToMinakusa {
-			return ""
-		} else {
-			return ""
-		}
-	case config.FromMaruo:
-		if fetcher.to == config.ToRits {
-			return ""
-		} else if fetcher.to == config.ToMinakusa {
-			return ""
-		} else {
-			return ""
-		}
-	case config.FromWakakusaKitaguchi:
-		if fetcher.to == config.ToRits {
-			return ""
-		} else if fetcher.to == config.ToMinakusa {
-			return ""
-		} else {
-			return ""
-		}
-	case config.FromRitsumeikanUnivMae:
-		if fetcher.to == config.ToRits {
-			return ""
-		} else if fetcher.to == config.ToMinakusa {
-			return ""
-		} else {
-			return ""
-		}
-	}
-}

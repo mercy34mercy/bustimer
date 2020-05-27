@@ -6,7 +6,7 @@ import (
 )
 
 func TimeTableRequest(c Context) error {
-	_, from := c.GetApproachInfoUrls()
+	from, _ := c.GetFromToQuery()
 	timeTable, ok := TimeTable[from]
 	if ok == false {
 		if from == config.Unknown {

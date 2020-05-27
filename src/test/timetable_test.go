@@ -24,7 +24,7 @@ var fetcher = infrastructure.TimetableFetcher{}
 	の時刻表を取得して、いくつかの具体的なデータと照らし合わせて正しくスクレイピングできてるかのテスト
  */
 func TestScrapeTimetableFromRits(t *testing.T) {
-	timetable := fetcher.FetchTimetable(config.FrRits)
+	timetable := fetcher.FetchTimetable(config.FromRits, config.ToMinakusa)
 	everydayCheck(t, &timetable)
 
 	oneBusCheck(t, &timetable, 7, 0, "P", "3", "2", weekdays)
@@ -37,7 +37,7 @@ func TestScrapeTimetableFromRits(t *testing.T) {
 }
 
 func TestScrapeTimetableFromMinakusa(t *testing.T) {
-	timetable := fetcher.FetchTimetable(config.FrMinakusa)
+	timetable := fetcher.FetchTimetable(config.FromMinakusa, config.ToRits)
 	everydayCheck(t, &timetable)
 
 	oneBusCheck(t, &timetable, 6, 0, "P", "57", "1", weekdays)

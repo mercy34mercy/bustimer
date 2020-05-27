@@ -1,6 +1,9 @@
 package config
 
-import "log"
+import (
+	"log"
+	"regexp"
+)
 
 // frクエリからスクレイピングする際のfrクエリに変換する
 // 該当するものがない場合は空文字列を返す
@@ -34,161 +37,8 @@ func CreateApproachInfoUrl(from, dgmpl string) string {
 }
 
 func CreateTimeTableUrl(from From, to To) string {
-	fr := FrRits
-	dgmpl := dgmplMap[FrRits][0]
-	if from == FrMinakusa {
-		dgmpl = dgmplMap[FrMinakusa][0]
-	}
-	switch from {
-	case FromRits:
-	case FromMinakusa:
-
-	case FromNoji:
-		if to == ToRits {
-			return ""
-		} else if to == ToMinakusa {
-			return ""
-		} else {
-			return ""
-		}
-	case FromNandayama:
-		if to == ToRits {
-			return ""
-		} else if to == ToMinakusa {
-			return ""
-		} else {
-			return ""
-		}
-	case FromTamagawashogakkomae:
-	case FromOnoyama:
-		if to == ToRits {
-			return ""
-		} else if to == ToMinakusa {
-			return ""
-		} else {
-			return ""
-		}
-	case FromPanaHigashi:
-		if to == ToRits {
-			return ""
-		} else if to == ToMinakusa {
-			return ""
-		} else {
-			return ""
-		}
-	case config.FromPanaMae:
-		if to == ToRits {
-			return ""
-		} else if to == ToMinakusa {
-			return ""
-		} else {
-			return ""
-		}
-	case config.FromPanaNishi:
-		if to == ToRits {
-			return ""
-		} else if to == ToMinakusa {
-			return ""
-		} else {
-			return ""
-		}
-	case config.FromKasayamaHigashi:
-		if to == ToRits {
-			return ""
-		} else if to == ToMinakusa {
-			return ""
-		} else {
-			return ""
-		}
-	case config.FromSasanoguchi:
-		if to == ToRits {
-			return ""
-		} else if to == ToMinakusa {
-			return ""
-		} else {
-			return ""
-		}
-	case config.FromKuresutoKusatsumae:
-		if to == ToRits {
-			return ""
-		} else if to == ToMinakusa {
-			return ""
-		} else {
-			return ""
-		}
-	case config.FromBkcGreenField:
-		if to == ToRits {
-			return ""
-		} else if to == ToMinakusa {
-			return ""
-		} else {
-			return ""
-		}
-	case config.FromNojiKigaguchi:
-		if to == ToRits {
-			return ""
-		} else if to == ToMinakusa {
-			return ""
-		} else {
-			return ""
-		}
-	case config.FromKusatsuKureaHole:
-		if to == ToRits {
-			return ""
-		} else if to == ToMinakusa {
-			return ""
-		} else {
-			return ""
-		}
-	case config.FromHigashiyakuraMinami:
-		if to == ToRits {
-			return ""
-		} else if to == ToMinakusa {
-			return ""
-		} else {
-			return ""
-		}
-	case config.FromHigashiyakuraShokuinnjutaku:
-		if to == ToRits {
-			return ""
-		} else if to == ToMinakusa {
-			return ""
-		} else {
-			return ""
-		}
-	case config.FromMukoyamaNewTown:
-		if to == ToRits {
-			return ""
-		} else if to == ToMinakusa {
-			return ""
-		} else {
-			return ""
-		}
-	case config.FromMaruo:
-		if to == ToRits {
-			return ""
-		} else if to == ToMinakusa {
-			return ""
-		} else {
-			return ""
-		}
-	case config.FromWakakusaKitaguchi:
-		if to == ToRits {
-			return ""
-		} else if to == ToMinakusa {
-			return ""
-		} else {
-			return ""
-		}
-	case config.FromRitsumeikanUnivMae:
-		if to == ToRits {
-			return ""
-		} else if to == ToMinakusa {
-			return ""
-		} else {
-			return ""
-		}
-	}
+	fr := frList[from.toString()]
+	dgmpl := dgmplList[from.toString()][to.toString()][0]
 	return TimeTableURL + "?fr=" + fr + "&dgmpl=" + dgmpl
 }
 
@@ -254,11 +104,79 @@ func ConvertFromToQuery(to string) To {
 	}
 }
 
-func (viaFrom From) ToVia() string {
-	switch viaFrom {
+func (from From) toString() string {
+	switch from {
+	case FromRits:
+		return rits
+	case FromMinakusa:
+		return minakusa
+	case FromNoji:
+		return "野路"
+	case FromNandayama:
+		return "南田山"
+	case FromTamagawashogakkomae:
+		return "玉川小学校前"
+	case FromOnoyama:
+		return "小野山"
+	case FromPanaHigashi:
+		return "パナソニック東口"
+	case FromPanaMae:
+		return "パナソニック前"
+	case FromPanaNishi:
+		return "パナソニック西口"
+	case FromKasayamaHigashi:
+		return "笠山東"
+	case FromSasanoguchi:
+		return "笹の口"
+	case FromKuresutoKusatsumae:
+		return "クレスト草津前"
+	case FromBkcGreenField:
+		return "BKCグリーンフィールド"
+	case FromNojiKigaguchi:
+		return "野路北口"
+	case FromKusatsuKureaHole:
+		return "草津クレアホール"
+	case FromHigashiyakuraMinami:
+		return "東矢倉南"
+	case FromHigashiyakuraShokuinnjutaku:
+		return "東矢倉職員住宅"
+	case FromMukoyamaNewTown:
+		return "向山ニュータウン"
+	case FromMaruo:
+		return "丸尾"
+	case FromWakakusaKitaguchi:
+		return "若草北口"
 	case FromRitsumeikanUnivMae:
-		return ""
+		return "立命館大学正門前"
 	}
 	return ""
 }
 
+func (to To) toString() string {
+	switch to {
+	case ToRits:
+		return rits
+	case ToMinakusa:
+		return minakusa
+	}
+	return ""
+}
+
+func GetBusStop(from From, to To) string {
+	dgmpl := dgmplList[from.toString()][to.toString()][0]
+	reg := regexp.MustCompile(`[0-9]`)
+	num := reg.FindString(dgmpl)
+	return num
+}
+
+func GetVia(from From) string {
+	switch from {
+	case FromNoji, FromNandayama, FromTamagawashogakkomae, FromOnoyama, FromPanaHigashi:
+		return "P"
+	case FromPanaMae, FromPanaNishi, FromKasayamaHigashi, FromSasanoguchi, FromKuresutoKusatsumae, FromBkcGreenField:
+		return "西"
+	case FromNojiKigaguchi, FromKusatsuKureaHole, FromHigashiyakuraMinami, FromHigashiyakuraShokuinnjutaku, FromMukoyamaNewTown, FromMaruo, FromWakakusaKitaguchi, FromRitsumeikanUnivMae:
+		return "か"
+	}
+	return ""
+}
