@@ -212,7 +212,54 @@ func TrimParentheses(str string) string {
 	return trimStr
 }
 
-func GetRequiredTime(from From, to To) int {
-	//TODO: 実装まだ
-	return 15
+func GetRequiredTime(from From, to To, via string) int {
+	switch to {
+	case ToRits:
+		switch from {
+		case FromNoji, FromNandayama, FromTamagawashogakkomae:
+			return 15
+		case FromOnoyama, FromPanaHigashi:
+			return 10
+		case FromPanaMae, FromPanaNishi:
+			return 15
+		case FromKasayamaHigashi, FromSasanoguchi, FromKuresutoKusatsumae:
+			return 10
+		case FromBkcGreenField:
+			return 5
+		case FromNojiKigaguchi, FromKusatsuKureaHole:
+			return 15
+		case FromHigashiyakuraMinami, FromHigashiyakuraShokuinnjutaku, FromMukoyamaNewTown, FromMaruo:
+			return 10
+		case FromWakakusaKitaguchi, FromRitsumeikanUnivMae:
+			return 5
+		}
+	case ToMinakusa:
+		switch from {
+		case FromNoji, FromNandayama, FromTamagawashogakkomae:
+			return 5
+		case FromOnoyama, FromPanaHigashi:
+			return 10
+		case FromPanaMae, FromPanaNishi:
+			return 15
+		case FromKasayamaHigashi, FromSasanoguchi, FromKuresutoKusatsumae:
+			return 15
+		case FromBkcGreenField:
+			return 25
+		case FromNojiKigaguchi, FromKusatsuKureaHole:
+			return 5
+		case FromHigashiyakuraMinami, FromHigashiyakuraShokuinnjutaku, FromMukoyamaNewTown, FromMaruo:
+			return 10
+		case FromWakakusaKitaguchi, FromRitsumeikanUnivMae:
+			return 15
+		}
+	}
+	if via == "パナソニック東口経由" {
+		return 20
+	} else if via == "パナソニック西口経由" {
+		return 25
+	} else if via == "かがやき通り経由" {
+		return 20
+	} else {
+		return 15
+	}
 }
