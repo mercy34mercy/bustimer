@@ -103,7 +103,10 @@ func (fetcher ApproachInfoFetcher) FetchApproachInfos(approachInfoUrl string) do
 		min, _ := strconv.Atoi(scheduledTime[i][3:])
 		tt, ok := TimeTable[fetcher.from]
 		if ok {
-			timeTableData := tt.Saturdays
+			timeTableData := tt.Weekdays
+			if config.IsHoliday() {
+				timeTableData = tt.Saturdays
+			}
 			for _, v := range timeTableData[hour] {
 				if convMin, err := strconv.Atoi(v.Min); err == nil {
 					if convMin == min {

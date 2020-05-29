@@ -30,7 +30,7 @@ func (fetcher TimetableFetcher) FetchTimetable(from config.From, to config.To) d
 		doc.Find(v).Each(func(j int, s *goquery.Selection) {
 			s.Find(".ttList li").Each(func(_ int, t *goquery.Selection) {
 				oneBusTime := domain.OneBusTime {
-					Via: t.Find(".legend span").Text(),
+					Via: config.GetViaFullName(t.Find(".legend span").Text()),
 					Min: reg.FindString(t.Text()),
 					BusStop: config.GetBusStop(from, to),
 				}

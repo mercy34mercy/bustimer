@@ -1,8 +1,10 @@
 package config
 
 import (
+	"github.com/yut-kt/goholiday"
 	"log"
 	"regexp"
+	"time"
 )
 
 // frクエリからスクレイピングする際のfrクエリに変換する
@@ -179,4 +181,22 @@ func GetVia(from From) string {
 		return "か"
 	}
 	return ""
+}
+
+func IsHoliday() bool {
+	datetime := time.Now()
+	return goholiday.IsHoliday(datetime)
+}
+
+func GetViaFullName(via string) string {
+	switch via {
+	case "P":
+		return "パナソニック東口経由"
+	case "西":
+		return "パナソニック西口経由"
+	case "か":
+		return "かがやき通り経由"
+	default:
+		return "シャトルバス"
+	}
 }
