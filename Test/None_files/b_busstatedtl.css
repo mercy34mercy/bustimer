@@ -1,0 +1,3730 @@
+@charset "UTF-8";
+.legcol1 {
+  color: #cc0001; }
+
+.legcol2 {
+  color: #004077; }
+
+.legcol3 {
+  color: #007aaa; }
+
+.legcol4 {
+  color: #000000; }
+
+.legcol5 {
+  color: #996600; }
+
+.legcol6 {
+  color: #8026ae; }
+
+.legcol7 {
+  color: #004714; }
+
+.legcol8 {
+  color: #587e03; }
+
+/* バスロケ情報 */
+/* 使い方ガイド */
+/* 区間時刻表 */
+/* 経路検索結果サマリー数値文字 */
+/* カレンダー配色 */
+/* フラッシュのカラー変更 基本： $key80 */
+/* ====================Initialization==================== */
+html {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  font-size: 62.5%; }
+
+body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  font-size: 14px;
+  font-size: 1.4rem;
+  text-align: center;
+  line-height: 1;
+  -webkit-text-size-adjust: none;
+  word-wrap: break-word;
+  overflow-wrap: break-word; }
+
+body, .ui-widget {
+  font-family: 'ヒラギノ角ゴ Pro W3','Hiragino Kaku Gothic Pro','メイリオ',Meiryo,sans-serif; }
+
+@-ms-viewport {
+  width: auto !important;
+  initial-scale: 1 !important; }
+
+ul, ol {
+  list-style: none; }
+
+table {
+  font-size: 100%; }
+
+figure {
+  margin: 0; }
+
+figcaption {
+  line-height: 1; }
+
+img {
+  vertical-align: baseline;
+  border: 0; }
+
+a:link, a:visited, a:hover, a:active {
+  text-decoration: none; }
+
+h1, h2, h3, h4, h5, p, ul, li, dl, dt, dd {
+  padding: 0;
+  margin: 0; }
+
+th {
+  font-weight: normal; }
+
+input {
+  cursor: pointer; }
+  input[type="text"].readOnly {
+    cursor: default; }
+    input[type="text"].readOnly:focus {
+      outline: none;
+      background: transparent !important; }
+
+button {
+  margin: 0;
+  padding: 0;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none; }
+
+/* float解除 */
+.cf:after {
+  content: "";
+  display: block;
+  clear: both; }
+
+.fl {
+  float: left; }
+
+.fr {
+  float: right; }
+
+.fclear {
+  clear: both; }
+
+.clearfix:after {
+  content: " ";
+  display: block;
+  clear: both; }
+
+.br:before {
+  content: "\A";
+  white-space: pre; }
+
+/* ====================
+◆個別装飾
+==================== */
+.txtCenter {
+  text-align: center !important; }
+
+.txtLeft {
+  text-align: left !important; }
+
+.txtRight {
+  text-align: right !important; }
+
+.db {
+  display: block !important; }
+
+.dib {
+  display: inline-block !important; }
+
+.vat {
+  vertical-align: top !important; }
+
+.vam {
+  vertical-align: middle !important; }
+
+.vab {
+  vertical-align: bottom; }
+
+.vabl {
+  vertical-align: baseline !important; }
+
+.m0 {
+  margin: 0 !important; }
+
+.mAuto {
+  margin: 0 auto; }
+
+.mb0 {
+  margin-bottom: 0px !important; }
+
+.mb10 {
+  margin-bottom: 10px !important; }
+
+.mb15 {
+  margin-bottom: 15px !important; }
+
+.mb16 {
+  margin-bottom: 16px !important; }
+
+.mb20 {
+  margin-bottom: 20px !important; }
+
+.mb25 {
+  margin-bottom: 25px !important; }
+
+.mb30 {
+  margin-bottom: 30px !important; }
+
+.mb35 {
+  margin-bottom: 35px !important; }
+
+.mb40 {
+  margin-bottom: 40px !important; }
+
+.mb45 {
+  margin-bottom: 45px !important; }
+
+.mb50 {
+  margin-bottom: 50px !important; }
+
+.mb60 {
+  margin-bottom: 60px !important; }
+
+.mb8 {
+  margin-bottom: 8px !important; }
+
+.mt10 {
+  margin-top: 10px !important; }
+
+.mt15 {
+  margin-top: 15px !important; }
+
+.mt20 {
+  margin-top: 20px !important; }
+
+.mt25 {
+  margin-top: 25px !important; }
+
+.mt30 {
+  margin-top: 30px !important; }
+
+.mt35 {
+  margin-top: 35px !important; }
+
+.mt40 {
+  margin-top: 40px !important; }
+
+.mt45 {
+  margin-top: 45px !important; }
+
+.mt50, .mt60 {
+  margin-top: 50px !important; }
+
+.mtm30 {
+  margin-top: -30px !important; }
+
+.mtm40 {
+  margin-top: -40px !important; }
+
+.mtm50 {
+  margin-top: -50px !important; }
+
+.mtm80 {
+  margin-top: -80px !important; }
+
+.ml5 {
+  margin-left: 5px !important; }
+
+.ml10 {
+  margin-left: 10px !important; }
+
+.ml15 {
+  margin-left: 15px !important; }
+
+.ml20 {
+  margin-left: 20px !important; }
+
+.ml25 {
+  margin-left: 25px !important; }
+
+.ml30 {
+  margin-left: 30px !important; }
+
+.ml35 {
+  margin-left: 35px !important; }
+
+.ml40 {
+  margin-left: 40px !important; }
+
+.ml45 {
+  margin-left: 45px !important; }
+
+.ml50 {
+  margin-left: 50px !important; }
+
+.l60 {
+  margin-left: 60px !important; }
+
+.mr5 {
+  margin-right: 5px !important; }
+
+.mr10 {
+  margin-right: 10px !important; }
+
+.mr15 {
+  margin-right: 15px !important; }
+
+.mr20 {
+  margin-right: 20px !important; }
+
+.mr25 {
+  margin-right: 25px !important; }
+
+.mr30 {
+  margin-right: 30px !important; }
+
+.mr35 {
+  margin-right: 35px !important; }
+
+.mr40 {
+  margin-right: 40px !important; }
+
+.mr45 {
+  margin-right: 45px !important; }
+
+.mr50, .mr60 {
+  margin-right: 50px !important; }
+
+.p0 {
+  padding: 0 !important; }
+
+.pb0 {
+  padding-bottom: 0px !important; }
+
+.pb10 {
+  padding-bottom: 10px !important; }
+
+.pb15 {
+  padding-bottom: 15px !important; }
+
+.pb20 {
+  padding-bottom: 20px !important; }
+
+.pb30 {
+  padding-bottom: 30px !important; }
+
+.pb40 {
+  padding-bottom: 40px !important; }
+
+.pb50 {
+  padding-bottom: 50px !important; }
+
+.pt5 {
+  padding-top: 5px !important; }
+
+.pt10 {
+  padding-top: 10px !important; }
+
+.pt15 {
+  padding-top: 15px !important; }
+
+.pt20 {
+  padding-top: 20px !important; }
+
+.pt30 {
+  padding-top: 30px !important; }
+
+.pt40 {
+  padding-top: 40px !important; }
+
+.pt50 {
+  padding-top: 50px !important; }
+
+.pl16 {
+  padding-left: 16px !important; }
+
+.pr16 {
+  padding-right: 16px !important; }
+
+.lh12 {
+  line-height: 1.2 !important; }
+
+.lh15 {
+  line-height: 1.5 !important; }
+
+.lh20 {
+  line-height: 2 !important; }
+
+.lh26 {
+  line-height: 2.6 !important; }
+
+.lh30 {
+  line-height: 3 !important; }
+
+.fwb {
+  font-weight: bold !important; }
+
+.fwn {
+  font-weight: normal !important; }
+
+.fnt10 {
+  font-size: 10px !important; }
+
+.fnt12 {
+  font-size: 12px !important; }
+
+.fnt14 {
+  font-size: 1.4rem !important; }
+
+.fnt16 {
+  font-size: 16px !important; }
+
+.fnt18 {
+  font-size: 18px !important; }
+
+.fnt20 {
+  font-size: 20px !important; }
+
+.fnt21 {
+  font-size: 21px !important; }
+
+.fnt24 {
+  font-size: 24px !important; }
+
+.fnt30 {
+  font-size: 30px !important; }
+
+.fnt32 {
+  font-size: 32px !important; }
+
+.headTxt {
+  font-size: 18px;
+  line-height: 2; }
+
+.smlTxt {
+  font-size: 12px;
+  line-height: 1.2; }
+
+.bfbr {
+  content: "\A";
+  white-space: pre; }
+
+.width5p {
+  width: 5%; }
+
+.width10p {
+  width: 10%; }
+
+.width15p {
+  width: 15%; }
+
+.width20p {
+  width: 20%; }
+
+.width25p {
+  width: 25%; }
+
+.width30p {
+  width: 30%; }
+
+.width35p {
+  width: 35%; }
+
+.width40p {
+  width: 40%; }
+
+.width45p {
+  width: 45%; }
+
+.width50p {
+  width: 50%; }
+
+.width55p {
+  width: 55%; }
+
+.width60p {
+  width: 60%; }
+
+.width65p {
+  width: 65%; }
+
+.width70p {
+  width: 70%; }
+
+.width75p {
+  width: 75%; }
+
+.width80p {
+  width: 80%; }
+
+.width85p {
+  width: 85%; }
+
+.width90p {
+  width: 90%; }
+
+.width95p {
+  width: 95%; }
+
+.width100p {
+  width: 100%; }
+
+.widthauto {
+  width: auto !important; }
+
+/* ==============色================= */
+.red {
+  color: red; }
+
+/* ==============SP layout================= */
+@media screen and (max-width: 980px) {
+  .flPc {
+    float: none; }
+  .frPc {
+    float: none; }
+  .width5pSp {
+    width: 5%; }
+  .width10pSp {
+    width: 10%; }
+  .width15pSp {
+    width: 15%; }
+  .width20pSp {
+    width: 20%; }
+  .width25pSp {
+    width: 25%; }
+  .width30pSp {
+    width: 30%; }
+  .width35pSp {
+    width: 35%; }
+  .width40pSp {
+    width: 40%; }
+  .width45pSp {
+    width: 45%; }
+  .width50pSp {
+    width: 50%; }
+  .width55pSp {
+    width: 55%; }
+  .width60pSp {
+    width: 60%; }
+  .width65pSp {
+    width: 65%; }
+  .width70pSp {
+    width: 70%; }
+  .width75pSp {
+    width: 75%; }
+  .width80pSp {
+    width: 80%; }
+  .width85pSp {
+    width: 85%; }
+  .width90pSp {
+    width: 90%; }
+  .width95pSp {
+    width: 95%; }
+  .width100pSp {
+    width: 100%; }
+  .width5pSpImp {
+    width: 5% !important; }
+  .width10pSpImp {
+    width: 10% !important; }
+  .width15pSpImp {
+    width: 15% !important; }
+  .width20pSpImp {
+    width: 20% !important; }
+  .width25pSpImp {
+    width: 25% !important; }
+  .width30pSpImp {
+    width: 30% !important; }
+  .width35pSpImp {
+    width: 35% !important; }
+  .width40pSpImp {
+    width: 40% !important; }
+  .width45pSpImp {
+    width: 45% !important; }
+  .width50pSpImp {
+    width: 50% !important; }
+  .width55pSpImp {
+    width: 55% !important; }
+  .width60pSpImp {
+    width: 60% !important; }
+  .width65pSpImp {
+    width: 65% !important; }
+  .width70pSpImp {
+    width: 70% !important; }
+  .width75pSpImp {
+    width: 75% !important; }
+  .width80pSpImp {
+    width: 80% !important; }
+  .width85pSpImp {
+    width: 85% !important; }
+  .width90pSpImp {
+    width: 90% !important; }
+  .width95pSpImp {
+    width: 95% !important; }
+  .width100pSpImp {
+    width: 100% !important; } }
+
+/*QRコード*/
+.qrcode, #qrcode {
+  width: 80px;
+  height: 80px;
+  /*border: 1px solid #000000;*/
+  /*position: absolute;
+    top: 0;
+    right: 0;*/ }
+
+.qrcode img, #qrcode img {
+  width: 100%;
+  height: 100%; }
+
+
+@charset "UTF-8";
+.legcol1 {
+  color: #cc0001; }
+
+.legcol2 {
+  color: #004077; }
+
+.legcol3 {
+  color: #007aaa; }
+
+.legcol4 {
+  color: #000000; }
+
+.legcol5 {
+  color: #996600; }
+
+.legcol6 {
+  color: #8026ae; }
+
+.legcol7 {
+  color: #004714; }
+
+.legcol8 {
+  color: #587e03; }
+
+/* バスロケ情報 */
+/* 使い方ガイド */
+/* 区間時刻表 */
+/* 経路検索結果サマリー数値文字 */
+/* カレンダー配色 */
+/* フラッシュのカラー変更 基本： $key80 */
+.legcol1 {
+  color: #cc0001; }
+
+.legcol2 {
+  color: #004077; }
+
+.legcol3 {
+  color: #007aaa; }
+
+.legcol4 {
+  color: #000000; }
+
+.legcol5 {
+  color: #996600; }
+
+.legcol6 {
+  color: #8026ae; }
+
+.legcol7 {
+  color: #004714; }
+
+.legcol8 {
+  color: #587e03; }
+
+/* バスロケ情報 */
+/* 使い方ガイド */
+/* 区間時刻表 */
+/* 経路検索結果サマリー数値文字 */
+/* カレンダー配色 */
+/* フラッシュのカラー変更 基本： $key80 */
+/* ====================Initialization==================== */
+body {
+  color: black;
+  -webkit-print-color-adjust: exact; }
+
+.border-right-1 {
+  border-right: 1px solid #3366cc; }
+
+input[type="text"]:focus {
+  outline: #3366cc 1px solid;
+  background: white !important; }
+
+*::selection, *::-moz-selection {
+  background: rgba(51, 102, 204, 0.3); }
+
+.fwb {
+  font-weight: bold; }
+
+.disableBtn {
+  background: #d9d9d9 !important;
+  cusror: default; }
+
+/* カレンダー装飾 */
+.hasDatepicker {
+  text-align: center; }
+
+.ui-datepicker-inline {
+  display: inline-block !important; }
+
+table.ui-datepicker-calendar td.saturday a {
+  background: #afeeee;
+  color: #191970; }
+
+table.ui-datepicker-calendar td.sunday a {
+  background: #ffe4e1;
+  color: #ff0000; }
+
+table.ui-datepicker-calendar td.holiday a {
+  background: #ffe4e1;
+  color: #ff0000; }
+
+/* セレクト装飾 */
+.selectArea {
+  position: relative;
+  cursor: pointer;
+  width: 100%;
+  text-align: left;
+  color: black;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  border: #3366cc 1px solid;
+  border-radius: 5px;
+  background: #eeeeee;
+  text-align: center; }
+
+.selectTxt {
+  padding: 10px 5px; }
+
+.selectArea .selectObj {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer; }
+
+.combo:after {
+  display: inline-block;
+  content: "▼";
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  margin-top: -5px;
+  font-size: 1rem; }
+
+/* チェックボックス */
+.checkArea input[type=checkbox] {
+  display: inline-block;
+  margin-right: 6px; }
+
+.checkArea input[type=checkbox] + label {
+  position: relative;
+  display: inline-block;
+  margin-right: 12px;
+  cursor: pointer; }
+
+.checkArea input[type=checkbox] {
+  display: none;
+  margin: 0; }
+
+.checkArea input[type=checkbox] + label {
+  padding: 0 26px 0 0; }
+
+.checkArea input[type=checkbox] + label::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: 0;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  display: block;
+  width: 24px;
+  height: 24px;
+  margin-top: -13px;
+  background: white; }
+
+.checkArea input[type=checkbox] + label::before {
+  border: #ccc 1px solid; }
+
+.checkArea input[type=checkbox]:checked + label::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  display: block; }
+
+.checkArea input[type=checkbox]:checked + label::after {
+  right: 3px;
+  width: 16px;
+  height: 8px;
+  margin-top: -7px;
+  border-left: #3366cc 2px solid;
+  border-bottom: #3366cc 2px solid;
+  -webkit-transform: rotate(-45deg);
+  -ms-transform: rotate(-45deg);
+  transform: rotate(-45deg); }
+
+/* ラジオボタン */
+.radioLabel {
+  display: inline-block;
+  position: relative;
+  cursor: pointer;
+  padding: 0 0 0 24px;
+  border-radius: 2px;
+  color: black;
+  text-align: center;
+  line-height: 1; }
+
+.radioLabel:before {
+  margin-top: -14px; }
+
+.radioLabel:before {
+  position: absolute;
+  content: "";
+  top: 50%;
+  left: 4px;
+  width: 14px;
+  height: 14px;
+  margin-top: -7px;
+  border: black 1px solid;
+  border-radius: 50%;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box; }
+
+.radioObj {
+  display: none;
+  /* firefox用 */ }
+
+.radioObj:checked + .radioLabel:after {
+  margin-top: -11px; }
+
+.radioObj:checked + .radioLabel:after {
+  position: absolute;
+  content: "";
+  top: 50%;
+  left: 7px;
+  width: 8px;
+  height: 8px;
+  margin-top: -4px;
+  border-radius: 50%;
+  background: #3366cc; }
+
+/* ==================== 戻る ==================== */
+.backarea {
+  margin-bottom: 16px;
+  background: rgba(51, 102, 204, 0.8);
+  padding: 10px 0;
+  text-align: left; }
+  .backarea .pageback {
+    color: white;
+    position: relative;
+    padding-left: 24px;
+    padding-right: 30px; }
+    .backarea .pageback:before {
+      position: absolute;
+      top: 50%;
+      -webkit-transform: translateY(-50%);
+      -ms-transform: translateY(-50%);
+      transform: translateY(-50%);
+      display: inline-block;
+      content: '';
+      width: 10px;
+      height: 10px;
+      -webkit-transform: rotate(45deg);
+      -moz-transform: rotate(45deg);
+      -ms-transform: rotate(45deg);
+      -o-transform: rotate(45deg);
+      transform: rotate(45deg);
+      left: 14px;
+      margin-top: -5px;
+      border-top: none;
+      border-right: none;
+      border-bottom: 1px solid white;
+      border-left: 1px solid white; }
+    .backarea .pageback.disabled:before {
+      border: none !important; }
+
+/* ==================== ボタン ==================== */
+.btnArea {
+  letter-spacing: -.4em;
+  text-align: center;
+  display: block; }
+  .btnArea li {
+    letter-spacing: normal;
+    display: inline-block; }
+    .btnArea li:first-child {
+      margin-right: 10px; }
+
+.btn {
+  display: inline-block;
+  background: #3366cc;
+  color: white;
+  border-radius: 5px;
+  text-align: center;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  font-size: 1.2rem;
+  -webkit-appearance: none;
+  border: none; }
+
+.btn2 {
+  display: inline-block;
+  background: #d9d9d9;
+  color: white;
+  border-radius: 5px;
+  text-align: center;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box; }
+
+.btn3 {
+  display: inline-block;
+  background: white;
+  color: #3366cc;
+  border-radius: 5px;
+  text-align: center;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  border: 1px solid #3366cc; }
+
+.btnLong {
+  width: 100%;
+  padding: 10px; }
+
+.btnMid {
+  width: 140px;
+  padding: 10px; }
+
+.btnSmall {
+  width: 120px;
+  padding: 10px; }
+
+/* ==================== スライダー ==================== */
+.slick-prev:before, .slick-next:before {
+  border-bottom: 2px solid #3366cc;
+  border-right: 2px solid #3366cc; }
+
+.slick-dots li.slick-active button:before {
+  color: #3366cc; }
+
+/* ===============svg=============== */
+.tab01 .st0,
+.haya .st0 {
+  stroke: #3366cc; }
+
+.tab01 .st1,
+.haya .st1 {
+  fill: #3366cc; }
+
+.tab02 .st0,
+.yasu .st0 {
+  stroke: #3366cc; }
+
+.tab02 .st1,
+.yasu .st1 {
+  fill: #3366cc; }
+
+.tab03 .st0,
+.raku .st0 {
+  stroke: #3366cc; }
+
+.tab03 .st1,
+.raku .st1 {
+  fill: #3366cc; }
+
+.current.tab01 .st0 {
+  stroke: white; }
+
+.current.tab01 .st1 {
+  fill: white; }
+
+.current.tab02 .st0 {
+  stroke: white; }
+
+.current.tab02 .st1 {
+  fill: white; }
+
+.current.tab03 .st0 {
+  stroke: white; }
+
+.current.tab03 .st1 {
+  fill: white; }
+
+/**** Add hsato ****/
+/* 更新ボタンのアイコン*/
+.btnReload:before {
+  display: inline-block;
+  vertical-align: middle;
+  content: "";
+  background: url("../images/icon_reload.png") no-repeat;
+  background-size: contain;
+  width: 13px;
+  height: 13px; }
+
+#qrcode img {
+  width: 80px;
+  height: 80px; }
+
+.notview {
+  display: none !important; }
+
+/* 使い方ガイド */
+.navdiv {
+  z-index: 1000;
+  border: #ff8000 3px solid;
+  position: absolute !important;
+  display: none;
+  border-radius: 10px; }
+
+.navno {
+  z-index: 1001;
+  border: #ff8000 1px solid;
+  background-color: #ed5200;
+  position: absolute !important;
+  display: none;
+  border-radius: 50%;
+  width: 28px;
+  height: 28px;
+  color: white;
+  font-size: 10px;
+  padding: 8px;
+  text-align: center; }
+  .navno .navnono {
+    font-size: 18px; }
+
+.navmessage {
+  z-index: 1001 !important;
+  border: #ff8000 3px solid !important;
+  background-color: #ed5200 !important;
+  position: absolute !important;
+  display: none;
+  border-radius: 10px !important;
+  width: 300px !important;
+  color: white !important;
+  padding: 10px !important;
+  font-size: 1.4rem !important; }
+  .navmessage .navmessagetitle {
+    font-size: 2rem !important;
+    margin-bottom: 10px !important;
+    text-align: center; }
+  .navmessage * {
+    color: white !important; }
+
+.openSortDialog {
+  font-size: 1.3rem;
+  font-weight: normal; }
+
+#infoSortDialog {
+  overflow: hidden; }
+  #infoSortDialog .infoSortArea {
+    border: black 1px solid;
+    background: rgba(13, 185, 222, 0.1);
+    overflow: hidden;
+    width: 500px;
+    margin: 20px auto 0; }
+    #infoSortDialog .infoSortArea li {
+      vertical-align: middle;
+      cursor: pointer;
+      color: white;
+      padding: 10px;
+      background: #3366cc;
+      border-radius: 5px;
+      margin: 5px 0; }
+
+iframe#gmap, iframe.map1 {
+  background-image: url("../images/loading.gif");
+  background-repeat: no-repeat;
+  background-position: center;
+  border: 1px solid rgba(238, 238, 238, 0.7); }
+
+/* ====================SPレイアウト==================== */
+@media only screen and (max-width: 767px) {
+  .pc {
+    display: none; }
+  img {
+    max-width: 100%;
+    height: auto; }
+  .mov-header {
+    height: 44px; }
+    .mov-header .logoArea {
+      position: absolute;
+      top: 8px;
+      left: 3.125%; }
+      .mov-header .logoArea img {
+        height: 26px;
+        vertical-align: top; }
+  .locHeader {
+    width: 100%; }
+    .locHeader .mov-inner .mov-locnav {
+      width: 100%;
+      display: table;
+      border-top: white 2px solid;
+      border-bottom: white 2px solid;
+      background: rgba(217, 205, 179, 0.3); }
+      .locHeader .mov-inner .mov-locnav .mov-locnav-first {
+        width: 33.3333%;
+        display: table-cell;
+        vertical-align: middle;
+        border-left: white 2px solid;
+        height: 32px; }
+        .locHeader .mov-inner .mov-locnav .mov-locnav-first:first-child {
+          border-left: none; }
+        .locHeader .mov-inner .mov-locnav .mov-locnav-first a {
+          position: relative;
+          display: block;
+          color: black;
+          font-size: 1.2rem;
+          text-align: left;
+          padding: 10px 0 10px 8px; }
+          .locHeader .mov-inner .mov-locnav .mov-locnav-first a .langArea {
+            display: none; }
+        .locHeader .mov-inner .mov-locnav .mov-locnav-first .locMenu {
+          position: absolute;
+          top: 80px;
+          width: 100%;
+          left: 0%;
+          background: white;
+          z-index: 2; }
+          .locHeader .mov-inner .mov-locnav .mov-locnav-first .locMenu .locNavHead {
+            background: rgba(217, 205, 179, 0.3);
+            color: black;
+            font-size: 1.6rem;
+            padding: 12px 20px;
+            text-align: left;
+            font-weight: bold; }
+          .locHeader .mov-inner .mov-locnav .mov-locnav-first .locMenu p {
+            border-bottom: white 1px solid;
+            background: rgba(217, 205, 179, 0.5); }
+            .locHeader .mov-inner .mov-locnav .mov-locnav-first .locMenu p a {
+              display: block;
+              padding: 14px 20px;
+              color: black;
+              text-align: left; }
+              .locHeader .mov-inner .mov-locnav .mov-locnav-first .locMenu p a:after {
+                display: none !important; }
+        .locHeader .mov-inner .mov-locnav .mov-locnav-first.haschild a {
+          position: relative; }
+          .locHeader .mov-inner .mov-locnav .mov-locnav-first.haschild a:after {
+            position: absolute;
+            top: 50%;
+            -webkit-transform: translateY(-50%);
+            -ms-transform: translateY(-50%);
+            transform: translateY(-50%);
+            display: inline-block;
+            vertical-align: top;
+            content: "";
+            right: 0;
+            width: 0;
+            height: 0;
+            border-style: solid;
+            border-width: 10px 7.5px 0 7.5px;
+            margin-right: 10px;
+            border-color: black transparent transparent transparent; }
+          .locHeader .mov-inner .mov-locnav .mov-locnav-first.haschild a.active:after, .locHeader .mov-inner .mov-locnav .mov-locnav-first.haschild a.open:after, .locHeader .mov-inner .mov-locnav .mov-locnav-first.haschild a.select:after {
+            border-width: 0 7.5px 10px 7.5px;
+            border-color: transparent transparent black transparent; }
+          .locHeader .mov-inner .mov-locnav .mov-locnav-first.haschild a.disabled:after {
+            border-style: none !important; }
+  /* ---------- gnav ---------- */
+  #menuList {
+    display: none; }
+  #rwdMenuWrap {
+    width: 100%; }
+    #rwdMenuWrap #switchBtnArea {
+      width: 100%;
+      /*height: 44px;*/
+      background: #3366cc; }
+      #rwdMenuWrap #switchBtnArea #switchBtn {
+        top: 0;
+        right: 0;
+        width: 44px;
+        height: 44px;
+        display: block;
+        background: rgba(51, 102, 204, 0.8);
+        position: absolute; }
+        #rwdMenuWrap #switchBtnArea #switchBtn span {
+          left: 30%;
+          width: 45%;
+          height: 1px;
+          display: block;
+          position: absolute;
+          background-color: white;
+          transition: all 0.2s linear; }
+          #rwdMenuWrap #switchBtnArea #switchBtn span:nth-of-type(1) {
+            top: 14px;
+            -webkit-transform: rotate(0);
+            transform: rotate(0); }
+          #rwdMenuWrap #switchBtnArea #switchBtn span:nth-of-type(2) {
+            top: 22px;
+            -webkit-transform: scale(1);
+            transform: scale(1); }
+          #rwdMenuWrap #switchBtnArea #switchBtn span:nth-of-type(3) {
+            top: 30px;
+            -webkit-transform: rotate(0);
+            transform: rotate(0); }
+      #rwdMenuWrap #switchBtnArea #switchBtn.btnClose span:nth-of-type(1) {
+        margin-top: 5px;
+        -webkit-transform: rotate(-45deg);
+        transform: rotate(-45deg); }
+      #rwdMenuWrap #switchBtnArea #switchBtn.btnClose span:nth-of-type(2) {
+        -webkit-transform: scale(0);
+        transform: scale(0); }
+      #rwdMenuWrap #switchBtnArea #switchBtn.btnClose span:nth-of-type(3) {
+        margin-top: -10px;
+        -webkit-transform: rotate(45deg);
+        transform: rotate(45deg); }
+    #rwdMenuWrap ul {
+      width: 100%;
+      display: none;
+      position: absolute;
+      z-index: 100;
+      margin-top: 2px; }
+      #rwdMenuWrap ul li a {
+        padding: 15px 20px;
+        text-align: left;
+        display: block;
+        position: relative;
+        /*&:after {
+                        content: '';
+                        margin-top: -4px;
+                        top: 50%;
+                        right: 15px;
+                        width: 8px;
+                        height: 8px;
+                        color: #888;
+                        font-size: 1em;
+                        font-weight: bold;
+                        line-height: 1.2em;
+                        display: block;
+                        position: absolute;
+                        -webkit-transform: rotate(45deg);
+                        transform: rotate(45deg);
+                    }*/ }
+      #rwdMenuWrap ul li .hideMenuList {
+        background: #3366cc;
+        border-top: white 1px solid;
+        color: black;
+        /*&:after {
+                        display: inline-block;
+                        vertical-align: top;
+                        content: "";
+                        width: 10px;
+                        height: 10px;
+                        -webkit-transform: rotate(45deg);
+                        -moz-transform: rotate(45deg);
+                        -ms-transform: rotate(45deg);
+                        -o-transform: rotate(45deg);
+                        transform: rotate(45deg);
+                        position: absolute;
+                        top: 18px;
+                        right: 20px;
+                        background: transparent;
+                        border-bottom: 1px solid $key100;
+                        border-right: 1px solid $key100;
+                    }
+
+                    &.open:after {
+                        -webkit-transform: rotate(-135deg);
+                        -moz-transform: rotate(-135deg);
+                        -ms-transform: rotate(-135deg);
+                        -o-transform: rotate(-135deg);
+                        transform: rotate(-135deg);
+                        top: 22px;
+                    }*/ }
+      #rwdMenuWrap ul li .menuOpen li a {
+        background: #3366cc;
+        border-top: white 1px solid;
+        color: black;
+        padding-left: 32px; }
+      #rwdMenuWrap ul li.haschild .hideMenuList {
+        position: relative; }
+        #rwdMenuWrap ul li.haschild .hideMenuList:after {
+          position: absolute;
+          top: 50%;
+          -webkit-transform: translateY(-50%);
+          -ms-transform: translateY(-50%);
+          transform: translateY(-50%);
+          display: inline-block;
+          content: '';
+          width: 10px;
+          height: 10px;
+          -webkit-transform: rotate(45deg);
+          -moz-transform: rotate(45deg);
+          -ms-transform: rotate(45deg);
+          -o-transform: rotate(45deg);
+          transform: rotate(45deg);
+          right: 20px;
+          margin-top: -7.5px;
+          border-top: none;
+          border-right: 1px solid white;
+          border-bottom: 1px solid white;
+          border-left: none; }
+        #rwdMenuWrap ul li.haschild .hideMenuList.active:after, #rwdMenuWrap ul li.haschild .hideMenuList.select:after, #rwdMenuWrap ul li.haschild .hideMenuList.open:after {
+          margin-top: -2.5px;
+          border-top: 1px solid white;
+          border-right: none;
+          border-bottom: none;
+          border-left: 1px solid white; }
+        #rwdMenuWrap ul li.haschild .hideMenuList.disabled:after {
+          border: none !important; }
+      #rwdMenuWrap ul .gnavHead {
+        color: white;
+        background: #3366cc;
+        font-size: 1.6rem;
+        padding: 12px 20px;
+        text-align: left;
+        font-weight: bold; }
+  /* ---------- mov-contents ---------- */
+  .mov-contents .mov-inner {
+    background: white;
+    padding: 15px 3.125% 30px; }
+  /* ---------- pagetop ---------- */
+  #pagetop {
+    position: fixed;
+    right: 20px;
+    bottom: 80px;
+    z-index: 100; }
+    #pagetop .pagetopBtn {
+      position: relative;
+      display: block;
+      color: black;
+      background: white;
+      font-size: 1rem;
+      padding: 34px 6px 20px; }
+      #pagetop .pagetopBtn:before {
+        content: '';
+        top: 20px;
+        left: 50%;
+        margin-left: -4px;
+        width: 8px;
+        height: 8px;
+        color: #888;
+        font-size: 1em;
+        display: block;
+        position: absolute;
+        -webkit-transform: rotate(-135deg);
+        transform: rotate(-135deg);
+        border-bottom: 1px solid #3366cc;
+        border-right: 1px solid #3366cc; }
+  /* ---------- mov-footer ---------- */
+  .mov-footer {
+    background: #3366cc;
+    width: 100%;
+    color: white;
+    padding: 15px 0; }
+    .mov-footer .mov-footer-menu ul {
+      letter-spacing: -.4em;
+      text-align: center;
+      padding-bottom: 20px; }
+      .mov-footer .mov-footer-menu ul li {
+        letter-spacing: normal;
+        display: inline-block;
+        font-size: 1.2rem;
+        border-left: white 1px solid; }
+        .mov-footer .mov-footer-menu ul li:first-child {
+          border: none; }
+        .mov-footer .mov-footer-menu ul li a {
+          padding: 0 10px;
+          color: white; }
+    .mov-footer .copyright {
+      font-size: 1.2rem;
+      color: white; }
+      .mov-footer .copyright img {
+        width: 7px;
+        display: inline-block;
+        margin-right: 2px;
+        vertical-align: middle; }
+  /*
+top
+==================== */
+  .slick-prev, .slick-next {
+    background: rgba(255, 255, 255, 0.5);
+    z-index: 1;
+    -webkit-transform: translate3d(0, 0, 0); }
+  .slick-prev:hover, .slick-prev:focus, .slick-next:hover, .slick-next:focus {
+    background: rgba(255, 255, 255, 0.5); }
+  .headTx {
+    color: black;
+    border-bottom: black 1px solid; }
+  .headTx2 {
+    color: black; }
+  .moreLink a {
+    color: #3366cc; }
+  /*.searchMenu {
+        .searchMenuBox {
+            background-color: $key10;
+            border: $key100 2px solid;
+        }
+    }*/
+  .mytool .mytoolSp .mytoolArea .mytoolTil {
+    color: white;
+    background: #3366cc; }
+    .mytool .mytoolSp .mytoolArea .mytoolTil:after {
+      border-color: white transparent transparent transparent; }
+    .mytool .mytoolSp .mytoolArea .mytoolTil.open:after {
+      border-color: transparent transparent white transparent; }
+  .mytool .mytoolSp .mytoolArea .mytoolCnt .mytoolBox {
+    border-bottom: black 1px solid; }
+    .mytool .mytoolSp .mytoolArea .mytoolCnt .mytoolBox .mytoolTx .detailLink {
+      color: #3366cc; }
+  .information .infoAreaSp .infoArea .infoTil {
+    color: white;
+    background: #3366cc; }
+    .information .infoAreaSp .infoArea .infoTil:after {
+      border-color: white transparent transparent transparent; }
+    .information .infoAreaSp .infoArea .infoTil.open:after {
+      border-color: transparent transparent white transparent; }
+  /*
+searchresult==================== */
+  .backBtn a {
+    color: #3366cc; }
+  .pageTtl::after {
+    background: #d9d9d9; }
+  .tabContsIn::after {
+    border-bottom: 1px dashed #d9d9d9; }
+  .tabTtl {
+    color: white;
+    background: #3366cc; }
+  .tabArea {
+    /*border-bottom: 1px solid $key100;*/ }
+    .tabArea a {
+      color: #3366cc; }
+    .tabArea .toggleBoxTtlBtn {
+      color: #3366cc; }
+  .resultBtn a {
+    border: 1px solid #3366cc;
+    background: rgba(217, 217, 217, 0.5);
+    color: black; }
+  .notes p:first-child {
+    color: #3366cc; }
+    .notes p:first-child::after {
+      color: #3366cc;
+      border-left: 5px solid #3366cc; }
+  .pager li {
+    border: 1px solid #3366cc; }
+    .pager li a {
+      color: #3366cc !important; }
+  .tabBox .tab {
+    border: 1px solid #3366cc; }
+    .tabBox .tab a {
+      color: #3366cc !important; }
+  .tabBox .current {
+    background: #3366cc; }
+    .tabBox .current a {
+      color: white !important; }
+  .routeBtn {
+    background: white;
+    border-top: 1px solid #3366cc;
+    border-bottom: 1px solid #3366cc; }
+  .routeBtn.open {
+    background: rgba(13, 185, 222, 0.1); }
+  .mapBtn {
+    text-align: right;
+    text-decoration: underline;
+    font-size: 1.2rem; }
+    .mapBtn a {
+      color: #3366cc; }
+      .mapBtn a::after {
+        display: inline-block;
+        content: "\25BC";
+        color: #3366cc; }
+    .mapBtn .open::after {
+      display: inline-block;
+      content: "\25B2";
+      color: #3366cc; }
+  .map {
+    border-top: 1px solid #d9d9d9;
+    border-bottom: 1px solid #d9d9d9; }
+  .detailBox {
+    border-bottom: 1px dashed #d9d9d9; }
+  .busColor01 .cearcle01 {
+    background: white;
+    border: 2px solid #0db9de; }
+    .busColor01 .cearcle01::after {
+      background: #0db9de; }
+  .busColor01 .cearcle02 {
+    background: #0db9de; }
+  .busColor01 .date {
+    border-right: 1px solid #0db9de; }
+  .busColor01 .stand02 .date::after {
+    background: #0db9de; }
+  .trainColor01 .cearcle01 {
+    background: white;
+    border: 2px solid #009944; }
+    .trainColor01 .cearcle01::after {
+      background: #009944; }
+  .trainColor01 .cearcle02 {
+    background: #009944; }
+  .trainColor01 .date {
+    border-right: 1px solid #009944; }
+  .trainColor01 .stand02 .date::after {
+    background: #009944; }
+  .stand {
+    background: rgba(13, 185, 222, 0.1); }
+  .busStopIcon li {
+    border: 1px solid #3366cc;
+    background: white; }
+    .busStopIcon li a {
+      color: #3366cc; }
+  .date a {
+    color: black; }
+  .toggleBoxTtlArea {
+    border-bottom: 1px solid #d9d9d9; }
+    .toggleBoxTtlArea .toggleBoxTtlBtn a {
+      color: #3366cc; }
+  .tableBox .toggleBoxTtlBtn a {
+    color: #3366cc; }
+    .tableBox .toggleBoxTtlBtn a::after {
+      color: #3366cc; }
+  .tableArea {
+    border: 1px solid #3366cc; }
+    .tableArea th {
+      background: #3366cc;
+      color: white; }
+    .tableArea td {
+      color: #3366cc; }
+      .tableArea td:nth-child(2) {
+        border-left: 1px solid #3366cc;
+        border-right: 1px solid #3366cc; }
+  .searchArea a {
+    color: white !important;
+    background: #3366cc; }
+  /*
+route==================== */
+  .pageTtl::after {
+    background: rgba(217, 217, 217, 0.5); }
+  /*Myルート アコーディオン*/
+  .route .toggleBoxTtlArea {
+    border-bottom: 1px solid #3366cc; }
+  .route .toggleBoxTtl {
+    background: #3366cc;
+    color: white; }
+  .toggleBoxTtlBtn {
+    color: #3366cc; }
+  /*myルート中身*/
+  .route .toggleList {
+    border-bottom: 1px solid rgba(217, 217, 217, 0.5); }
+  .toggleListBtnArea li {
+    border: 1px solid #3366cc;
+    background: #3366cc; }
+  .toggleListBtnArea a {
+    color: white; }
+  .toggleListBtnArea .deleteBtn {
+    background: rgba(217, 217, 217, 0.5); }
+    .toggleListBtnArea .deleteBtn a {
+      color: black; }
+  /*タブ*/
+  .route .tabBox .tab {
+    border: 1px solid #3366cc; }
+    .route .tabBox .tab a {
+      color: #3366cc; }
+  .route .tabBox .current {
+    background: #3366cc; }
+    .route .tabBox .current a {
+      color: white; }
+  /*フォーム*/
+  .tabContsIn::after {
+    border-bottom: 1px dashed rgba(217, 217, 217, 0.5); }
+  /*履歴*/
+  .history {
+    background: #3366cc;
+    float: none;
+    position: absolute;
+    top: 28px;
+    right: 1px;
+    width: 20%;
+    border-radius: 0 6px 6px 0;
+    border-left: none;
+    text-align: center;
+    box-sizing: border-box;
+    font-size: 1.2rem; }
+    .history a {
+      color: white;
+      display: block;
+      height: 46px;
+      padding: 14px 0;
+      box-sizing: border-box; }
+      .history a::after {
+        color: white;
+        display: inline-block;
+        content: "\25BC";
+        padding-left: 3px; }
+  /*履歴候補*/
+  .historyList {
+    background: white;
+    display: none;
+    position: absolute;
+    top: 75px;
+    left: 0;
+    width: 100%;
+    max-height: 225px;
+    box-sizing: border-box;
+    overflow-y: auto;
+    z-index: 5;
+    overflow-x: hidden; }
+    .historyList li {
+      background: rgba(217, 217, 217, 0.5);
+      width: 100%;
+      text-align: left; }
+      .historyList li:hover {
+        opacity: 0.5; }
+      .historyList li a {
+        color: black;
+        display: block;
+        padding: 13px 13px 13px 48px;
+        line-height: 1.5;
+        font-size: 1.2rem; }
+      .historyList li a .hisClose {
+        display: inline-block;
+        width: 24px;
+        height: 24px;
+        font-size: 2rem;
+        top: 50%;
+        right: 6px;
+        margin-top: -5px;
+        cursor: pointer;
+        float: right; }
+    .historyList .icBus a {
+      background: url(../images/ic_bus.png) no-repeat 13px center;
+      background-size: 26px auto; }
+    .historyList .icTrain a {
+      background: url(../images/ic_station.png) no-repeat 13px center;
+      background-size: 26px auto; }
+    .historyList .icLandmark a {
+      background: url(../images/ic_landmark.png) no-repeat 13px center;
+      background-size: 26px auto; }
+    .historyList .icBill a {
+      background: url(../images/ic_bill.png) no-repeat 13px center;
+      background-size: 26px auto; }
+    .historyList .icAirport a {
+      background: url(../images/ic_airport.png) no-repeat 13px center;
+      background-size: 26px auto; }
+    .historyList .icHotel a {
+      background: url(../images/ic_hotel.png) no-repeat 13px center;
+      background-size: 26px auto; }
+    .historyList.suggestList {
+      width: auto; }
+  .inputBox {
+    /*バス停名入力*/ }
+    .inputBox::after {
+      border-bottom: 1px dashed rgba(217, 217, 217, 0.5); }
+    .inputBox input[type="text"] {
+      background: rgba(217, 217, 217, 0.5); }
+    .inputBox .suggest {
+      background: white; }
+      .inputBox .suggest .suggestTx {
+        background: rgba(217, 217, 217, 0.5); }
+      .inputBox .suggest .suggestTtl {
+        background: rgba(217, 217, 217, 0.5); }
+        .inputBox .suggest .suggestTtl::after {
+          background: #d9d9d9; }
+      .inputBox .suggest .suggestList {
+        background: rgba(217, 217, 217, 0.5); }
+        .inputBox .suggest .suggestList a {
+          color: black; }
+    .inputBox .changeBtn {
+      background: #3366cc; }
+  /*検索ボタンリスト*/
+  .list li {
+    background: #3366cc; }
+  .list a {
+    color: white; }
+  /*検索窓*/
+  .search input[type="submit"] {
+    border: 2px solid #3366cc;
+    border-radius: 6px;
+    background: rgba(13, 185, 222, 0.1);
+    color: black; }
+  /*日時指定エリア*/
+  .dateBox {
+    border-bottom: 1px dashed rgba(217, 217, 217, 0.5); }
+  .pulldown::before {
+    color: white;
+    background: #3366cc; }
+  .pulldown::after {
+    color: white; }
+  .pulldownType02::before {
+    color: white;
+    background: #3366cc; }
+  .pulldownType02::after {
+    color: white; }
+  /*日時指定のボタンエリア*/
+  .list02 li {
+    background: rgba(217, 217, 217, 0.5);
+    border: 1px solid #3366cc; }
+  .list02 input[type="radio"]:checked + label {
+    background: #3366cc;
+    color: white; }
+  .list02 label {
+    background: rgba(217, 217, 217, 0.5); }
+  /*オプション*/
+  .option .toggle {
+    border-bottom: 1px dashed rgba(217, 217, 217, 0.5); }
+  .searchTab .toggleBoxTtlBtn {
+    color: #3366cc; }
+  .option .toggleBoxTtlArea {
+    border-bottom: 1px solid rgba(217, 217, 217, 0.5); }
+  /*お知らせ*/
+  .infoTtl {
+    background: #3366cc;
+    color: white; }
+  /* 緊急のお知らせ（ダイアログ）*/
+  .emergencyAreaInner {
+    overflow-y: auto;
+    border: 1px solid black; }
+  .decided {
+    background: rgba(13, 185, 222, 0.1); }
+  .decidedDirect {
+    cursor: pointer; }
+  .arrow::after {
+    color: white; }
+  .navmessage {
+    width: auto !important; }
+  #infoSortDialog .infoSortArea {
+    width: 90%; }
+  /* end of max767px layout */ }
+
+/* ====================middleレイアウト==================== */
+@media only screen and (min-width: 768px) {
+  .sp {
+    display: none; }
+  img {
+    width: auto; }
+  .mouseon {
+    cursor: pointer;
+    -webkit-transition: .7s ease;
+    -moz-transition: .7s ease;
+    -ms-transition: .7s ease;
+    -o-transition: .7s ease;
+    transition: .7s ease; }
+    .mouseon:hover {
+      opacity: 0.5;
+      cursor: pointer; }
+  .selectArea {
+    width: 116px;
+    text-align: left; }
+  /* ==================== header ==================== */
+  .mov-header {
+    position: relative;
+    background: #3366cc;
+    min-width: 980px; }
+    .mov-header .mov-inner {
+      width: 100%;
+      max-width: 980px;
+      margin: 0 auto;
+      position: relative;
+      height: 88px; }
+      .mov-header .mov-inner .logoArea {
+        position: absolute;
+        top: 24px;
+        left: 0;
+        width: 192px; }
+        .mov-header .mov-inner .logoArea a {
+          display: block; }
+          .mov-header .mov-inner .logoArea a img {
+            width: 100%; }
+      .mov-header .mov-inner .mov-gnav {
+        position: absolute;
+        top: 32px;
+        right: 0; }
+  .locHeader {
+    background: rgba(217, 205, 179, 0.3);
+    width: 100%;
+    min-width: 980px; }
+    .locHeader .mov-inner {
+      width: 100%;
+      max-width: 980px;
+      margin: 0 auto;
+      height: 45px;
+      position: relative; }
+      .locHeader .mov-inner .mov-locnav {
+        text-align: right;
+        letter-spacing: -.4em;
+        padding-top: 12px; }
+        .locHeader .mov-inner .mov-locnav li {
+          letter-spacing: normal;
+          display: inline-block;
+          vertical-align: top;
+          text-align: center;
+          position: relative;
+          z-index: 1; }
+          .locHeader .mov-inner .mov-locnav li:first-child {
+            border-left: none;
+            padding-left: 0;
+            margin-left: 0; }
+            .locHeader .mov-inner .mov-locnav li:first-child a {
+              border-left: none; }
+          .locHeader .mov-inner .mov-locnav li a {
+            display: inline-block;
+            vertical-align: middle;
+            color: black;
+            font-size: 1.2rem;
+            padding: 5px 30px 5px 20px;
+            border-left: black 1px solid; }
+            .locHeader .mov-inner .mov-locnav li a .langArea {
+              display: inline-block;
+              padding: 0 8px;
+              color: black; }
+              .locHeader .mov-inner .mov-locnav li a .langArea:before {
+                display: inline-block;
+                content: "："; }
+        .locHeader .mov-inner .mov-locnav .locnavObjPc.haschild > a {
+          position: relative; }
+          .locHeader .mov-inner .mov-locnav .locnavObjPc.haschild > a::after {
+            position: absolute;
+            top: 50%;
+            -webkit-transform: translateY(-50%);
+            -ms-transform: translateY(-50%);
+            transform: translateY(-50%);
+            display: inline-block;
+            vertical-align: top;
+            content: "";
+            right: 0;
+            width: 0;
+            height: 0;
+            border-style: solid;
+            border-width: 10px 7.5px 0 7.5px;
+            margin-right: 10px;
+            border-color: black transparent transparent transparent; }
+      .locHeader .mov-inner .locMenu {
+        width: 100%;
+        padding-top: 11px;
+        color: black; }
+        .locHeader .mov-inner .locMenu .locNavHead {
+          background: white; }
+          .locHeader .mov-inner .locMenu .locNavHead span {
+            display: block;
+            background: #d9cdb3;
+            padding: 10px; }
+        .locHeader .mov-inner .locMenu p {
+          background: white; }
+          .locHeader .mov-inner .locMenu p a {
+            display: block;
+            background: rgba(217, 205, 179, 0.5);
+            color: black;
+            padding: 10px;
+            border: none; }
+            .locHeader .mov-inner .locMenu p a:after {
+              display: none; }
+            .locHeader .mov-inner .locMenu p a:hover {
+              background: #d9cdb3; }
+  .secInner {
+    position: relative;
+    padding: 0 3.125%; }
+  /* ---------- gnav ---------- */
+  #menuList {
+    width: 100%;
+    position: relative;
+    z-index: 10; }
+    #menuList .gnavHead {
+      display: none; }
+    #menuList ul {
+      text-align: center;
+      letter-spacing: -.4em; }
+      #menuList ul li {
+        position: relative;
+        display: inline-block;
+        vertical-align: top;
+        letter-spacing: normal;
+        width: 172px;
+        height: 24px;
+        border-left: white 1px solid;
+        box-sizing: border-box; }
+        #menuList ul li:last-child {
+          border-right: white 1px solid; }
+        #menuList ul li a {
+          position: relative;
+          font-size: 1.2rem;
+          min-height: 24px;
+          padding: 0px 16px;
+          line-height: 1.5;
+          display: block;
+          text-align: center;
+          transition: all 0.2s linear;
+          color: white; }
+          #menuList ul li a.open {
+            background: white;
+            color: #3366cc; }
+            #menuList ul li a.open a {
+              background: rgba(51, 102, 204, 0.6);
+              color: white; }
+          #menuList ul li a.open:after {
+            border-width: 0px 7px 11px 7px;
+            border-color: transparent transparent #3366cc transparent; }
+        #menuList ul li.haschild a {
+          padding-right: 32px; }
+        #menuList ul li.haschild a:after {
+          position: absolute;
+          top: 50%;
+          -webkit-transform: translateY(-50%);
+          -ms-transform: translateY(-50%);
+          transform: translateY(-50%);
+          display: inline-block;
+          vertical-align: top;
+          content: "";
+          right: 0;
+          width: 0;
+          height: 0;
+          border-style: solid;
+          border-width: 11px 8.25px 0 8.25px;
+          margin-right: 10px;
+          border-color: white transparent transparent transparent; }
+        #menuList ul li .menuOpen {
+          padding-top: 32px; }
+          #menuList ul li .menuOpen li {
+            display: block;
+            height: auto;
+            border: none;
+            background: white; }
+            #menuList ul li .menuOpen li a {
+              display: block;
+              padding: 5px 12px 5px 10px;
+              background: #3366cc; }
+              #menuList ul li .menuOpen li a:hover {
+                background: rgba(51, 102, 204, 0.6);
+                color: white; }
+              #menuList ul li .menuOpen li a:after {
+                display: none; }
+  /* ---------- mov-contents ---------- */
+  .mov-contents {
+    background: #FAFAFA;
+    padding: 12px 0 16px;
+    text-align: left; }
+    .mov-contents .mov-inner {
+      width: 980px;
+      margin: 0 auto;
+      background: white;
+      padding: 24px;
+      -webkit-box-sizing: border-box;
+      -moz-box-sizing: border-box;
+      box-sizing: border-box; }
+  /* ---------- pagetop ---------- */
+  #pagetop {
+    position: fixed;
+    right: 20px;
+    bottom: 60px; }
+    #pagetop .pagetopBtn {
+      position: relative;
+      display: block;
+      color: black;
+      background: white;
+      font-size: 1rem;
+      padding: 34px 6px 20px; }
+      #pagetop .pagetopBtn:before {
+        content: '';
+        top: 20px;
+        left: 50%;
+        margin-left: -4px;
+        width: 8px;
+        height: 8px;
+        color: #888;
+        font-size: 1em;
+        display: block;
+        position: absolute;
+        -webkit-transform: rotate(-135deg);
+        transform: rotate(-135deg);
+        border-bottom: 1px solid #3366cc;
+        border-right: 1px solid #3366cc;
+        -webkit-transition: .5s ease;
+        -moz-transition: .5s ease;
+        -ms-transition: .5s ease;
+        -o-transition: .5s ease;
+        transition: .5s ease; }
+      #pagetop .pagetopBtn:hover:before {
+        top: 16px; }
+  /* ---------- mov-footer ---------- */
+  .mov-footer {
+    background: #3366cc;
+    width: 100%;
+    min-width: 980px;
+    color: white;
+    padding: 15px 0; }
+    .mov-footer .mov-footer-inner {
+      width: 100%;
+      max-width: 980px;
+      margin: 0 auto; }
+      .mov-footer .mov-footer-inner .mov-footer-menu {
+        float: right; }
+        .mov-footer .mov-footer-inner .mov-footer-menu ul {
+          letter-spacing: -.4em;
+          text-align: center; }
+          .mov-footer .mov-footer-inner .mov-footer-menu ul li {
+            letter-spacing: normal;
+            display: inline-block;
+            font-size: 1.2rem;
+            border-left: white 1px solid; }
+            .mov-footer .mov-footer-inner .mov-footer-menu ul li:first-child {
+              border: none; }
+            .mov-footer .mov-footer-inner .mov-footer-menu ul li a {
+              padding: 0 10px;
+              color: white; }
+      .mov-footer .mov-footer-inner .copyright {
+        float: left;
+        font-size: 1.2rem; }
+        .mov-footer .mov-footer-inner .copyright img {
+          display: inline-block;
+          margin-right: 2px;
+          vertical-align: bottom; }
+  /*
+top==================== */
+  .headTx {
+    color: black; }
+  .headTx2 {
+    color: black;
+    border-bottom: black 1px solid; }
+  .emergencyArea {
+    border: #3366cc 4px solid; }
+  .moreLink a {
+    color: #3366cc; }
+  /*.searchMenu {
+        .searchMenuBox {
+            background-color: $key10;
+            border: $key100 2px solid;
+        }
+    }*/
+  .selectTxt {
+    padding-right: 20px; }
+  .largeBanner .slick-prev, .largeBanner .slick-next {
+    background: white; }
+  .largeBanner .slick-prev:hover, .largeBanner .slick-prev:focus, .largeBanner .slick-next:hover, .largeBanner .slick-next:focus {
+    background: white; }
+  .mytool .headTx {
+    border-bottom: black 1px solid; }
+  .mytool .mytoolPc .tabList {
+    border-bottom: #3366cc 2px solid; }
+    .mytool .mytoolPc .tabList li {
+      color: #3366cc;
+      background: white;
+      border: #3366cc 2px solid; }
+    .mytool .mytoolPc .tabList .select {
+      background: #3366cc;
+      color: white; }
+  .mytool .mytoolPc .tabCnt {
+    border-bottom: #3366cc 1px solid; }
+    .mytool .mytoolPc .tabCnt li .mytoolBox {
+      border-bottom: #eeeeee 1px solid; }
+      .mytool .mytoolPc .tabCnt li .mytoolBox .mytoolTx .detailLink {
+        color: #3366cc; }
+  .information .headTx {
+    border-bottom: black 1px solid; }
+  .information .infoAreaPc .tabList2 {
+    border-bottom: #3366cc 2px solid; }
+    .information .infoAreaPc .tabList2 li {
+      color: #3366cc;
+      background: white;
+      border: #3366cc 2px solid; }
+    .information .infoAreaPc .tabList2 .select {
+      background: #3366cc;
+      color: white; }
+  .information .infoAreaPc .tabCnt2 {
+    border: #3366cc 2px solid; }
+  /*
+searchresult==================== */
+  /*パンくず*/
+  .breadcrumb {
+    background: #fafafa; }
+    .breadcrumb a {
+      color: #3366cc; }
+  #mov-wrap {
+    background: #fafafa; }
+  .conts {
+    background: white; }
+  .pageTtl:after {
+    background: #d9d9d9; }
+  .tabContsIn {
+    border-bottom: 2px dashed #d9d9d9; }
+  .resultBtn a {
+    border: 1px solid #3366cc;
+    background: rgba(217, 217, 217, 0.5);
+    color: black; }
+  .notes p:first-child {
+    color: #3366cc; }
+  .pager li {
+    border: 1px solid #3366cc; }
+  .pager a {
+    color: #3366cc; }
+  /*早安楽タブ*/
+  .tabBox .current {
+    background: #3366cc; }
+    .tabBox .current a {
+      color: white; }
+  .tabArea {
+    border-bottom: 1px solid #3366cc; }
+    .tabArea a {
+      color: #3366cc; }
+  .tab {
+    border: 2px solid #3366cc; }
+  /*経路タブ*/
+  .routeTab li {
+    border: 1px solid #3366cc; }
+    .routeTab li a {
+      color: #3366cc; }
+    .routeTab li .routeCurrent {
+      color: white;
+      background: #3366cc; }
+  .detailWrap {
+    border-left: 2px dashed #d9d9d9; }
+  .map {
+    border-top: 2px solid #d9d9d9;
+    border-bottom: 2px solid #d9d9d9; }
+    .map .mapBtn a {
+      color: #3366cc; }
+  .mapMessageArea {
+    font-size: 1.4rem;
+    font-weight: normal;
+    text-align: left; }
+  .busColor01 .cearcle01 {
+    background: white;
+    border: 2px solid #0db9de; }
+    .busColor01 .cearcle01::after {
+      background: #0db9de; }
+  .busColor01 .cearcle02 {
+    background: #0db9de; }
+  .busColor01 .date {
+    border-right: 2px solid #0db9de; }
+  .busColor01 .stand02 .date::after {
+    background: #0db9de; }
+  .trainColor01 .cearcle01 {
+    background: white;
+    border: 2px solid #009944; }
+    .trainColor01 .cearcle01::after {
+      background: #009944; }
+  .trainColor01 .cearcle02 {
+    background: #009944; }
+  .trainColor01 .date {
+    border-right: 2px solid #009944; }
+  .trainColor01 .stand02 .date::after {
+    background: #009944; }
+  .stand {
+    background: rgba(13, 185, 222, 0.1); }
+  .date a {
+    color: black; }
+  .busStopIcon li {
+    border: 1px solid #3366cc;
+    background: white; }
+    .busStopIcon li a {
+      color: #3366cc; }
+      .busStopIcon li a::after {
+        color: #3366cc; }
+  /*定期代*/
+  .tableArea {
+    border: 1px solid #3366cc; }
+    .tableArea th {
+      background: #3366cc;
+      color: white; }
+    .tableArea td {
+      color: #3366cc; }
+      .tableArea td:nth-child(2) {
+        border-left: 1px solid #3366cc;
+        border-right: 1px solid #3366cc; }
+  .pagerLast {
+    border-top: 2px solid #d9d9d9; }
+  /*.tabContsIn02 {
+        border-bottom: 2px solid $def100;
+    }*/
+  .searchArea a {
+    color: white;
+    background: #3366cc; }
+  /*
+route==================== */
+  .breadcrumb {
+    background: #fafafa; }
+    .breadcrumb li a {
+      color: #3366cc; }
+  .pageTtl:after {
+    background: rgba(217, 217, 217, 0.5); }
+  .tabContsIn {
+    border-bottom: 2px dashed rgba(217, 217, 217, 0.5); }
+  .tab {
+    border: 2px solid #3366cc; }
+  .tabTtl {
+    color: white;
+    background: #3366cc; }
+  .tabArea {
+    border-bottom: 2px solid #3366cc; }
+    .tabArea a {
+      color: #3366cc; }
+    .tabArea .toggleBoxTtlBtn {
+      color: #3366cc; }
+  .route .toggleList {
+    border-bottom: 2px solid rgba(217, 217, 217, 0.5); }
+    .route .toggleList:nth-child(2) {
+      /*border-bottom: 2px solid $key100;*/ }
+    .route .toggleList .toggleListBtnArea li a {
+      background: #3366cc;
+      color: white; }
+    .route .toggleList .toggleListBtnArea .deleteBtn a {
+      background: #d9d9d9; }
+  /*タブ（通常検索・今すぐ検索・直通路検索）*/
+  .route .tabBox {
+    border-bottom: 2px solid #3366cc; }
+    .route .tabBox .tab a {
+      color: #3366cc; }
+    .route .tabBox .tab.current {
+      background: #3366cc; }
+      .route .tabBox .tab.current a {
+        color: white; }
+  .inputBox {
+    border-bottom: 2px dashed rgba(217, 217, 217, 0.5); }
+  .changeBtn {
+    background: #3366cc; }
+  .inputArea input[type="text"] {
+    background: rgba(217, 217, 217, 0.5); }
+  .suggest {
+    background: white; }
+    .suggest .suggestTx {
+      background: rgba(217, 217, 217, 0.5); }
+    .suggest .suggestTtl {
+      background: rgba(217, 217, 217, 0.5); }
+      .suggest .suggestTtl::after {
+        background: #cfcfcf; }
+    .suggest .suggestList {
+      background: rgba(217, 217, 217, 0.5); }
+      .suggest .suggestList a {
+        color: black; }
+  .history {
+    background: #3366cc;
+    position: relative;
+    float: right;
+    width: 20%;
+    border-radius: 0 6px 6px 0;
+    border-left: none;
+    text-align: center;
+    box-sizing: border-box;
+    font-size: 1.4rem; }
+    .history a {
+      color: white;
+      display: block;
+      height: 40px; }
+      .history a::after {
+        color: white;
+        display: inline-block;
+        content: "\25BC";
+        padding-left: 40px; }
+      .history a span {
+        display: block;
+        position: relative;
+        top: 50%;
+        -ms-transform: translateY(-50%);
+        -webkit-transform: translateY(-50%);
+        transform: translateY(-50%);
+        padding-right: 30px; }
+  .historyList {
+    background: white;
+    display: none;
+    position: absolute;
+    top: 69px;
+    left: 0;
+    width: 100%;
+    max-height: 225px;
+    box-sizing: border-box;
+    overflow-y: auto;
+    z-index: 5;
+    overflow-x: hidden; }
+    .historyList li {
+      background: rgba(217, 217, 217, 0.5);
+      width: 100%; }
+      .historyList li:hover {
+        opacity: 0.5; }
+      .historyList li a {
+        color: black;
+        display: block;
+        padding: 13px 13px 13px 48px;
+        line-height: 1.5;
+        position: relative; }
+    .historyList a .hisClose {
+      position: absolute;
+      display: block;
+      width: 24px;
+      height: 24px;
+      font-size: 2rem;
+      top: 50%;
+      right: 6px;
+      margin-top: -15px;
+      cursor: pointer; }
+    .historyList.suggestList {
+      width: auto; }
+    .historyList .icBus a {
+      background: url(../images/ic_bus.png) no-repeat 13px center;
+      background-size: 25px auto; }
+    .historyList .icTrain a {
+      background: url(../images/ic_station.png) no-repeat 13px center;
+      background-size: 25px auto; }
+    .historyList .icLandmark a {
+      background: url(../images/ic_landmark.png) no-repeat 13px center;
+      background-size: 25px auto; }
+    .historyList .icBill a {
+      background: url(../images/ic_bill.png) no-repeat 13px center;
+      background-size: 25px auto; }
+    .historyList .icAirport a {
+      background: url(../images/ic_airport.png) no-repeat 13px center;
+      background-size: 25px auto; }
+    .historyList .icHotel a {
+      background: url(../images/ic_hotel.png) no-repeat 13px center;
+      background-size: 25px auto; }
+  /*検索ボタンリスト*/
+  .list li a {
+    color: white; }
+  /*50音検索等のボタンエリア*/
+  .list01 li {
+    background: #3366cc; }
+  /*日時指定のボタンエリア*/
+  .list02 li {
+    background: rgba(217, 217, 217, 0.5);
+    border: 1px solid #3366cc; }
+  .list02 input[type="radio"]:checked + label {
+    background: #3366cc;
+    color: white; }
+  /*検索ボタン*/
+  .search input[type="submit"] {
+    border: 1px solid #3366cc;
+    background-color: rgba(51, 102, 204, 0.3); }
+  /*日時指定エリア*/
+  .pulldown::before {
+    color: white;
+    background: #3366cc; }
+  .pulldown::after {
+    color: white; }
+  .pulldownType02::before {
+    color: white;
+    background: #3366cc; }
+  .pulldownType02::after {
+    color: white; }
+  .infoTx {
+    border: 2px solid #3366cc; }
+  .decided {
+    background: rgba(13, 185, 222, 0.1); }
+  .decidedDirect {
+    cursor: pointer; }
+  /* end of max767px layout */ }
+
+.legcol1 {
+  color: #cc0001; }
+
+.legcol2 {
+  color: #004077; }
+
+.legcol3 {
+  color: #007aaa; }
+
+.legcol4 {
+  color: #000000; }
+
+.legcol5 {
+  color: #996600; }
+
+.legcol6 {
+  color: #8026ae; }
+
+.legcol7 {
+  color: #004714; }
+
+.legcol8 {
+  color: #587e03; }
+
+/* バスロケ情報 */
+/* 使い方ガイド */
+/* 区間時刻表 */
+/* 経路検索結果サマリー数値文字 */
+/* カレンダー配色 */
+/* フラッシュのカラー変更 基本： $key80 */
+/* ====================SPレイアウト==================== */
+@media only screen and (max-width: 767px) {
+  .pageTtl, .pageSubTtl {
+    position: relative;
+    margin-top: 15px;
+    padding-bottom: 10px;
+    margin-bottom: 8px;
+    font-size: 1.6rem; }
+  .pageTtl::after {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    display: block;
+    content: "";
+    width: 100%;
+    height: 1px; }
+  .pageSubTtl {
+    font-size: 1.4rem;
+    padding-bottom: 6px;
+    margin-bottom: 0px; } }
+
+/* ====================middleレイアウト==================== */
+@media only screen and (min-width: 768px) {
+  .pageTtl, .pageSubTtl {
+    position: relative;
+    padding: 0 0 12px;
+    margin-bottom: 8px;
+    font-size: 1.8rem;
+    line-height: 1.5; }
+  .pageTtl:after {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    display: block;
+    content: "";
+    width: 100%;
+    height: 2px;
+    background: rgba(217, 205, 179, 0.3); }
+  .pageSubTtl {
+    font-size: 1.6rem;
+    padding-bottom: 6px;
+    margin-bottom: 0px; } }
+
+@media only screen and (min-width: 980px) {
+  /* ====================PCレイアウト==================== */ }
+
+/* ====================SPレイアウト==================== */
+/* ====================middleレイアウト==================== */
+@media only screen and (min-width: 768px) {
+  /*パンくず*/
+  .breadcrumb {
+    margin: 0 0 12px;
+    font-size: 1.2rem; }
+    .breadcrumb li {
+      display: inline-block;
+      line-height: 1.5; }
+    .breadcrumb a {
+      text-decoration: underline; }
+  .breadcrumbNow::before {
+    display: inline-block;
+    content: "＞"; }
+  #index {
+    text-align: left; }
+  .breadcrumb li.breadcrumbNow:first-child::before {
+    content: ""; } }
+
+@media only screen and (min-width: 980px) {
+  /* ====================PCレイアウト==================== */
+  /*パンくず*/
+  .breadcrumb {
+    width: 980px;
+    margin: 0 auto 12px; }
+  .mov-contents .mov-inner {
+    width: 980px;
+    text-align: left; } }
+
+.MapBtn {
+  width: 80px; }
+
+.btnBox li {
+  float: left; }
+  .btnBox li:first-child {
+    margin-right: 12px; }
+  .btnBox li.onebutton {
+    margin: 0 auto;
+    float: none; }
+
+/* ==============SP layout================= */
+@media screen and (max-width: 980px) {
+  .btnBox li {
+    width: 48%; }
+    .btnBox li:first-child {
+      margin-right: 4%; } }
+
+.legcol1 {
+  color: #cc0001; }
+
+.legcol2 {
+  color: #004077; }
+
+.legcol3 {
+  color: #007aaa; }
+
+.legcol4 {
+  color: #000000; }
+
+.legcol5 {
+  color: #996600; }
+
+.legcol6 {
+  color: #8026ae; }
+
+.legcol7 {
+  color: #004714; }
+
+.legcol8 {
+  color: #587e03; }
+
+/* バスロケ情報 */
+/* 使い方ガイド */
+/* 区間時刻表 */
+/* 経路検索結果サマリー数値文字 */
+/* カレンダー配色 */
+/* フラッシュのカラー変更 基本： $key80 */
+/* ====================SPレイアウト==================== */
+@media only screen and (max-width: 767px) {
+  /*共通*/
+  .komokuConts {
+    position: relative;
+    padding: 2rem 6px;
+    text-align: left; }
+    .komokuConts::after {
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      display: block;
+      content: "";
+      width: 100%;
+      /*border-bottom: 1px dashed $def100;*/ }
+  .komokuIn {
+    margin-bottom: 11px;
+    font-size: 1.2rem; }
+    .komokuIn dl {
+      margin-bottom: 8px; }
+    .komokuIn dt {
+      display: inline-block; }
+      .komokuIn dt::after {
+        display: inline-block;
+        content: "："; }
+    .komokuIn dd {
+      display: inline-block;
+      font-weight: bold; }
+      .komokuIn dd .normal {
+        font-weight: normal; }
+    .komokuIn .btnArea {
+      width: 100%;
+      padding: 20px 0; }
+  dd.width100 {
+    width: 100%; } }
+
+/* ====================middleレイアウト==================== */
+@media only screen and (min-width: 768px) {
+  .komokuConts {
+    position: relative;
+    padding: 2rem 0;
+    font-size: 1.4rem;
+    border-bottom: 2px dashed #d9d9d9;
+    display: table;
+    width: 100%; }
+  .komokuIn {
+    float: left;
+    /*width: 80%;*/
+    width: 100%;
+    margin-top: 20px;
+    font-size: 1.6rem; }
+    .komokuIn dl {
+      margin-bottom: 16px; }
+    .komokuIn dt {
+      display: inline-block; }
+      .komokuIn dt::after {
+        display: inline-block;
+        content: "："; }
+    .komokuIn dd {
+      display: inline-block;
+      /*width: 100%;*/
+      font-weight: bold; }
+    .komokuIn dd.width100 {
+      width: 100%; } }
+
+.legcol1 {
+  color: #cc0001; }
+
+.legcol2 {
+  color: #004077; }
+
+.legcol3 {
+  color: #007aaa; }
+
+.legcol4 {
+  color: #000000; }
+
+.legcol5 {
+  color: #996600; }
+
+.legcol6 {
+  color: #8026ae; }
+
+.legcol7 {
+  color: #004714; }
+
+.legcol8 {
+  color: #587e03; }
+
+/* バスロケ情報 */
+/* 使い方ガイド */
+/* 区間時刻表 */
+/* 経路検索結果サマリー数値文字 */
+/* カレンダー配色 */
+/* フラッシュのカラー変更 基本： $key80 */
+/* チェックボックス装飾 */
+input[type=checkbox] {
+  display: inline-block;
+  margin-right: 6px; }
+
+input[type=checkbox] + label {
+  position: relative;
+  display: inline-block;
+  margin-right: 12px;
+  font-size: 14px;
+  line-height: 1.5;
+  cursor: pointer; }
+
+@media (min-width: 1px) {
+  input[type=checkbox] {
+    display: none;
+    margin: 0; }
+  input[type=checkbox] + label {
+    padding: 0 0 0 24px; }
+  input[type=checkbox] + label::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 0;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    display: block;
+    width: 18px;
+    height: 18px;
+    margin-top: -10px;
+    background: white;
+    border: 1px solid black; }
+  input[type=checkbox]:checked + label::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    display: block;
+    left: 3px;
+    width: 16px;
+    height: 8px;
+    margin-top: -8px;
+    border-left: 3px solid #3366cc;
+    border-bottom: 3px solid #3366cc;
+    -webkit-transform: rotate(-45deg);
+    -ms-transform: rotate(-45deg);
+    transform: rotate(-45deg); }
+  /* END OF 1px legacy hack */ }
+
+.legcol1 {
+  color: #cc0001; }
+
+.legcol2 {
+  color: #004077; }
+
+.legcol3 {
+  color: #007aaa; }
+
+.legcol4 {
+  color: #000000; }
+
+.legcol5 {
+  color: #996600; }
+
+.legcol6 {
+  color: #8026ae; }
+
+.legcol7 {
+  color: #004714; }
+
+.legcol8 {
+  color: #587e03; }
+
+/* バスロケ情報 */
+/* 使い方ガイド */
+/* 区間時刻表 */
+/* 経路検索結果サマリー数値文字 */
+/* カレンダー配色 */
+/* フラッシュのカラー変更 基本： $key80 */
+/* =========
+エラーメッセージ
+========== */
+.jError {
+  display: block;
+  font-size: 16px;
+  color: red;
+  font-weight: bold;
+  margin-top: 16px;
+  padding-bottom: 16px; }
+
+.Errmessage {
+  font-size: 16px;
+  color: red;
+  margin-bottom: 100px; }
+
+.legcol1 {
+  color: #cc0001; }
+
+.legcol2 {
+  color: #004077; }
+
+.legcol3 {
+  color: #007aaa; }
+
+.legcol4 {
+  color: #000000; }
+
+.legcol5 {
+  color: #996600; }
+
+.legcol6 {
+  color: #8026ae; }
+
+.legcol7 {
+  color: #004714; }
+
+.legcol8 {
+  color: #587e03; }
+
+/* バスロケ情報 */
+/* 使い方ガイド */
+/* 区間時刻表 */
+/* 経路検索結果サマリー数値文字 */
+/* カレンダー配色 */
+/* フラッシュのカラー変更 基本： $key80 */
+.legcol1 {
+  color: #cc0001; }
+
+.legcol2 {
+  color: #004077; }
+
+.legcol3 {
+  color: #007aaa; }
+
+.legcol4 {
+  color: #000000; }
+
+.legcol5 {
+  color: #996600; }
+
+.legcol6 {
+  color: #8026ae; }
+
+.legcol7 {
+  color: #004714; }
+
+.legcol8 {
+  color: #587e03; }
+
+/* バスロケ情報 */
+/* 使い方ガイド */
+/* 区間時刻表 */
+/* 経路検索結果サマリー数値文字 */
+/* カレンダー配色 */
+/* フラッシュのカラー変更 基本： $key80 */
+/* ====================SPレイアウト==================== */
+@media only screen and (max-width: 767px) {
+  .infoArea {
+    /*margin-bottom: 85px;*/ }
+  .infoTtl {
+    padding: 10px 0 10px 3%;
+    border-radius: 6px;
+    font-weight: bold; }
+  .arrow {
+    margin-bottom: 4px;
+    position: relative; }
+    .arrow:after {
+      position: absolute;
+      top: 50%;
+      -webkit-transform: translateY(-50%);
+      -ms-transform: translateY(-50%);
+      transform: translateY(-50%);
+      display: inline-block;
+      vertical-align: top;
+      content: "";
+      right: 0;
+      width: 0;
+      height: 0;
+      border-style: solid;
+      border-width: 10px 7.5px 0 7.5px;
+      margin-right: 20px;
+      border-color: white transparent transparent transparent; }
+    .arrow.active:after, .arrow.open:after, .arrow.select:after {
+      border-width: 0 7.5px 10px 7.5px;
+      border-color: transparent transparent white transparent; }
+    .arrow.disabled:after {
+      border-style: none !important; }
+  .infoTx {
+    display: none;
+    padding: 3%; }
+  .moreLink {
+    display: inline-block; }
+  .tabBox .tab {
+    position: relative;
+    width: 33.3%;
+    height: auto;
+    box-sizing: border-box;
+    text-align: center; }
+  .tabBox .tab a {
+    display: block;
+    height: 100%;
+    width: 100%;
+    padding: 9px 0;
+    box-sizing: border-box;
+    font-weight: bold;
+    font-size: 1.2rem; }
+  .tabBox .tab span {
+    position: relative;
+    top: 50%;
+    -ms-transform: translateY(-50%);
+    -webkit-transform: translateY(-50%);
+    transform: translateY(-50%);
+    display: block; }
+  .tabBox .tab:first-child {
+    border-radius: 8px 0 0 0;
+    border-right: none; }
+  .tabBox .tab:last-child {
+    border-radius: 0 8px 0 0;
+    border-left: none; } }
+
+@media only screen and (min-width: 768px) {
+  .info .tabBox {
+    border-bottom: 2px solid #3366cc; } }
+
+.legcol1 {
+  color: #cc0001; }
+
+.legcol2 {
+  color: #004077; }
+
+.legcol3 {
+  color: #007aaa; }
+
+.legcol4 {
+  color: #000000; }
+
+.legcol5 {
+  color: #996600; }
+
+.legcol6 {
+  color: #8026ae; }
+
+.legcol7 {
+  color: #004714; }
+
+.legcol8 {
+  color: #587e03; }
+
+/* バスロケ情報 */
+/* 使い方ガイド */
+/* 区間時刻表 */
+/* 経路検索結果サマリー数値文字 */
+/* カレンダー配色 */
+/* フラッシュのカラー変更 基本： $key80 */
+/* =========
+強調アニメーション
+========== */
+.flash3 {
+  -webkit-animation: blink 0.5s ease-in-out infinite alternate;
+  -moz-animation: blink 0.5s ease-in-out infinite alternate;
+  animation: blink 0.5s ease-in-out infinite alternate; }
+
+@-webkit-keyframes blink {
+  0% {
+    box-shadow: 0 0 0 0 rgba(220, 20, 60, 0.5); }
+  100% {
+    box-shadow: 0 1px 15px 0 rgba(220, 20, 60, 0.5); } }
+
+@-moz-keyframes blink {
+  0% {
+    box-shadow: 0 0 0 0 rgba(220, 20, 60, 0.5); }
+  100% {
+    box-shadow: 0 1px 15px 0 rgba(220, 20, 60, 0.5); } }
+
+@keyframes blink {
+  0% {
+    box-shadow: 0 0 0 0 rgba(220, 20, 60, 0.5); }
+  100% {
+    box-shadow: 0 1px 15px 0 rgba(220, 20, 60, 0.5); } }
+
+.legcol1 {
+  color: #cc0001; }
+
+.legcol2 {
+  color: #004077; }
+
+.legcol3 {
+  color: #007aaa; }
+
+.legcol4 {
+  color: #000000; }
+
+.legcol5 {
+  color: #996600; }
+
+.legcol6 {
+  color: #8026ae; }
+
+.legcol7 {
+  color: #004714; }
+
+.legcol8 {
+  color: #587e03; }
+
+/* バスロケ情報 */
+/* 使い方ガイド */
+/* 区間時刻表 */
+/* 経路検索結果サマリー数値文字 */
+/* カレンダー配色 */
+/* フラッシュのカラー変更 基本： $key80 */
+.msgdialog {
+  border: 1px solid #3366cc; }
+  .msgdialog .ui-dialog-titlebar {
+    border: none;
+    display: block;
+    height: 36px;
+    vertical-align: middle;
+    background: #3366cc;
+    color: white; }
+  .msgdialog .ui-dialog-title {
+    margin-top: 8px; }
+  .msgdialog #myrouteArea {
+    margin: 16px 0; }
+  .msgdialog .ui-dialog-buttonpane {
+    border: none; }
+  .msgdialog .btn {
+    background: #3366cc;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    font-size: 14px; }
+  .msgdialog .btn2 {
+    background: #d9d9d9;
+    color: black;
+    border: none;
+    padding: 8px 16px;
+    font-size: 14px; }
+
+@media only screen and (max-width: 767px) {
+  .msgdialog {
+    width: 90% !important; } }
+
+/* ====================middleレイアウト==================== */
+@media only screen and (min-width: 768px) {
+  .msgdialog {
+    width: 50% !important; } }
+
+.legcol1 {
+  color: #cc0001; }
+
+.legcol2 {
+  color: #004077; }
+
+.legcol3 {
+  color: #007aaa; }
+
+.legcol4 {
+  color: #000000; }
+
+.legcol5 {
+  color: #996600; }
+
+.legcol6 {
+  color: #8026ae; }
+
+.legcol7 {
+  color: #004714; }
+
+.legcol8 {
+  color: #587e03; }
+
+/* バスロケ情報 */
+/* 使い方ガイド */
+/* 区間時刻表 */
+/* 経路検索結果サマリー数値文字 */
+/* カレンダー配色 */
+/* フラッシュのカラー変更 基本： $key80 */
+.legcol1 {
+  color: #cc0001; }
+
+.legcol2 {
+  color: #004077; }
+
+.legcol3 {
+  color: #007aaa; }
+
+.legcol4 {
+  color: #000000; }
+
+.legcol5 {
+  color: #996600; }
+
+.legcol6 {
+  color: #8026ae; }
+
+.legcol7 {
+  color: #004714; }
+
+.legcol8 {
+  color: #587e03; }
+
+/* バスロケ情報 */
+/* 使い方ガイド */
+/* 区間時刻表 */
+/* 経路検索結果サマリー数値文字 */
+/* カレンダー配色 */
+/* フラッシュのカラー変更 基本： $key80 */
+@media only screen and (min-width: 768px) {
+  .mov-header .mov-inner .logoArea {
+    width: 270px !important;
+    margin-left: 0 !important; }
+  .searchMenu .searchMenuBox {
+    background-color: rgba(13, 185, 222, 0.1);
+    border: #3366cc 2px solid !important; } }
+
+/* ====================SPレイアウト==================== */
+@media only screen and (max-width: 767px) {
+  .mov-header {
+    background-color: #3366cc; }
+  .searchMenu .searchMenuBox {
+    background-color: rgba(13, 185, 222, 0.1);
+    border: #3366cc 2px solid !important; }
+  #rwdMenuWrap #switchBtnArea {
+    height: 44px; } }
+
+
+@charset "UTF-8";
+.legcol1 {
+  color: #cc0001; }
+
+.legcol2 {
+  color: #004077; }
+
+.legcol3 {
+  color: #007aaa; }
+
+.legcol4 {
+  color: #000000; }
+
+.legcol5 {
+  color: #996600; }
+
+.legcol6 {
+  color: #8026ae; }
+
+.legcol7 {
+  color: #004714; }
+
+.legcol8 {
+  color: #587e03; }
+
+/* バスロケ情報 */
+/* 使い方ガイド */
+/* 区間時刻表 */
+/* 経路検索結果サマリー数値文字 */
+/* カレンダー配色 */
+/* フラッシュのカラー変更 基本： $key80 */
+.legcol1 {
+  color: #cc0001; }
+
+.legcol2 {
+  color: #004077; }
+
+.legcol3 {
+  color: #007aaa; }
+
+.legcol4 {
+  color: #000000; }
+
+.legcol5 {
+  color: #996600; }
+
+.legcol6 {
+  color: #8026ae; }
+
+.legcol7 {
+  color: #004714; }
+
+.legcol8 {
+  color: #587e03; }
+
+/* バスロケ情報 */
+/* 使い方ガイド */
+/* 区間時刻表 */
+/* 経路検索結果サマリー数値文字 */
+/* カレンダー配色 */
+/* フラッシュのカラー変更 基本： $key80 */
+@media only screen and (min-width: 768px) {
+  .mov-header .mov-inner .logoArea {
+    width: 270px !important;
+    margin-left: 0 !important; }
+  .searchMenu .searchMenuBox {
+    background-color: rgba(13, 185, 222, 0.1);
+    border: #3366cc 2px solid !important; } }
+
+/* ====================SPレイアウト==================== */
+@media only screen and (max-width: 767px) {
+  .mov-header {
+    background-color: #3366cc; }
+  .searchMenu .searchMenuBox {
+    background-color: rgba(13, 185, 222, 0.1);
+    border: #3366cc 2px solid !important; }
+  #rwdMenuWrap #switchBtnArea {
+    height: 44px; } }
+@charset "UTF-8";
+.legcol1 {
+  color: #cc0001; }
+
+.legcol2 {
+  color: #004077; }
+
+.legcol3 {
+  color: #007aaa; }
+
+.legcol4 {
+  color: #000000; }
+
+.legcol5 {
+  color: #996600; }
+
+.legcol6 {
+  color: #8026ae; }
+
+.legcol7 {
+  color: #004714; }
+
+.legcol8 {
+  color: #587e03; }
+
+/* バスロケ情報 */
+/* 使い方ガイド */
+/* 区間時刻表 */
+/* 経路検索結果サマリー数値文字 */
+/* カレンダー配色 */
+/* フラッシュのカラー変更 基本： $key80 */
+.legcol1 {
+  color: #cc0001; }
+
+.legcol2 {
+  color: #004077; }
+
+.legcol3 {
+  color: #007aaa; }
+
+.legcol4 {
+  color: #000000; }
+
+.legcol5 {
+  color: #996600; }
+
+.legcol6 {
+  color: #8026ae; }
+
+.legcol7 {
+  color: #004714; }
+
+.legcol8 {
+  color: #587e03; }
+
+/* バスロケ情報 */
+/* 使い方ガイド */
+/* 区間時刻表 */
+/* 経路検索結果サマリー数値文字 */
+/* カレンダー配色 */
+/* フラッシュのカラー変更 基本： $key80 */
+/* ====================SPレイアウト==================== */
+@media only screen and (max-width: 767px) {
+  .backBtn {
+    display: inline-block;
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+    color: black; }
+  .backBtn:before {
+    display: inline-block;
+    content: "＜"; }
+  .timetableArea {
+    text-align: left; }
+  a.linkTx {
+    display: block;
+    font-size: 1.2rem;
+    line-height: 1.6;
+    text-decoration: underline;
+    color: black; }
+  .borderBlock {
+    padding-bottom: 15px;
+    margin-bottom: 15px; }
+  .hide {
+    display: none; }
+  .mov-contents .mov-inner {
+    padding-bottom: 85px; }
+  .stationHead {
+    margin-bottom: 15px;
+    font-weight: bold;
+    line-height: 1.4; }
+    .stationHead dt {
+      clear: left;
+      float: left;
+      width: 20%;
+      font-weight: bold; }
+    .stationHead dd {
+      margin-left: 20%; }
+  .pageTtl .afterTx {
+    font-size: 1.4rem;
+    font-weight: normal; }
+  .listBtn1 {
+    margin: 0 2%; }
+    .listBtn1 li {
+      width: 46%;
+      margin: 0 1% 5px; }
+      .listBtn1 li:first-child {
+        margin: 0 1%; }
+      .listBtn1 li a {
+        width: 100%;
+        padding: 10px 0; }
+  .typeSelect .ttl {
+    overflow: hidden;
+    font-weight: bold;
+    text-align: left;
+    padding-bottom: 15px;
+    margin-bottom: 15px;
+    font-size: 1.6rem;
+    border-bottom: black 1px solid; }
+    .typeSelect .ttl span {
+      display: inline-block;
+      float: right;
+      font-size: 1.2rem;
+      font-weight: normal; }
+  .typeSelect .typeBox {
+    position: relative;
+    text-align: left;
+    padding: 0 19px;
+    padding-bottom: 15px;
+    margin-bottom: 15px;
+    border-bottom: black 1px solid;
+    /* チェックボックス */ }
+    .typeSelect .typeBox p {
+      margin-bottom: 10px; }
+    .typeSelect .typeBox .checkArea {
+      position: absolute;
+      top: 50%;
+      right: 0;
+      margin-top: -22px; }
+  .logoColor {
+    width: 53%;
+    margin: 31px auto 0; }
+  /* end of max767px layout */ }
+
+/* ====================middleレイアウト==================== */
+@media print, screen and (min-width: 768px) {
+  .mov-contents .mov-inner {
+    position: relative; }
+    .mov-contents .mov-inner .beforeTx {
+      position: absolute;
+      right: 0;
+      top: -30px;
+      font-size: 1.2rem;
+      text-decoration: underline;
+      color: black; }
+  .timetableArea {
+    position: relative;
+    text-align: left;
+    padding-bottom: 10px;
+    margin-bottom: 20px; }
+  .selectArea {
+    width: auto;
+    max-width: 400px;
+    position: relative; }
+    .selectArea:after {
+      position: absolute;
+      top: 50%;
+      -webkit-transform: translateY(-50%);
+      -ms-transform: translateY(-50%);
+      transform: translateY(-50%);
+      display: inline-block;
+      vertical-align: top;
+      content: "";
+      right: 0;
+      width: 0;
+      height: 0;
+      border-style: solid;
+      border-width: 8px 6px 0 6px;
+      margin-right: 8px;
+      border-color: black transparent transparent transparent; }
+  .pageTtl {
+    font-weight: bold;
+    font-size: 1.8rem;
+    line-height: 2rem;
+    padding-bottom: 15px;
+    margin-bottom: 15px;
+    overflow: hidden; }
+    .pageTtl .afterTx {
+      font-size: 1.2rem;
+      float: right;
+      font-weight: normal; }
+  .hide {
+    display: none; }
+  .ttl {
+    text-align: left;
+    font-weight: bold;
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+    border-bottom: #3366cc 1px solid; }
+  a.linkTx {
+    display: block;
+    font-size: 1.2rem;
+    text-decoration: underline;
+    color: black; }
+  .stationHead {
+    font-weight: bold;
+    padding-bottom: 10px;
+    line-height: 1.4; }
+    .stationHead dt {
+      clear: both;
+      float: left;
+      width: 80px; }
+    .stationHead dd {
+      margin-left: 80px; }
+  .option {
+    position: absolute;
+    top: 50%;
+    right: 0;
+    margin-top: 0;
+    letter-spacing: -.4em; }
+    .option li {
+      letter-spacing: normal;
+      display: inline-block; }
+      .option li:first-child {
+        margin-right: 30px; }
+  .btnArea {
+    text-align: left;
+    margin-bottom: 30px;
+    margin-top: 10px; }
+    .btnArea li {
+      width: 116px;
+      margin-left: 20px; }
+      .btnArea li:first-child {
+        margin: 0; }
+      .btnArea li a {
+        width: 100%;
+        padding: 10px 0; }
+  .typeSelect {
+    float: left;
+    width: 280px;
+    text-align: left; }
+    .typeSelect .typeBox {
+      position: relative;
+      /*height: 68px;*/
+      line-height: 1.4;
+      margin-bottom: 10px;
+      border-bottom: #eeeeee 1px solid;
+      /* チェックボックス */ }
+      .typeSelect .typeBox .typeTx {
+        width: 190px; }
+      .typeSelect .typeBox .checkArea {
+        position: absolute;
+        top: 50%;
+        right: 0;
+        margin-top: -16px; }
+    .typeSelect .logoColor {
+      width: 200px;
+      margin: 24px auto; }
+      .typeSelect .logoColor img {
+        width: 100%; }
+  /* end of max767px layout */ }
+
+input[type=checkbox] + label::before {
+  left: auto;
+  right: 0 !important; }
+
+input[type=checkbox]:checked + label::after {
+  left: auto;
+  right: 3px !important; }
+
+.tabList a, .tabList a:hover {
+  color: #3366cc; }
+
+.tabList .select a, .tabList .select a:hover {
+  color: white; }
+
+
+@charset "UTF-8";
+.legcol1 {
+  color: #cc0001; }
+
+.legcol2 {
+  color: #004077; }
+
+.legcol3 {
+  color: #007aaa; }
+
+.legcol4 {
+  color: #000000; }
+
+.legcol5 {
+  color: #996600; }
+
+.legcol6 {
+  color: #8026ae; }
+
+.legcol7 {
+  color: #004714; }
+
+.legcol8 {
+  color: #587e03; }
+
+/* バスロケ情報 */
+/* 使い方ガイド */
+/* 区間時刻表 */
+/* 経路検索結果サマリー数値文字 */
+/* カレンダー配色 */
+/* フラッシュのカラー変更 基本： $key80 */
+.legcol1 {
+  color: #cc0001; }
+
+.legcol2 {
+  color: #004077; }
+
+.legcol3 {
+  color: #007aaa; }
+
+.legcol4 {
+  color: #000000; }
+
+.legcol5 {
+  color: #996600; }
+
+.legcol6 {
+  color: #8026ae; }
+
+.legcol7 {
+  color: #004714; }
+
+.legcol8 {
+  color: #587e03; }
+
+/* バスロケ情報 */
+/* 使い方ガイド */
+/* 区間時刻表 */
+/* 経路検索結果サマリー数値文字 */
+/* カレンダー配色 */
+/* フラッシュのカラー変更 基本： $key80 */
+/* ====================SPレイアウト==================== */
+@media only screen and (max-width: 767px) {
+  .backBtn {
+    display: inline-block;
+    font-size: 1.2rem;
+    margin-bottom: 20px; }
+  .backBtn:before {
+    display: inline-block;
+    content: "＜"; }
+  .btnArea {
+    float: none; }
+  .busstateArea {
+    text-align: left; }
+  .borderBlock {
+    padding-bottom: 15px;
+    margin-bottom: 15px; }
+  .hide {
+    display: none; }
+  .mov-contents .mov-inner {
+    padding-bottom: 85px; }
+  .busState {
+    text-align: left; }
+    .busState .ttl {
+      font-weight: bold;
+      text-align: left;
+      margin-bottom: 15px;
+      font-size: 1.6rem; }
+    .busState .ttl_bslist {
+      overflow: hidden; }
+      .busState .ttl_bslist p.menu.eventLink {
+        padding-top: 10px; }
+  .logoColor {
+    width: 53%;
+    margin: 31px auto 0; }
+  /* end of max767px layout */ }
+
+/* ====================middleレイアウト==================== */
+@media only screen and (min-width: 768px) {
+  .listBtn1, .listBtn1 li:first-child {
+    margin-left: 0; }
+  .btnReloadArea {
+    float: none; }
+  .busstateArea {
+    position: relative;
+    text-align: left;
+    padding-bottom: 30px;
+    margin-bottom: 20px; }
+  .ttl {
+    text-align: left;
+    font-weight: bold;
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+    overflow: hidden; }
+  .busState {
+    float: right;
+    width: 620px;
+    text-align: left; }
+  .notview {
+    display: none !important; }
+  /** common.scssかbase.scssマージ希望 **/
+  .tabList a, .tabList a:hover {
+    color: #3366cc; }
+  .tabList .select a, .tabList .select a:hover {
+    color: white; }
+  .divbusstate {
+    position: relative; }
+    .divbusstate:after {
+      position: absolute;
+      top: 50%;
+      -webkit-transform: translateY(-50%);
+      -ms-transform: translateY(-50%);
+      transform: translateY(-50%);
+      display: inline-block;
+      content: '';
+      width: 16px;
+      height: 16px;
+      -webkit-transform: rotate(45deg);
+      -moz-transform: rotate(45deg);
+      -ms-transform: rotate(45deg);
+      -o-transform: rotate(45deg);
+      transform: rotate(45deg);
+      right: 20px;
+      margin-top: -12px;
+      border-top: none;
+      border-right: 1px solid rgba(51, 102, 204, 0.8);
+      border-bottom: 1px solid rgba(51, 102, 204, 0.8);
+      border-left: none; }
+    .divbusstate.active:after, .divbusstate.select:after, .divbusstate.open:after {
+      margin-top: -4px;
+      border-top: 1px solid rgba(51, 102, 204, 0.8);
+      border-right: none;
+      border-bottom: none;
+      border-left: 1px solid rgba(51, 102, 204, 0.8); }
+    .divbusstate.disabled:after {
+      border: none !important; }
+    .divbusstate:hover {
+      background: rgba(13, 185, 222, 0.1); }
+    .divbusstate .bsno {
+      padding: 0 20px;
+      position: absolute;
+      top: 50%;
+      -webkit-transform: translateY(-50%);
+      -ms-transform: translateY(-50%);
+      transform: translateY(-50%); }
+  /* end of max767px layout */ }
+
+.map1 {
+  height: 350px;
+  width: 100%; }
+
+a.maplink {
+  color: #3366cc;
+  padding-right: 1.6rem;
+  position: relative; }
+  a.maplink:after {
+    position: absolute;
+    top: 50%;
+    -webkit-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+    display: inline-block;
+    content: '';
+    width: 0.7rem;
+    height: 0.7rem;
+    -webkit-transform: rotate(45deg);
+    -moz-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    -o-transform: rotate(45deg);
+    transform: rotate(45deg);
+    right: 0px;
+    margin-top: -0.525rem;
+    border-top: none;
+    border-right: 1px solid #3366cc;
+    border-bottom: 1px solid #3366cc;
+    border-left: none; }
+  a.maplink.active:after, a.maplink.select:after, a.maplink.open:after {
+    margin-top: -0.175rem;
+    border-top: 1px solid #3366cc;
+    border-right: none;
+    border-bottom: none;
+    border-left: 1px solid #3366cc; }
+  a.maplink.disabled:after {
+    border: none !important; }
+
+.ttl_bslist p.menu {
+  font-weight: normal; }
+  .ttl_bslist p.menu.fl {
+    margin-left: 20px; }
+    .ttl_bslist p.menu.fl a {
+      color: inherit; }
+
+.ttl_bslist:after {
+  content: '　'; }
+
+.divbusstate {
+  padding: 5px 20px 5px 0;
+  border-bottom: #eeeeee 1px solid;
+  overflow: hidden;
+  cursor: pointer; }
+  .divbusstate .bsno {
+    font-weight: bold;
+    width: 40px;
+    font-size: 16px;
+    font-size: 1.6rem;
+    text-align: center; }
+  .divbusstate .bsdtl {
+    width: 100%; }
+  .divbusstate .bsul {
+    clear: both;
+    margin-left: 80px; }
+    .divbusstate .bsul li {
+      list-style-type: none;
+      float: left;
+      padding: 10px 20px 10px 0;
+      font-weight: bold; }
+      .divbusstate .bsul li .bsmidashi {
+        font-weight: normal; }
+      .divbusstate .bsul li.more_min {
+        margin: 10px 0;
+        background-color: #0db9de;
+        color: white;
+        width: 250px;
+        text-align: center;
+        padding: 5px 0;
+        font-size: 1.6px;
+        font-size: 1.6rem; }
+        .divbusstate .bsul li.more_min.delay {
+          background-color: red;
+          color: white; }
+        .divbusstate .bsul li.more_min.trouble {
+          background-color: yellow;
+          color: black; }
+      .divbusstate .bsul li.time {
+        margin-top: 10px;
+        border: #3366cc 2px solid;
+        background-color: white;
+        color: black;
+        padding: 4px 40px;
+        font-size: 1.4px;
+        font-size: 1.4rem; }
+      .divbusstate .bsul li.bus_position {
+        height: 60px;
+        float: left;
+        border-bottom: 2px solid #3366cc;
+        padding-bottom: 0;
+        padding-right: 0; }
+        .divbusstate .bsul li.bus_position .bus_pole {
+          width: 20px;
+          height: 100%;
+          background-image: url(../images/icon_busstop_gray.svg);
+          background-repeat: no-repeat;
+          background-position: bottom;
+          float: left; }
+          .divbusstate .bsul li.bus_position .bus_pole:first-child {
+            background-image: url(../images/icon_busstop.svg); }
+        .divbusstate .bsul li.bus_position .bus_road {
+          width: 40px;
+          margin: 0 15px;
+          float: left;
+          height: 100%; }
+          .divbusstate .bsul li.bus_position .bus_road.bus.view {
+            background-image: url(../images/icon_bus.svg);
+            background-repeat: no-repeat;
+            background-size: 40px 21.666px;
+            background-position: bottom; }
+  .divbusstate .moreArea {
+    clear: both; }
+  .divbusstate .bsul_hanrei {
+    clear: both;
+    margin-left: 80px; }
+    .divbusstate .bsul_hanrei li {
+      list-style-type: none;
+      border: #3366cc 2px solid;
+      float: left;
+      color: #3366cc;
+      text-align: center;
+      width: 120px;
+      padding: 5px 0;
+      margin: 5px 0; }
+      .divbusstate .bsul_hanrei li:not(:first-child) {
+        border-left: none; }
+  .divbusstate:after {
+    clear: both; }
+
+.divbusstate .btnArea, .btnReloadArea {
+  float: right;
+  margin-bottom: 0px; }
+  .divbusstate .btnArea li, .btnReloadArea li {
+    padding-right: 0 !important;
+    width: auto;
+    position: relative; }
+    .divbusstate .btnArea li:first-child, .btnReloadArea li:first-child {
+      margin: 0; }
+    .divbusstate .btnArea li:after, .btnReloadArea li:after {
+      position: absolute;
+      top: 50%;
+      -webkit-transform: translateY(-50%);
+      -ms-transform: translateY(-50%);
+      transform: translateY(-50%);
+      display: inline-block;
+      content: '';
+      width: 6px;
+      height: 6px;
+      -webkit-transform: rotate(45deg);
+      -moz-transform: rotate(45deg);
+      -ms-transform: rotate(45deg);
+      -o-transform: rotate(45deg);
+      transform: rotate(45deg);
+      right: 10px;
+      margin-top: -3px;
+      border-top: 1px solid white;
+      border-right: 1px solid white;
+      border-bottom: none;
+      border-left: none; }
+    .divbusstate .btnArea li.disabled:after, .btnReloadArea li.disabled:after {
+      border: none !important; }
+  .divbusstate .btnArea .btn, .btnReloadArea .btn {
+    width: auto;
+    padding: 15px 20px !important;
+    font-weight: bold; }
+
+/* ====================SPレイアウト==================== */
+@media only screen and (max-width: 767px) {
+  .busState {
+    margin-top: 40px; }
+  #datetimeStr {
+    font-size: 1.4rem;
+    font-weight: normal; }
+  .divbusstate {
+    background: rgba(13, 185, 222, 0.1);
+    padding: 0 5px 0 5px;
+    margin: 8px 0; }
+    .divbusstate .bsul {
+      margin-left: 0;
+      width: 100%; }
+      .divbusstate .bsul li {
+        float: none;
+        padding: 7px 0; }
+        .divbusstate .bsul li.header {
+          font-size: 1.2em; }
+        .divbusstate .bsul li.more_min {
+          width: auto; }
+        .divbusstate .bsul li.time {
+          text-align: center; }
+      .divbusstate .bsul .bsinfo {
+        width: 100%; }
+    .divbusstate .bsul_hanrei {
+      margin-left: 0; }
+      .divbusstate .bsul_hanrei li {
+        width: 40%;
+        margin-left: 0;
+        margin-right: 5%; }
+        .divbusstate .bsul_hanrei li:not(:first-child) {
+          border-left: #3366cc 2px solid; }
+  .btnArea {
+    text-align: left; } }
+
+.pageTtl {
+  font-size: 18px;
+  font-size: 1.8rem;
+  font-weight: bold; }
+
+.resultMap {
+  clear: both;
+  padding-top: 20px; }

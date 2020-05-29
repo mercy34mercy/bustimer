@@ -1,23 +1,65 @@
-package approach
+package config
+
+import "time"
+
+// 外部に公開するconst
+const (
+	ApproachURL                  = "https://ohmitetudo-bus.jorudan.biz/busstatedtl"
+	TimeTableURL                 = "https://ohmitetudo-bus.jorudan.biz/diagrampoledtl"
+	FrRits                       = "立命館大学〔近江鉄道・湖国バス〕"
+	FrMinakusa                   = "南草津駅〔近江鉄道・湖国バス〕"
+	TimeTableCacheUpdateDuration = 24 * 60 * 60 * time.Second
+)
+
+type From int
 
 const (
-	url        = "https://ohmitetudo-bus.jorudan.biz/busstatedtl"
-	frRits     = "立命館大学〔近江鉄道・湖国バス〕"
-	frMinakusa = "南草津駅〔近江鉄道・湖国バス〕"
-	// 「立命館大学」の固定文字列
-	rits = "立命館大学"
-	// 「南草津駅」の固定文字列
-	minakusa     = "南草津駅"
-	MAX_RESPONSE = 3
+	Unknown From = iota
+	FromRits
+	FromMinakusa
+	FromNoji
+	FromNandayama
+	FromTamagawashogakkomae
+	FromOnoyama
+	FromPanaHigashi
+	FromPanaMae
+	FromPanaNishi
+	FromKasayamaHigashi
+	FromSasanoguchi
+	FromKuresutoKusatsumae
+	FromBkcGreenField
+	FromNojiKigaguchi
+	FromKusatsuKureaHole
+	FromHigashiyakuraMinami
+	FromHigashiyakuraShokuinnjutaku
+	FromMukoyamaNewTown
+	FromMaruo
+	FromWakakusaKitaguchi
+	FromRitsumeikanUnivMae
+)
+
+type To int
+
+const (
+	ToUnknown To = iota
+	ToRits
+	ToMinakusa
+)
+
+// privateなconst
+const (
+	rits     = "立命館大学"
+	minakusa = "南草津駅"
 )
 
 // frクエリに対応するdgmplクエリのスライス
-var dgmplMap = map[string][]string{frMinakusa: []string{"南草津駅〔近江鉄道・湖国バス〕:1", "南草津駅〔近江鉄道・湖国バス〕:3", "南草津駅〔近江鉄道・湖国バス〕:4"},
-	frRits: []string{"立命館大学〔近江鉄道・湖国バス〕:2"}}
+var dgmplMap = map[string][]string{FrMinakusa: []string{"南草津駅〔近江鉄道・湖国バス〕:1", "南草津駅〔近江鉄道・湖国バス〕:3", "南草津駅〔近江鉄道・湖国バス〕:4"},
+	FrRits: []string{"立命館大学〔近江鉄道・湖国バス〕:2"}}
 
+// frクエリからスクレイピングURL用のfrに変換するマップ
 var frList = map[string]string{
-	rits:           frRits,
-	minakusa:       frMinakusa,
+	rits:           "立命館大学〔近江鉄道・湖国バス〕",
+	minakusa:       "南草津駅〔近江鉄道・湖国バス〕",
 	"野路":           "野路〔近江鉄道・湖国バス〕",
 	"南田山":          "南田山〔近江鉄道・湖国バス〕",
 	"玉川小学校前":       "玉川小学校前〔近江鉄道・湖国バス〕",
@@ -39,6 +81,7 @@ var frList = map[string]string{
 	"立命館大学正門前":     "立命館大学正門前〔近江鉄道・湖国バス〕",
 }
 
+// frクエリとtoクエリからdgmplクエリを取り出すマップ
 var dgmplList = map[string]map[string][]string{
 	rits:           {minakusa: {"立命館大学〔近江鉄道・湖国バス〕:2"}},
 	minakusa:       {rits: {"南草津駅〔近江鉄道・湖国バス〕:1", "南草津駅〔近江鉄道・湖国バス〕:3", "南草津駅〔近江鉄道・湖国バス〕:4"}},
@@ -61,20 +104,4 @@ var dgmplList = map[string]map[string][]string{
 	"丸尾":           {rits: {"丸尾〔近江鉄道・湖国バス〕:1"}, minakusa: {"丸尾〔近江鉄道・湖国バス〕:2"}},
 	"若草北口":         {rits: {"若草北口〔近江鉄道・湖国バス〕:1"}, minakusa: {"若草北口〔近江鉄道・湖国バス〕:2"}},
 	"立命館大学正門前":     {rits: {"立命館大学正門前〔近江鉄道・湖国バス〕:2"}, minakusa: {"立命館大学正門前〔近江鉄道・湖国バス〕:1"}},
-}
-
-// approachInfo 1件の接近情報を表す構造体
-type approachInfo struct {
-	// あと何分で到着か
-	MoreMin string `json:"more_min"`
-	// 実際の到着予定時刻(遅延を考慮する)
-	RealArrivalTime string `json:"real_arrive_time"`
-	// 系統
-	Descent string `json:"descent"`
-	// 行き先
-	Direction string `json:"direction"`
-	// 定刻の時間
-	ScheduledTime string `json:"scheduled_time"`
-	// 遅延時間
-	Delay string `json:"delay"`
 }
