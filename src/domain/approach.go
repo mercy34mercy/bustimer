@@ -8,6 +8,7 @@ type ApproachInfo struct {
 	ScheduledTime 	string `json:"scheduled_time"`
 	Delay 			string `json:"delay"`
 	BusStop 		string `json:"bus_stop"`
+	RequiredTime    int `json:"required_time"`
 }
 
 type ApproachInfos struct {

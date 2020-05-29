@@ -211,3 +211,8 @@ func TrimParentheses(str string) string {
 	}
 	return trimStr
 }
+
+func GetRequiredTime(from From, to To) int {
+	//TODO: 実装まだ
+	return 15
+}
