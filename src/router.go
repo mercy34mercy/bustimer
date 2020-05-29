@@ -2,7 +2,9 @@ package main
 
 import (
 	"github.com/labstack/echo/v4"
+	"github.com/shun-shun123/bus-timer/approach"
 	"github.com/shun-shun123/bus-timer/src/infrastructure"
+	"github.com/shun-shun123/bus-timer/timetable"
 	"net/http"
 )
 
@@ -20,6 +22,9 @@ func Routing() {
 		cc := &CustomContext{c}
 		return infrastructure.TimeTableRequest(cc)
 	})
+	e.GET("/bus/timetable", timetable.ScrapeTimeTable)
+	e.GET("/bus/time", approach.ScrapeApproachInfo)
+	e.GET("/bus/time/v2", approach.ScrapeApproachInfoV2)
 }
 
 
