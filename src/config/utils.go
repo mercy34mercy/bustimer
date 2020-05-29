@@ -200,3 +200,14 @@ func GetViaFullName(via string) string {
 		return "シャトルバス"
 	}
 }
+
+func TrimParentheses(str string) string {
+	trimStr := str
+	if trimStr[0] == '(' {
+		trimStr = trimStr[1:]
+	}
+	if trimStr[len(trimStr) - 1] == ')' {
+		trimStr = trimStr[:len(trimStr) - 1]
+	}
+	return trimStr
+}

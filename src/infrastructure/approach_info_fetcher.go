@@ -51,7 +51,7 @@ func (doc *CustomDocument) fetchApproachInfo() ([]string, []string, []string, []
 			}
 			li.Find(".bsmidashi").Each(func(k int, span *goquery.Selection) {
 				if k == 1 {
-					Delay = append(Delay, span.Text())
+					Delay = append(Delay, config.TrimParentheses(span.Text()))
 				}
 			})
 		})
