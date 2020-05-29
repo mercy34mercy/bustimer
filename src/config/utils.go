@@ -174,13 +174,13 @@ func GetBusStop(from From, to To) string {
 func GetVia(from From) string {
 	switch from {
 	case FromNoji, FromNandayama, FromTamagawashogakkomae, FromOnoyama, FromPanaHigashi:
-		return "P"
+		return GetViaFullName("P")
 	case FromPanaMae, FromPanaNishi, FromKasayamaHigashi, FromSasanoguchi, FromKuresutoKusatsumae, FromBkcGreenField:
-		return "西"
+		return GetViaFullName("西")
 	case FromNojiKigaguchi, FromKusatsuKureaHole, FromHigashiyakuraMinami, FromHigashiyakuraShokuinnjutaku, FromMukoyamaNewTown, FromMaruo, FromWakakusaKitaguchi, FromRitsumeikanUnivMae:
-		return "か"
+		return GetViaFullName("か")
 	}
-	return ""
+	return GetViaFullName("")
 }
 
 func IsHoliday() bool {
