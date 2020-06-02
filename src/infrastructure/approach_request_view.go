@@ -18,5 +18,8 @@ func ApproachInfoRequest(c Context) error {
 
 	// Presenterに処理をリクエスト
 	approachInfos := presenter.RequestApproachInfos(approachInfoUrls, fetcher)
+	if len(approachInfos.ApproachInfo) == 0 {
+		return c.Response(http.StatusNoContent, approachInfos)
+	}
 	return c.Response(http.StatusOK, approachInfos)
 }

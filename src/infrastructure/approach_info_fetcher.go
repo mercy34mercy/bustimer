@@ -96,8 +96,6 @@ func (fetcher ApproachInfoFetcher) FetchApproachInfos(approachInfoUrl string) do
 	iterateCount := findMinLen(moreMin, realArrivalTime, directions, scheduledTime, delay)
 	via := ""
 	for i := 0; i < iterateCount; i++ {
-		//TODO: 経由情報のスクレイピング
-
 		// hh:mmの表記でくる
 		hour, _ := strconv.Atoi(scheduledTime[i][:2])
 		min, _ := strconv.Atoi(scheduledTime[i][3:])
