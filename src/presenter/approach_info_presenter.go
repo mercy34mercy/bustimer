@@ -5,17 +5,11 @@ import (
 )
 
 func RequestApproachInfos(approachInfoUrls []string, fetcher IFetchApproachInfos) domain.ApproachInfos {
-	approachInfos := make([]domain.ApproachInfos, len(approachInfoUrls))
-	for i, url := range approachInfoUrls {
-		approachInfos[i] = fetcher.FetchApproachInfos(url)
+	approachInfos := domain.CreateApproachInfos()
+	for _, url := range approachInfoUrls {
+		fetchResult := fetcher.FetchApproachInfos(url)
+		approachInfos.ApproachInfo = append(approachInfos.ApproachInfo, fetchResult.ApproachInfo...)
 	}
-	// TODO: 上位三つの早いものを取り出す処理
-	fastThree := domain.ApproachInfos{}
-	// FIXME: 一旦それっぽいデータを埋めてる
-	for _, v := range approachInfos {
-		for _, vinfo := range v.ApproachInfo {
-			fastThree.ApproachInfo = append(fastThree.ApproachInfo, vinfo)
-		}
-	}
+	fastThree := approachInfos.GetFastThree()
 	return fastThree
 }
