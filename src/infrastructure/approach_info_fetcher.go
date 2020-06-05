@@ -115,6 +115,10 @@ func (fetcher ApproachInfoFetcher) FetchApproachInfos(approachInfoUrl string) do
 		} else if fetcher.from != config.Unknown {
 			via = config.GetVia(fetcher.from)
 		}
+		//FIXME: 特例の処理
+		if fetcher.from == config.FromMinakusa && scheduledTime[i] == "17:20" {
+			continue
+		}
 		approachInfos.ApproachInfo = append(approachInfos.ApproachInfo, domain.ApproachInfo{
 			MoreMin: moreMin[i],
 			RealArrivalTime: realArrivalTime[i],
