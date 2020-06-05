@@ -16,7 +16,7 @@ func Routing() {
 		cc := &CustomContext{c}
 		return infrastructure.ApproachInfoRequest(cc)
 	})
-	e.GET("/bus/timetable/v3", func(c echo.Context) error {
+	e.GET("/bus/timetable", func(c echo.Context) error {
 		cc := &CustomContext{c}
 		return infrastructure.TimeTableRequest(cc)
 	})
