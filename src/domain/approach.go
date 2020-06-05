@@ -20,6 +20,20 @@ type ApproachInfos struct {
 	ApproachInfo []ApproachInfo `json:"approach_infos"`
 }
 
+type ApproachInfoV2 struct {
+	MoreMin 		string `json:"more_min"`
+	RealArrivalTime string `json:"real_arrive_time"`
+	Descent 		string `json:"descent"`
+	Direction 		string `json:"direction"`
+	ScheduledTime 	string `json:"scheduled_time"`
+	Delay 			string `json:"delay"`
+}
+
+type ApproachInfosV2 struct {
+	ApproachInfo []ApproachInfoV2 `json:"res"`
+}
+
+
 type compareFastInfo struct {
 	index int
 	hour  int
@@ -103,4 +117,21 @@ func (infos ApproachInfos) GetFastThree() ApproachInfos {
 	approachInfos.ApproachInfo = append(approachInfos.ApproachInfo, infos.ApproachInfo[second.index])
 	approachInfos.ApproachInfo = append(approachInfos.ApproachInfo, infos.ApproachInfo[third.index])
 	return approachInfos
+}
+
+func (info ApproachInfos) CopyToV2() ApproachInfosV2 {
+	v2 := ApproachInfosV2{
+		ApproachInfo: make([]ApproachInfoV2, 0),
+	}
+	for _, v := range info.ApproachInfo {
+		v2.ApproachInfo = append(v2.ApproachInfo, ApproachInfoV2{
+			MoreMin: v.MoreMin,
+			RealArrivalTime: v.RealArrivalTime,
+			Descent: "現在この機能は停止しています。アプリを更新してください。",
+			Direction: v.Direction,
+			ScheduledTime: v.ScheduledTime,
+			Delay: v.Delay,
+		})
+	}
+	return v2
 }

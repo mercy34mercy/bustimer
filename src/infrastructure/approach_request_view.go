@@ -23,3 +23,20 @@ func ApproachInfoRequest(c Context) error {
 	}
 	return c.Response(http.StatusOK, approachInfos)
 }
+
+func ApproachInfoRequestV2(c Context) error {
+	approachInfoUrls := c.GetApproachInfoUrls()
+	from, to := c.GetFromToQuery()
+
+	fetcher := ApproachInfoFetcher{
+		from: from,
+		to: to,
+	}
+
+	approachInfos := presenter.RequestApproachInfos(approachInfoUrls, fetcher)
+	v2 := approachInfos.CopyToV2()
+	if len(approachInfos.ApproachInfo) == 0 {
+		return c.Response(http.StatusNoContent, v2)
+	}
+	return c.Response(http.StatusOK, v2)
+}
