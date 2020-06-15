@@ -3,6 +3,8 @@ package config
 import (
 	"log"
 	"regexp"
+	"time"
+	"github.com/yut-kt/goholiday"
 )
 
 // frクエリからスクレイピングする際のfrクエリに変換する
@@ -182,11 +184,8 @@ func GetVia(from From) string {
 }
 
 func IsHoliday() bool {
-	//datetime := time.Now()
-	//return goholiday.IsHoliday(datetime)
-	// TODO: コロナ対応
-	// TODO: 6/31まで平日問わず日曜祝日ダイヤでの運行になるので、それまでは常時trueを返す
-	return true
+	datetime := time.Now()
+	return goholiday.IsHoliday(datetime)
 }
 
 func GetViaFullName(via string) string {
