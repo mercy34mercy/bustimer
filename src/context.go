@@ -1,8 +1,11 @@
 package main
 
 import (
+	"fmt"
 	"github.com/labstack/echo/v4"
 	"github.com/shun-shun123/bus-timer/src/config"
+	"github.com/shun-shun123/bus-timer/src/slack"
+	"net/http"
 )
 
 type CustomContext struct {
@@ -30,10 +33,19 @@ func (c *CustomContext) GetApproachInfoUrls() []string {
 }
 
 // echo.Context経由のレスポンスをラップした
-func (c *CustomContext) Response(statusCode int, param interface{}) error {
+func (c *CustomContext) Response(methodName string, statusCode int, param interface{}) error {
+	errorNotification(statusCode, methodName)
 	return c.JSON(statusCode, param)
 }
 
+func errorNotification(statusCode int, methodName string) {
+	switch (statusCode) {
+	case http.StatusBadRequest:
+		slack.PostMessage(fmt.Sprintf("%s StatusBadRequest", methodName))
+	case http.StatusNoContent:
+		slack.PostMessage(fmt.Sprintf("%s StatusNoContent", methodName))
+	}
+}
 
 // 「どこ発のどこ行き」かを判定する
 func (c *CustomContext) GetFromToQuery() (config.From, config.To) {

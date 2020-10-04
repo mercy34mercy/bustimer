@@ -1,7 +1,9 @@
 package infrastructure
 
 import (
+	"fmt"
 	"github.com/shun-shun123/bus-timer/src/config"
+	"github.com/shun-shun123/bus-timer/src/slack"
 	"net/http"
 )
 
@@ -10,10 +12,12 @@ func TimeTableRequest(c Context) error {
 	timeTable, ok := TimeTable[from]
 	if ok == false {
 		if from == config.Unknown {
-			return c.Response(http.StatusBadRequest, timeTable)
+			slack.PostMessage(fmt.Sprint("TimeTableRequest.BadQuery"))
+			return c.Response("TimeTableRequest", http.StatusBadRequest, timeTable)
 		} else {
-			return c.Response(http.StatusNoContent, timeTable)
+			slack.PostMessage(fmt.Sprint("TimeTableRequest.StatusNoContent"))
+			return c.Response("TimeTableRequest", http.StatusNoContent, timeTable)
 		}
 	}
-	return c.Response(http.StatusOK, timeTable)
+	return c.Response("TimeTableRequest", http.StatusOK, timeTable)
 }
