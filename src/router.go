@@ -24,6 +24,14 @@ func Routing() {
 		cc := &CustomContext{c}
 		return infrastructure.SystemInfoRequest(cc)
 	})
+	e.GET("/debug/system/info/error", func(c echo.Context) error {
+		cc := &CustomContext{c}
+		return infrastructure.DebugErrorSystemInfoRequest(cc)
+	})
+	e.GET("/debug/system/info/success", func(c echo.Context) error {
+		cc := &CustomContext{c}
+		return infrastructure.DebugSuccessSystemInfoRequest(cc)
+	})
 }
 
 
