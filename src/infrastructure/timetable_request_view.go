@@ -2,10 +2,12 @@ package infrastructure
 
 import (
 	"bytes"
+	"fmt"
 	"github.com/PuerkitoBio/goquery"
 	"github.com/saintfish/chardet"
 	"github.com/shun-shun123/bus-timer/src/config"
 	"github.com/shun-shun123/bus-timer/src/domain"
+	"github.com/shun-shun123/bus-timer/src/slack"
 	"golang.org/x/net/html/charset"
 	"io/ioutil"
 	"net/http"
@@ -18,19 +20,20 @@ func TimeTableRequest(c Context) error {
 	timeTable, ok := TimeTableCache[from]
 	if ok == false {
 		if from == config.Unknown {
-			return c.Response(http.StatusBadRequest, timeTable)
+			return c.Response("TimeTableRequest", http.StatusBadRequest, timeTable)
 		}
 	}
 	if len(timeTable.Weekdays[10]) <= 0 {
+		slack.PostMessage(fmt.Sprint("従来の時刻表データのスクレイピング結果が不正なので、旧サイトからとります"))
 		if from == config.FromRits {
 			timeTable = TimeTableFetchFromRits()
 		} else {
 			timeTable = TimeTableFetchFromMinakusa()
+			return c.Response("TimeTableRequest", http.StatusBadRequest, timeTable)
 		}
 		TimeTableCache[from] = timeTable
-		return c.Response(http.StatusOK, timeTable)
 	}
-	return c.Response(http.StatusOK, timeTable)
+	return c.Response("TimeTableRequest", http.StatusOK, timeTable)
 }
 
 func TimeTableFetchFromMinakusa() domain.TimeTable {

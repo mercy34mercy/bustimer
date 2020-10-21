@@ -19,9 +19,9 @@ func ApproachInfoRequest(c Context) error {
 	// Presenterに処理をリクエスト
 	approachInfos := presenter.RequestApproachInfos(approachInfoUrls, fetcher)
 	if len(approachInfos.ApproachInfo) == 0 {
-		return c.Response(http.StatusNoContent, approachInfos)
+		return c.Response("ApproachInfoRequest", http.StatusNoContent, approachInfos)
 	}
-	return c.Response(http.StatusOK, approachInfos)
+	return c.Response("ApproachInfoRequest", http.StatusOK, approachInfos)
 }
 
 func ApproachInfoRequestV2(c Context) error {
@@ -36,7 +36,7 @@ func ApproachInfoRequestV2(c Context) error {
 	approachInfos := presenter.RequestApproachInfos(approachInfoUrls, fetcher)
 	v2 := approachInfos.CopyToV2()
 	if len(approachInfos.ApproachInfo) == 0 {
-		return c.Response(http.StatusNoContent, v2)
+		return c.Response("ApproachInfoRequestV2", http.StatusNoContent, v2)
 	}
-	return c.Response(http.StatusOK, v2)
+	return c.Response("ApproachInfoRequestV2", http.StatusOK, v2)
 }

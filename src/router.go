@@ -20,6 +20,10 @@ func Routing() {
 		cc := &CustomContext{c}
 		return infrastructure.TimeTableRequest(cc)
 	})
+	e.GET("/system/info", func(c echo.Context) error {
+		cc := &CustomContext{c}
+		return infrastructure.SystemInfoRequest(cc)
+	})
 }
 
 
