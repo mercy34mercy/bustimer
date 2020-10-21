@@ -29,7 +29,6 @@ func TimeTableRequest(c Context) error {
 			timeTable = TimeTableFetchFromRits()
 		} else {
 			timeTable = TimeTableFetchFromMinakusa()
-			return c.Response("TimeTableRequest", http.StatusBadRequest, timeTable)
 		}
 		TimeTableCache[from] = timeTable
 	}
