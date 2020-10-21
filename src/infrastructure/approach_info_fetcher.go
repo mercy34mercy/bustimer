@@ -99,7 +99,7 @@ func (fetcher ApproachInfoFetcher) FetchApproachInfos(approachInfoUrl string) do
 		// hh:mmの表記でくる
 		hour, _ := strconv.Atoi(scheduledTime[i][:2])
 		min, _ := strconv.Atoi(scheduledTime[i][3:])
-		tt, ok := TimeTable[fetcher.from]
+		tt, ok := TimeTableCache[fetcher.from]
 		if ok {
 			timeTableData := tt.Weekdays
 			if config.IsHoliday() {

@@ -20,9 +20,9 @@ func Routing() {
 		cc := &CustomContext{c}
 		return infrastructure.TimeTableRequest(cc)
 	})
-	e.GET("/bus/time/v2", func(c echo.Context) error {
+	e.GET("/system/info", func(c echo.Context) error {
 		cc := &CustomContext{c}
-		return infrastructure.ApproachInfoRequestV2(cc)
+		return infrastructure.SystemInfoRequest(cc)
 	})
 }
 
