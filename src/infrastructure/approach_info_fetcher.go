@@ -103,6 +103,7 @@ func (fetcher ApproachInfoFetcher) FetchApproachInfos(approachInfoUrl string) do
 	// どれかが空の場合もあるので、最小の数を探す
 	iterateCount := findMinLen(moreMin, realArrivalTime, directions, scheduledTime, delay)
 	via := ""
+	offsetForSameTime := 0
 	for i := 0; i < iterateCount; i++ {
 		// hh:mmの表記でくる
 		hour, _ := strconv.Atoi(scheduledTime[i][:2])
@@ -113,10 +114,27 @@ func (fetcher ApproachInfoFetcher) FetchApproachInfos(approachInfoUrl string) do
 			if config.IsHoliday() {
 				timeTableData = tt.Saturdays
 			}
+
+			var sameTimeCount = 0
 			for _, v := range timeTableData[hour] {
 				if convMin, err := strconv.Atoi(v.Min); err == nil {
 					if convMin == min {
-						via = v.Via
+						sameTimeCount += 1
+					}
+				}
+			}
+
+			for j, v := range timeTableData[hour] {
+				if convMin, err := strconv.Atoi(v.Min); err == nil {
+					if convMin == min {
+						if sameTimeCount <= 1 {
+							via = v.Via
+							break
+						} else {
+							via = timeTableData[hour][j+offsetForSameTime].Via
+							offsetForSameTime += 1
+							break
+						}
 					}
 				}
 			}
