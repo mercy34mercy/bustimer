@@ -1,14 +1,15 @@
 package infrastructure
 
 import (
-	"github.com/PuerkitoBio/goquery"
-	"github.com/shun-shun123/bus-timer/src/config"
-	"github.com/shun-shun123/bus-timer/src/domain"
 	"log"
 	"net/http"
 	"regexp"
 	"strconv"
 	"strings"
+
+	"github.com/PuerkitoBio/goquery"
+	"github.com/shun-shun123/bus-timer/src/config"
+	"github.com/shun-shun123/bus-timer/src/domain"
 )
 
 type ApproachInfoFetcher struct {
@@ -102,9 +103,16 @@ func (fetcher ApproachInfoFetcher) FetchApproachInfos(approachInfoUrl string) do
 
 	// どれかが空の場合もあるので、最小の数を探す
 	iterateCount := findMinLen(moreMin, realArrivalTime, directions, scheduledTime, delay)
-	via := ""
+	sameTimeCountDict := map[string]int{}
 	for i := 0; i < iterateCount; i++ {
+		via := ""
 		// hh:mmの表記でくる
+		if v, ok := sameTimeCountDict[scheduledTime[i]]; ok {
+			sameTimeCountDict[scheduledTime[i]] = v + 1
+		} else {
+			sameTimeCountDict[scheduledTime[i]] = 0
+		}
+
 		hour, _ := strconv.Atoi(scheduledTime[i][:2])
 		min, _ := strconv.Atoi(scheduledTime[i][3:])
 		tt, ok := TimeTableCache[fetcher.from]
@@ -113,10 +121,11 @@ func (fetcher ApproachInfoFetcher) FetchApproachInfos(approachInfoUrl string) do
 			if config.IsHoliday() {
 				timeTableData = tt.Saturdays
 			}
-			for _, v := range timeTableData[hour] {
+			for j, v := range timeTableData[hour] {
 				if convMin, err := strconv.Atoi(v.Min); err == nil {
 					if convMin == min {
-						via = v.Via
+						via = timeTableData[hour][j+sameTimeCountDict[scheduledTime[i]]].Via
+						break
 					}
 				}
 			}
