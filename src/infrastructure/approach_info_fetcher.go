@@ -70,7 +70,7 @@ func findMinLen(dataset ...[]string) int {
 	return min
 }
 
-func (fetcher ApproachInfoFetcher) FetchApproachInfos(approachInfoUrl string) domain.ApproachInfos {
+func (fetcher ApproachInfoFetcher) FetchApproachInfos(approachInfoUrl string, pastUrlsApproachInfos domain.ApproachInfos) domain.ApproachInfos {
 	// 返り値で返す変数を初期化
 	approachInfos := domain.CreateApproachInfos()
 
@@ -104,6 +104,14 @@ func (fetcher ApproachInfoFetcher) FetchApproachInfos(approachInfoUrl string) do
 	// どれかが空の場合もあるので、最小の数を探す
 	iterateCount := findMinLen(moreMin, realArrivalTime, directions, scheduledTime, delay)
 	sameTimeCountDict := map[string]int{}
+	for _, pastUrlsApproachInfo := range pastUrlsApproachInfos.ApproachInfo {
+		if v, ok := sameTimeCountDict[pastUrlsApproachInfo.ScheduledTime]; ok {
+			sameTimeCountDict[pastUrlsApproachInfo.ScheduledTime] = v + 1
+		} else {
+			sameTimeCountDict[pastUrlsApproachInfo.ScheduledTime] = 0
+		}
+	}
+
 	for i := 0; i < iterateCount; i++ {
 		via := ""
 		// hh:mmの表記でくる
@@ -124,7 +132,14 @@ func (fetcher ApproachInfoFetcher) FetchApproachInfos(approachInfoUrl string) do
 			for j, v := range timeTableData[hour] {
 				if convMin, err := strconv.Atoi(v.Min); err == nil {
 					if convMin == min {
-						via = timeTableData[hour][j+sameTimeCountDict[scheduledTime[i]]].Via
+						if j + sameTimeCountDict[scheduledTime[i]] >= len(timeTableData[hour]) {
+							break
+						}
+						var matchedOneBusTime =  timeTableData[hour][j+sameTimeCountDict[scheduledTime[i]]]
+						matchMin, _ := strconv.Atoi(matchedOneBusTime.Min)
+						if matchMin == min {
+							via = timeTableData[hour][j+sameTimeCountDict[scheduledTime[i]]].Via
+						}
 						break
 					}
 				}
