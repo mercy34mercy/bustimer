@@ -1,10 +1,11 @@
 package config
 
 import (
-	"github.com/yut-kt/goholiday"
 	"log"
 	"regexp"
 	"time"
+
+	"github.com/najeira/jpholiday"
 )
 
 // frクエリからスクレイピングする際のfrクエリに変換する
@@ -185,7 +186,16 @@ func GetVia(from From) string {
 
 func IsHoliday() bool {
 	datetime := time.Now()
-	return goholiday.IsHoliday(datetime)
+	var weekday = int(datetime.Weekday())
+	if weekday == 0 || weekday == 6 {
+		return true
+	}
+	holidayName := jpholiday.Name(datetime)
+	if holidayName != "" {
+		return true
+	} else {
+		return false
+	}
 }
 
 func GetViaFullName(via string) string {

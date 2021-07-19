@@ -5,5 +5,5 @@ import (
 )
 
 type IFetchApproachInfos interface {
-	FetchApproachInfos(approachInfoUrl string) domain.ApproachInfos
+	FetchApproachInfos(approachInfoUrl string, pastUrlsApproachInfos domain.ApproachInfos) domain.ApproachInfos
 }
