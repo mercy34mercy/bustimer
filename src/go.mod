@@ -7,11 +7,11 @@ require (
 	github.com/ashwanthkumar/slack-go-webhook v0.0.0-20200209025033-430dd4e66960
 	github.com/elazarl/goproxy v0.0.0-20200809112317-0581fc3aee2d // indirect
 	github.com/labstack/echo/v4 v4.1.16
+	github.com/najeira/jpholiday v0.0.0-20201205051200-308d6dc577e8
 	github.com/parnurzeal/gorequest v0.2.16 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/saintfish/chardet v0.0.0-20120816061221-3af4cd4741ca
 	github.com/smartystreets/goconvey v1.6.4 // indirect
-	github.com/yut-kt/goholiday v0.0.0-20171118074514-8085670e50d9
 	golang.org/x/net v0.0.0-20200226121028-0de0cce0169b
 	moul.io/http2curl v1.0.0 // indirect
 )
