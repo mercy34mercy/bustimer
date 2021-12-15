@@ -1,5 +1,10 @@
 package domain
 
+import (
+	"sort"
+	"strconv"
+)
+
 // 時刻表テーブルを現したデータ構造
 type TimeTable struct {
 	Weekdays 	map[int][]OneBusTime `json:"weekdays"`
@@ -29,4 +34,26 @@ func CreateNewTimeTable() TimeTable {
 		timetable.Holidays[i] = make([]OneBusTime, 0)
 	}
 	return timetable
+}
+
+func (timetable TimeTable) SortOneBusTime() {
+	for _, oneBusTimeHolidaysList := range timetable.Holidays {
+		sortByMin(oneBusTimeHolidaysList)
+	}
+
+	for _, oneBusTimeSaturdaysList := range timetable.Saturdays {
+		sortByMin(oneBusTimeSaturdaysList)
+	}
+
+	for _, oneBusTimeWeekdaysList := range timetable.Weekdays {
+		sortByMin(oneBusTimeWeekdaysList)
+	}
+}
+
+func sortByMin(oneBusTimeList []OneBusTime) {
+	sort.Slice(oneBusTimeList, func(i, j int) bool {
+		iMin, _ := strconv.Atoi(oneBusTimeList[i].Min)
+		jMin, _ := strconv.Atoi(oneBusTimeList[j].Min)
+		return iMin < jMin
+	})
 }

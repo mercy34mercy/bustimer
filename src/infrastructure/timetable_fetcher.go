@@ -8,6 +8,8 @@ import (
 	"log"
 	"net/http"
 	"regexp"
+	"strconv"
+	"strings"
 )
 
 type TimetableFetcher struct {
@@ -35,21 +37,27 @@ func (fetcher TimetableFetcher) FetchTimetable(from config.From, to config.To) d
 	for i, v := range tdList {
 		doc.Find(v).Each(func(j int, s *goquery.Selection) {
 			s.Find(".ttList li").Each(func(_ int, t *goquery.Selection) {
+				value, _ := t.Find(".diagraminfo").Attr("value")
+				splittedValue := strings.Split(value, "::::")
+				hourStr := strings.Split(splittedValue[1], ":")[0]
+				hour, _ := strconv.Atoi(hourStr)
+
 				oneBusTime := domain.OneBusTime {
 					Via: config.GetViaFullName(t.Find(".legend span").Text()),
 					Min: reg.FindString(t.Text()),
 					BusStop: config.GetBusStop(from, to),
 				}
 				if i == 0 {
-					timetable.Weekdays[j+5] = append(timetable.Weekdays[j+5], oneBusTime)
+					timetable.Weekdays[hour] = append(timetable.Weekdays[hour], oneBusTime)
 				} else if i == 1 {
-					timetable.Saturdays[j+5] = append(timetable.Saturdays[j+5], oneBusTime)
+					timetable.Saturdays[hour] = append(timetable.Saturdays[hour], oneBusTime)
 				} else if i == 2 {
-					timetable.Holidays[j+5] = append(timetable.Holidays[j+5], oneBusTime)
+					timetable.Holidays[hour] = append(timetable.Holidays[hour], oneBusTime)
 				}
 			})
 		})
 	}
+	timetable.SortOneBusTime()
 	return timetable
 }
 
