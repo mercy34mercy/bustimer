@@ -158,7 +158,7 @@ func (fetcher ApproachInfoFetcher) FetchApproachInfos(approachInfoUrl string, pa
 			ScheduledTime: scheduledTime[i],
 			Delay: delay[i],
 			Via: via,
-			BusStop: config.GetApproachBusStop(via),
+			BusStop: config.GetApproachBusStop(fetcher.from, fetcher.to,via),
 			RequiredTime: config.GetRequiredTime(fetcher.from, fetcher.to, via),
 		})
 	}

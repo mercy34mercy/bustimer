@@ -172,21 +172,27 @@ func GetBusStop(from From, to To) string {
 	return num
 }
 
-func GetApproachBusStop(via string) string{
+func GetApproachBusStop(from From,to To,via string) string{
+	switch from {
+	case FromMinakusa:
 		switch via{
-	case "パナソニック東口経由":
-		return "4"
-	case "パナソニック西口経由":
-		return "4"
-	case "かがやき通り経由":
-		return "3"
-	case "立命館大学経由":
-		return "5"
-	case "シャトルバス":
-		return "1"
+		case "パナソニック東口経由":
+			return "4"
+		case "パナソニック西口経由":
+			return "4"
+		case "かがやき通り経由":
+			return "3"
+		case "立命館大学経由":
+			return "5"
+		case "シャトルバス":
+			return "1"
+		default:
+			return "1"
+		}
 	default:
-		return "1"
+		return GetBusStop(from,to)
 	}
+
 }
 
 func GetVia(from From) string {
