@@ -6,7 +6,7 @@ services:
     container_name: bustimer_mongodb
     environment:
       MONGO_INITDB_ROOT_USERNAME: mongo
-      MONGO_INITDB_ROOT_PASSWORD: haksjh223k23fasadf324
+      MONGO_INITDB_ROOT_PASSWORD: uhrqwr2q4u42ibfarwb
     volumes:
       - mongodb_data:/data/db
     ports:
