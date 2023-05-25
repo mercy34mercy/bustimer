@@ -106,7 +106,11 @@ func main() {
 	})
 
 	// サーバを起動
-	if err := router.Run(":8080"); err != nil {
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "1323"
+	}
+	if err := router.Run(port); err != nil {
 		fmt.Println(err)
 	}
 }
