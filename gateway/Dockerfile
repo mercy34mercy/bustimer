@@ -15,6 +15,8 @@ RUN apk update && apk upgrade
 RUN mkdir /app
 WORKDIR /app
 
+
+COPY local.env local.env
 COPY --from=builder /app/main ./main
 
 CMD ["./main"]
