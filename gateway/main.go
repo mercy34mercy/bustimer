@@ -180,17 +180,17 @@ func isLocalhostRequest(r *http.Request) bool {
 func GetMongoURI() (string, string) {
 	err := godotenv.Load("local.env")
 	if err != nil {
-		log.Fatalf("Error loading local.env file: %s", err)
+		//log.Fatalf("Error loading local.env file: %s", err)
 	}
 
 	mongoURI := os.Getenv("MONGO_URI")
 	if mongoURI == "" {
-		log.Fatal("Mongo URI not found in local.env file")
+		//log.Fatal("Mongo URI not found in local.env file")
 	}
 
 	apiURL := os.Getenv("API_URL")
 	if apiURL == "" {
-		log.Fatal("API URL not found in local.env file")
+		//log.Fatal("API URL not found in local.env file")
 	}
 
 	return mongoURI, apiURL
