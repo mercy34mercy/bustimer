@@ -37,7 +37,6 @@ func (doc *CustomDocument) fetchApproachInfo() ([]string, []string, []string, []
 	doc.Find("div.text-lg.font-bold.text-error strong.mx-1.text-2xl").Each(func(i int, s *goquery.Selection) {
 		waitTime := s.Text()
 		moreMin = append(moreMin, waitTime)
-		Direction = append(Direction, "かがやき通り")
 		Delay = append(Delay, "")
 	})
 
@@ -46,6 +45,12 @@ func (doc *CustomDocument) fetchApproachInfo() ([]string, []string, []string, []
 		// 最後の1文字を抽出
 		lastChar := busstop[len(busstop)-1:]
 		Busstop = append(Busstop, lastChar)
+	})
+
+	doc.Find("div.flex.flex-col").Each(func(i int, s *goquery.Selection) {
+		s.Find("span.font-bold").Each(func(i int, s *goquery.Selection) {
+			Direction = append(Direction, s.Text())
+		})
 	})
 
 	// strong の tag を検索
