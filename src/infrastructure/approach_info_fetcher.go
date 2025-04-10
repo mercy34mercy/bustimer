@@ -77,21 +77,31 @@ func (doc *CustomDocument) fetchApproachInfo() ([]string, []string, []string, []
 			}
 		})
 	})
-
+	doc.Find("button.w-full.rounded.text-left.drop-shadow-md.bg-white").Each(func(i int, s *goquery.Selection) {
+		s.Find("div.flex.justify-between").Each(func(i int, t *goquery.Selection) {
+			t.Find("div.flex.flex-col").Each(func(i int, s *goquery.Selection) {
+				s.Find("span").Each(func(i int, s *goquery.Selection) {
+					fmt.Println("via: ", s.Text())
+					via := s.Text()
+					Via = append(Via, via)
+				})
+			})
+		})
+	})
 	doc.Find("div.flex.flex-col").Each(func(i int, s *goquery.Selection) {
 		s.Find("span.font-bold").Each(func(i int, s *goquery.Selection) {
 			dir := s.Text()
 			Direction = append(Direction, dir)
 			// Directionの[]で囲まれた文字列を抽出
 			fmt.Println(dir)
-			// [ or ]でsplitして、[ or ]の中身を抽出
-			via := strings.Split(dir, "[")
-			if len(via) > 1 {
-				// viaの最後の1文字以外を抽出
-				Via = append(Via, via[1][:len(via[1])-1])
-			} else {
-				Via = append(Via, "")
-			}
+			// // [ or ]でsplitして、[ or ]の中身を抽出
+			// via := strings.Split(dir, "[")
+			// if len(via) > 1 {
+			// 	// viaの最後の1文字以外を抽出
+			// 	Via = append(Via, via[1][:len(via[1])-1])
+			// } else {
+			// 	Via = append(Via, "")
+			// }
 		})
 	})
 
