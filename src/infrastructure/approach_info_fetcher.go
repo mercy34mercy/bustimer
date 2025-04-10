@@ -5,6 +5,7 @@ import (
 	"io"
 	"log"
 	"net/http"
+	"regexp"
 	"strconv"
 	"strings"
 
@@ -25,13 +26,32 @@ type CustomDocument struct {
 var dataCount = 3
 
 // 接近情報のサイトから取れる下記の情報をまとめてスクレイピングする
-func (doc *CustomDocument) fetchApproachInfo() ([]string, []string, []string, []string, []string, []string) {
+func (doc *CustomDocument) fetchApproachInfo() ([]string, []string, []string, []string, []string, []string, []string, []int) {
 	moreMin := make([]string, 0)
 	realArrivalTime := make([]string, 0)
 	Direction := make([]string, 0)
 	ScheduledTime := make([]string, 0)
 	Delay := make([]string, 0)
 	Busstop := make([]string, 0)
+	Via := make([]string, 0)
+	RequiredTime := make([]int, 0)
+
+	doc.Find("div.text-sm.mb-2.ml-auto.mr-4.w-fit.text-text-grey").Each(func(i int, s *goquery.Selection) {
+		requiredTime := s.Text()
+		// 予測所要時間 約20分 こういうテキストだから、数字の部分を抽出する
+		re := regexp.MustCompile(`約([0-9]+)分`)
+		matched := re.FindStringSubmatch(requiredTime)
+		if len(matched) > 1 {
+			requiredTimeInt, err := strconv.Atoi(matched[1])
+			if err != nil {
+				RequiredTime = append(RequiredTime, 0)
+			} else {
+				RequiredTime = append(RequiredTime, requiredTimeInt)
+			}
+		} else {
+			RequiredTime = append(RequiredTime, 0)
+		}
+	})
 
 	// あと約X分で発車の部分を検索し、X（残り時間）を抽出する
 	doc.Find("div.text-lg.font-bold.text-error strong.mx-1.text-2xl").Each(func(i int, s *goquery.Selection) {
@@ -49,7 +69,18 @@ func (doc *CustomDocument) fetchApproachInfo() ([]string, []string, []string, []
 
 	doc.Find("div.flex.flex-col").Each(func(i int, s *goquery.Selection) {
 		s.Find("span.font-bold").Each(func(i int, s *goquery.Selection) {
-			Direction = append(Direction, s.Text())
+			dir := s.Text()
+			Direction = append(Direction, dir)
+			// Directionの[]で囲まれた文字列を抽出
+			fmt.Println(dir)
+			// [ or ]でsplitして、[ or ]の中身を抽出
+			via := strings.Split(dir, "[")
+			if len(via) > 1 {
+				// viaの最後の1文字以外を抽出
+				Via = append(Via, via[1][:len(via[1])-1])
+			} else {
+				Via = append(Via, "")
+			}
 		})
 	})
 
@@ -125,7 +156,7 @@ func (doc *CustomDocument) fetchApproachInfo() ([]string, []string, []string, []
 	// 		})
 	// 	})
 	// })
-	return moreMin, realArrivalTime, Direction, ScheduledTime, Delay, Busstop
+	return moreMin, realArrivalTime, Direction, ScheduledTime, Delay, Busstop, Via, RequiredTime
 }
 
 func findMinLen(dataset ...[]string) int {
@@ -194,7 +225,7 @@ func (fetcher ApproachInfoFetcher) FetchApproachInfos(approachInfoUrl string, pa
 
 	// CustomDocument型に変換する
 	customDoc := CustomDocument{approachDoc}
-	moreMin, realArrivalTime, directions, scheduledTime, delay, busstop := customDoc.fetchApproachInfo()
+	moreMin, realArrivalTime, directions, scheduledTime, delay, busstop, via, requiredTime := customDoc.fetchApproachInfo()
 
 	// どれかが空の場合もあるので、最小の数を探す
 	iterateCount := findMinLen(moreMin, realArrivalTime, directions, scheduledTime, delay)
@@ -208,39 +239,11 @@ func (fetcher ApproachInfoFetcher) FetchApproachInfos(approachInfoUrl string, pa
 	}
 
 	for i := 0; i < iterateCount; i++ {
-		via := ""
 		// hh:mmの表記でくる
 		if v, ok := sameTimeCountDict[scheduledTime[i]]; ok {
 			sameTimeCountDict[scheduledTime[i]] = v + 1
 		} else {
 			sameTimeCountDict[scheduledTime[i]] = 0
-		}
-
-		hour, _ := strconv.Atoi(scheduledTime[i][:2])
-		min, _ := strconv.Atoi(scheduledTime[i][3:])
-		tt, ok := TimeTableCache[fetcher.from]
-		if ok {
-			timeTableData := tt.Weekdays
-			if config.IsHoliday() {
-				timeTableData = tt.Saturdays
-			}
-			for j, v := range timeTableData[hour] {
-				if convMin, err := strconv.Atoi(v.Min); err == nil {
-					if convMin == min {
-						if j+sameTimeCountDict[scheduledTime[i]] >= len(timeTableData[hour]) {
-							break
-						}
-						var matchedOneBusTime = timeTableData[hour][j+sameTimeCountDict[scheduledTime[i]]]
-						matchMin, _ := strconv.Atoi(matchedOneBusTime.Min)
-						if matchMin == min {
-							via = timeTableData[hour][j+sameTimeCountDict[scheduledTime[i]]].Via
-						}
-						break
-					}
-				}
-			}
-		} else if fetcher.from != config.Unknown {
-			via = config.GetVia(fetcher.from)
 		}
 		//FIXME: 特例の処理
 		if fetcher.from == config.FromMinakusa && scheduledTime[i] == "17:20" {
@@ -252,9 +255,9 @@ func (fetcher ApproachInfoFetcher) FetchApproachInfos(approachInfoUrl string, pa
 			Direction:       directions[i],
 			ScheduledTime:   scheduledTime[i],
 			Delay:           delay[i],
-			Via:             via,
+			Via:             via[i],
 			BusStop:         busstop[i],
-			RequiredTime:    config.GetRequiredTime(fetcher.from, fetcher.to, via),
+			RequiredTime:    requiredTime[i],
 		})
 	}
 	return approachInfos
