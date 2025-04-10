@@ -4,7 +4,7 @@ import "time"
 
 // 外部に公開するconst
 const (
-	ApproachURL                  = "https://transfer-cloud.navitime.biz/ohmitetudo"
+	ApproachURL                  = "https://transfer-cloud.navitime.biz/ohmitetudo/approachings"
 	TimeTableURL                 = "https://ohmitetudo-bus.jorudan.biz/diagrampoledtl"
 	FrRits                       = "立命館大学〔近江鉄道・湖国バス〕"
 	FrMinakusa                   = "南草津駅〔近江鉄道・湖国バス〕"
