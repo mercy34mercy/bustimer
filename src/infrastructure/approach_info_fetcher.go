@@ -149,7 +149,7 @@ func (fetcher ApproachInfoFetcher) FetchApproachInfos(approachInfoUrl string, pa
 	// req.Header.Set("Accept", accept)
 	// req.Header.Set("User-Agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.110 Safari/537.36")
 
-	resp, err := http.Get("https://transfer-cloud.navitime.biz/ohmitetudo/approachings?departure-busstop=00480156&arrival-busstop=00480011")
+	resp, err := http.Get(approachInfoUrl)
 	if err != nil {
 		log.Printf("Http/GET failed to %v because of %v", approachInfoUrl, err)
 		return approachInfos
