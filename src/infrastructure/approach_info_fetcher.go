@@ -25,24 +25,28 @@ type CustomDocument struct {
 var dataCount = 3
 
 // 接近情報のサイトから取れる下記の情報をまとめてスクレイピングする
-func (doc *CustomDocument) fetchApproachInfo() ([]string, []string, []string, []string, []string) {
+func (doc *CustomDocument) fetchApproachInfo() ([]string, []string, []string, []string, []string, []string) {
 	moreMin := make([]string, 0)
 	realArrivalTime := make([]string, 0)
 	Direction := make([]string, 0)
 	ScheduledTime := make([]string, 0)
 	Delay := make([]string, 0)
+	Busstop := make([]string, 0)
 
 	// あと約X分で発車の部分を検索し、X（残り時間）を抽出する
 	doc.Find("div.text-lg.font-bold.text-error strong.mx-1.text-2xl").Each(func(i int, s *goquery.Selection) {
 		waitTime := s.Text()
 		moreMin = append(moreMin, waitTime)
 		Direction = append(Direction, "かがやき通り")
-		Delay = append(Delay, "0")
-		fmt.Printf("バス %d: あと約%s分\n", i+1, waitTime)
+		Delay = append(Delay, "")
 	})
 
-	// docを表示
-	fmt.Println(doc.Document)
+	doc.Find("dt.mr-1.break-all").Each(func(i int, s *goquery.Selection) {
+		busstop := s.Text()
+		// 最後の1文字を抽出
+		lastChar := busstop[len(busstop)-1:]
+		Busstop = append(Busstop, lastChar)
+	})
 
 	// strong の tag を検索
 	// doc.Find("strong").Each(func(i int, s *goquery.Selection) {
@@ -116,7 +120,7 @@ func (doc *CustomDocument) fetchApproachInfo() ([]string, []string, []string, []
 	// 		})
 	// 	})
 	// })
-	return moreMin, realArrivalTime, Direction, ScheduledTime, Delay
+	return moreMin, realArrivalTime, Direction, ScheduledTime, Delay, Busstop
 }
 
 func findMinLen(dataset ...[]string) int {
@@ -185,7 +189,7 @@ func (fetcher ApproachInfoFetcher) FetchApproachInfos(approachInfoUrl string, pa
 
 	// CustomDocument型に変換する
 	customDoc := CustomDocument{approachDoc}
-	moreMin, realArrivalTime, directions, scheduledTime, delay := customDoc.fetchApproachInfo()
+	moreMin, realArrivalTime, directions, scheduledTime, delay, busstop := customDoc.fetchApproachInfo()
 
 	// どれかが空の場合もあるので、最小の数を探す
 	iterateCount := findMinLen(moreMin, realArrivalTime, directions, scheduledTime, delay)
@@ -244,7 +248,7 @@ func (fetcher ApproachInfoFetcher) FetchApproachInfos(approachInfoUrl string, pa
 			ScheduledTime:   scheduledTime[i],
 			Delay:           delay[i],
 			Via:             via,
-			BusStop:         config.GetApproachBusStop(fetcher.from, fetcher.to, via),
+			BusStop:         busstop[i],
 			RequiredTime:    config.GetRequiredTime(fetcher.from, fetcher.to, via),
 		})
 	}
