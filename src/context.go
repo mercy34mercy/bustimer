@@ -2,10 +2,12 @@ package main
 
 import (
 	"fmt"
+	"log"
+	"net/http"
+
 	"github.com/labstack/echo/v4"
 	"github.com/shun-shun123/bus-timer/src/config"
 	"github.com/shun-shun123/bus-timer/src/slack"
-	"net/http"
 )
 
 type CustomContext struct {
@@ -20,15 +22,15 @@ func (c *CustomContext) GetApproachInfoUrls() []string {
 
 	// リクエストクエリからスクレイピング用のURLに含めるクエリに変換する
 	from := config.GetFromKey(fr)
-	dgmplList := config.GetDgmplList(fr, to)
+	too := config.GetFromKey(to)
+	// dgmplList := config.GetDgmplList(fr, to)
 
 	// URLスライス作成（複数ある場合があるので）
 	approachInfoUrls := make([]string, 0)
+	url := config.CreateApproachInfoUrl(from, too)
+	log.Println(url)
 
-	// URLを作成
-	for _, dgmpl := range dgmplList {
-		approachInfoUrls = append(approachInfoUrls, config.CreateApproachInfoUrl(from, dgmpl))
-	}
+	approachInfoUrls = append(approachInfoUrls, url)
 	return approachInfoUrls
 }
 
@@ -39,7 +41,7 @@ func (c *CustomContext) Response(methodName string, statusCode int, param interf
 }
 
 func errorNotification(statusCode int, methodName string) {
-	switch (statusCode) {
+	switch statusCode {
 	case http.StatusBadRequest:
 		slack.PostMessage(fmt.Sprintf("%s StatusBadRequest", methodName))
 	case http.StatusNoContent:
