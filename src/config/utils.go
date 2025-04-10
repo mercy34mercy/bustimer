@@ -39,10 +39,16 @@ func CreateApproachInfoUrl(from, to string) string {
 	return ApproachURL + "?departure-busstop=" + from + "&arrival-busstop=" + to
 }
 
-func CreateTimeTableUrl(from From, to To) string {
-	fr := frList[from.toString()]
-	dgmpl := dgmplList[from.toString()][to.toString()][0]
-	return TimeTableURL + "?fr=" + fr + "&dgmpl=" + dgmpl
+func CreateTimeTableUrl(from From, to To) map[string]string {
+	// fr := frList[from.toString()]
+	// dgmpl := dgmplList[from.toString()][to.toString()][0]
+	switch from {
+	case FromRits:
+		return ritsumeikanTimeTableURL
+	case FromMinakusa:
+		return minamikusatsuTimeTableURL
+	}
+	return map[string]string{}
 }
 
 func ConvertFromFrQuery(fr string) From {
