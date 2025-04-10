@@ -35,8 +35,8 @@ func GetDgmplList(fr, to string) []string {
 	return dgmplList
 }
 
-func CreateApproachInfoUrl(from, dgmpl string) string {
-	return ApproachURL + "?fr=" + from + "&dgmpl=" + dgmpl
+func CreateApproachInfoUrl(from, to string) string {
+	return ApproachURL + "?departure-busstop=" + from + "&arrival-busstop=" + to
 }
 
 func CreateTimeTableUrl(from From, to To) string {
@@ -172,10 +172,10 @@ func GetBusStop(from From, to To) string {
 	return num
 }
 
-func GetApproachBusStop(from From,to To,via string) string{
+func GetApproachBusStop(from From, to To, via string) string {
 	switch from {
 	case FromMinakusa:
-		switch via{
+		switch via {
 		case "パナソニック東口経由":
 			return "4"
 		case "パナソニック西口経由":
@@ -190,7 +190,7 @@ func GetApproachBusStop(from From,to To,via string) string{
 			return "1"
 		}
 	default:
-		return GetBusStop(from,to)
+		return GetBusStop(from, to)
 	}
 
 }
@@ -243,8 +243,8 @@ func TrimParentheses(str string) string {
 	if trimStr[0] == '(' {
 		trimStr = trimStr[1:]
 	}
-	if trimStr[len(trimStr) - 1] == ')' {
-		trimStr = trimStr[:len(trimStr) - 1]
+	if trimStr[len(trimStr)-1] == ')' {
+		trimStr = trimStr[:len(trimStr)-1]
 	}
 	return trimStr
 }

@@ -4,7 +4,7 @@ import "time"
 
 // 外部に公開するconst
 const (
-	ApproachURL                  = "https://ohmitetudo-bus.jorudan.biz/busstatedtl"
+	ApproachURL                  = "https://transfer-cloud.navitime.biz/ohmitetudo"
 	TimeTableURL                 = "https://ohmitetudo-bus.jorudan.biz/diagrampoledtl"
 	FrRits                       = "立命館大学〔近江鉄道・湖国バス〕"
 	FrMinakusa                   = "南草津駅〔近江鉄道・湖国バス〕"
@@ -58,8 +58,8 @@ var dgmplMap = map[string][]string{FrMinakusa: []string{"南草津駅〔近江�
 
 // frクエリからスクレイピングURL用のfrに変換するマップ
 var frList = map[string]string{
-	rits:           "立命館大学〔近江鉄道・湖国バス〕",
-	minakusa:       "南草津駅〔近江鉄道・湖国バス〕",
+	rits:           "00480156",
+	minakusa:       "00480011",
 	"野路":           "野路〔近江鉄道・湖国バス〕",
 	"南田山":          "南田山〔近江鉄道・湖国バス〕",
 	"玉川小学校前":       "玉川小学校前〔近江鉄道・湖国バス〕",
