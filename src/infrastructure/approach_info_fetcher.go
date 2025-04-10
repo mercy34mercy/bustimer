@@ -31,7 +31,6 @@ func (doc *CustomDocument) fetchApproachInfo() ([]string, []string, []string, []
 	realArrivalTime := make([]string, 0)
 	Direction := make([]string, 0)
 	ScheduledTime := make([]string, 0)
-	Delay := make([]string, 0)
 	Busstop := make([]string, 0)
 	Via := make([]string, 0)
 	RequiredTime := make([]int, 0)
@@ -57,7 +56,6 @@ func (doc *CustomDocument) fetchApproachInfo() ([]string, []string, []string, []
 	doc.Find("div.text-lg.font-bold.text-error strong.mx-1.text-2xl").Each(func(i int, s *goquery.Selection) {
 		waitTime := s.Text()
 		moreMin = append(moreMin, waitTime)
-		Delay = append(Delay, "")
 	})
 
 	doc.Find("dt.mr-1.break-all").Each(func(i int, s *goquery.Selection) {
@@ -65,6 +63,19 @@ func (doc *CustomDocument) fetchApproachInfo() ([]string, []string, []string, []
 		// 最後の1文字を抽出
 		lastChar := busstop[len(busstop)-1:]
 		Busstop = append(Busstop, lastChar)
+	})
+	Delay := make([]string, len(moreMin))
+	doc.Find("div.flex.justify-center.text-error").Each(func(i int, s *goquery.Selection) {
+		println(s.Text())
+		s.Find("span.mr-2").Each(func(i int, s *goquery.Selection) {
+			// textの2文字目を抽出
+			if len(s.Text()) > 1 {
+				delay := s.Text()[1]
+				Delay = append(Delay, string(delay))
+			} else {
+				Delay = append(Delay, "")
+			}
+		})
 	})
 
 	doc.Find("div.flex.flex-col").Each(func(i int, s *goquery.Selection) {
