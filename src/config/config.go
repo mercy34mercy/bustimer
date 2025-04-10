@@ -11,6 +11,17 @@ const (
 	TimeTableCacheUpdateDuration = 24 * 60 * 60 * time.Second
 )
 
+// 南草津タイムテーブルURL
+var minamikusatsuTimeTableURL = map[string]string{
+	"シャトル":          "https://transfer-cloud.navitime.biz/ohmitetudo/courses/timetables?busstop=00480156&course-sequence=0007900570-1",
+	"かがやき通り":        "https://transfer-cloud.navitime.biz/ohmitetudo/courses/timetables?busstop=00480156&course-sequence=0007900505-1",
+	"パナソニック西口・東口経由": "https://transfer-cloud.navitime.biz/ohmitetudo/courses/timetables?busstop=00480156&course-sequence=0007900503-1",
+}
+
+var ritsumeikanTimeTableURL = map[string]string{
+	"invalid": "https://transfer-cloud.navitime.biz/ohmitetudo/courses/timetables?busstop=00480011&course-sequence=0007900502-1",
+}
+
 type From int
 
 const (
