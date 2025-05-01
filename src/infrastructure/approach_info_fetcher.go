@@ -190,6 +190,15 @@ func findMinLen(dataset ...[]string) int {
 	return min
 }
 
+// 整数スライスの長さを考慮する関数を追加
+func findMinLenWithIntSlice(intSlice []int, dataset ...[]string) int {
+	min := findMinLen(dataset...)
+	if len(intSlice) < min {
+		min = len(intSlice)
+	}
+	return min
+}
+
 func (fetcher ApproachInfoFetcher) FetchApproachInfos(approachInfoUrl string, pastUrlsApproachInfos domain.ApproachInfos) domain.ApproachInfos {
 	// 返り値で返す変数を初期化
 	approachInfos := domain.CreateApproachInfos()
@@ -249,7 +258,7 @@ func (fetcher ApproachInfoFetcher) FetchApproachInfos(approachInfoUrl string, pa
 	moreMin, realArrivalTime, directions, scheduledTime, delay, busstop, via, requiredTime := customDoc.fetchApproachInfo()
 
 	// どれかが空の場合もあるので、最小の数を探す
-	iterateCount := findMinLen(moreMin, realArrivalTime, directions, scheduledTime, delay)
+	iterateCount := findMinLenWithIntSlice(requiredTime, moreMin, realArrivalTime, directions, scheduledTime, delay, via, busstop)
 	sameTimeCountDict := map[string]int{}
 	for _, pastUrlsApproachInfo := range pastUrlsApproachInfos.ApproachInfo {
 		if v, ok := sameTimeCountDict[pastUrlsApproachInfo.ScheduledTime]; ok {
