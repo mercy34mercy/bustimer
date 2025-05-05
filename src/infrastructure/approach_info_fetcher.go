@@ -1,16 +1,20 @@
 package infrastructure
 
 import (
+	"context"
 	"io"
 	"log"
 	"net/http"
 	"regexp"
 	"strconv"
 	"strings"
+	"time"
 
 	"github.com/PuerkitoBio/goquery"
 	"github.com/shun-shun123/bus-timer/src/config"
 	"github.com/shun-shun123/bus-timer/src/domain"
+	"go.opentelemetry.io/otel"
+	"go.opentelemetry.io/otel/attribute"
 )
 
 type ApproachInfoFetcher struct {
@@ -23,6 +27,7 @@ type CustomDocument struct {
 }
 
 var re = regexp.MustCompile(`約([0-9]+)分`)
+var fetcherTracer = otel.Tracer("bustimer/fetcher")
 
 // FetchApproachInfo 接近情報のサイトから取れる下記の情報をまとめてスクレイピングする
 func (doc *CustomDocument) FetchApproachInfo() ([]string, []string, []string, []string, []string, []string, []string, []int) {
@@ -172,20 +177,46 @@ func findMinLenWithIntSlice(intSlice []int, dataset ...[]string) int {
 }
 
 func (fetcher ApproachInfoFetcher) FetchApproachInfos(approachInfoUrl string, pastUrlsApproachInfos domain.ApproachInfos) domain.ApproachInfos {
+	return fetcher.FetchApproachInfosWithContext(context.Background(), approachInfoUrl, pastUrlsApproachInfos)
+}
+
+func (fetcher ApproachInfoFetcher) FetchApproachInfosWithContext(ctx context.Context, approachInfoUrl string, pastUrlsApproachInfos domain.ApproachInfos) domain.ApproachInfos {
+	// トレーシング
+	ctx, span := fetcherTracer.Start(ctx, "FetchApproachInfosWithContext")
+	defer span.End()
+
+	startTime := time.Now()
+
+	span.SetAttributes(
+		attribute.String("url", approachInfoUrl),
+		attribute.String("from", fetcher.from.String()),
+		attribute.String("to", fetcher.to.String()),
+	)
+
 	// 返り値で返す変数を初期化
 	approachInfos := domain.CreateApproachInfos()
 
+	// HTTPリクエスト
+	_, httpSpan := fetcherTracer.Start(ctx, "HTTPRequest")
 	resp, err := http.Get(approachInfoUrl)
+	httpSpan.SetAttributes(attribute.String("url", approachInfoUrl))
+
 	if err != nil {
 		log.Printf("Http/GET failed to %v because of %v", approachInfoUrl, err)
+		httpSpan.SetAttributes(attribute.String("error", err.Error()))
+		httpSpan.End()
 		return approachInfos
 	}
 	defer resp.Body.Close()
+	httpSpan.End()
 
 	// レスポンスのボディを読み込む
+	_, parseSpan := fetcherTracer.Start(ctx, "ParseResponse")
 	body, err := io.ReadAll(resp.Body)
 	if err != nil {
 		log.Printf("レスポンスのボディを読み込めませんでした: %v", err)
+		parseSpan.SetAttributes(attribute.String("error", err.Error()))
+		parseSpan.End()
 		return approachInfos
 	}
 
@@ -196,41 +227,56 @@ func (fetcher ApproachInfoFetcher) FetchApproachInfos(approachInfoUrl string, pa
 	approachDoc, err := goquery.NewDocumentFromReader(bodyReader)
 	if err != nil {
 		log.Printf("goquery.NewDocumentFromReader failed because of %v", err)
+		parseSpan.SetAttributes(attribute.String("error", err.Error()))
+		parseSpan.End()
 		return approachInfos
 	}
+	parseSpan.End()
 
-	// CustomDocument型に変換する
-	customDoc := CustomDocument{approachDoc}
-	moreMin, realArrivalTime, directions, scheduledTime, delay, busstop, via, requiredTime := customDoc.FetchApproachInfo()
+	// ドキュメントを操作するカスタムラッパー
+	doc := &CustomDocument{approachDoc}
 
-	// どれかが空の場合もあるので、最小の数を探す
-	iterateCount := findMinLenWithIntSlice(requiredTime, moreMin, realArrivalTime, directions, scheduledTime, delay, via, busstop)
-	sameTimeCountDict := map[string]int{}
-	for _, pastUrlsApproachInfo := range pastUrlsApproachInfos.ApproachInfo {
-		if v, ok := sameTimeCountDict[pastUrlsApproachInfo.ScheduledTime]; ok {
-			sameTimeCountDict[pastUrlsApproachInfo.ScheduledTime] = v + 1
-		} else {
-			sameTimeCountDict[pastUrlsApproachInfo.ScheduledTime] = 0
-		}
-	}
+	// スクレイピング
+	_, scrapeSpan := fetcherTracer.Start(ctx, "Scraping")
+	moreMin, realArrivalTime, direction, scheduledTime, delay, busstop, via, requiredTime := doc.FetchApproachInfo()
 
-	for i := 0; i < iterateCount; i++ {
-		// hh:mmの表記でくる
-		if v, ok := sameTimeCountDict[scheduledTime[i]]; ok {
-			sameTimeCountDict[scheduledTime[i]] = v + 1
-		} else {
-			sameTimeCountDict[scheduledTime[i]] = 0
-		}
-		approachInfos.ApproachInfo = append(approachInfos.ApproachInfo, domain.ApproachInfo{
+	// 結果の件数をトレース
+	scrapeSpan.SetAttributes(
+		attribute.Int("moreMinCount", len(moreMin)),
+		attribute.Int("realArrivalTimeCount", len(realArrivalTime)),
+		attribute.Int("directionCount", len(direction)),
+		attribute.Int("scheduledTimeCount", len(scheduledTime)),
+		attribute.Int("delayCount", len(delay)),
+		attribute.Int("busstopCount", len(busstop)),
+		attribute.Int("viaCount", len(via)),
+		attribute.Int("requiredTimeCount", len(requiredTime)),
+	)
+	scrapeSpan.End()
+
+	// 最小の長さを取得
+	min := findMinLenWithIntSlice(requiredTime, moreMin, realArrivalTime, direction, scheduledTime, delay, busstop, via)
+
+	for i := 0; i < min; i++ {
+		info := domain.ApproachInfo{
 			MoreMin:         moreMin[i],
 			RealArrivalTime: realArrivalTime[i],
-			Direction:       directions[i],
+			Direction:       direction[i],
+			Via:             via[i],
 			ScheduledTime:   scheduledTime[i],
 			Delay:           delay[i],
-			Via:             via[i],
 			BusStop:         busstop[i],
 			RequiredTime:    requiredTime[i],
-		})
+		}
+		approachInfos.ApproachInfo = append(approachInfos.ApproachInfo, info)
 	}
+
+	// 処理時間の記録
+	processingTime := time.Since(startTime)
+	span.SetAttributes(
+		attribute.String("processingTime", processingTime.String()),
+		attribute.Int64("processingTimeMs", processingTime.Milliseconds()),
+		attribute.Int("resultCount", len(approachInfos.ApproachInfo)),
+	)
+
 	return approachInfos
 }
