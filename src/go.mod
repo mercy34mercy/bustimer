@@ -1,6 +1,6 @@
 module github.com/shun-shun123/bus-timer/src
 
-go 1.24.2
+go 1.24
 
 require (
 	github.com/PuerkitoBio/goquery v1.5.1
