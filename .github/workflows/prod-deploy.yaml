@@ -42,3 +42,4 @@ jobs:
             --service-account $SERVICE_ACCOUNT \
             --region $GCP_REGION \
             --memory 512Mi
+            --set-env-vars PROJECT_ID=bustimer-381112
