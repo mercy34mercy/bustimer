@@ -2,8 +2,6 @@ module github.com/shun-shun123/bus-timer/src
 
 go 1.21
 
-toolchain go1.24.2
-
 require (
 	github.com/PuerkitoBio/goquery v1.5.1
 	github.com/ashwanthkumar/slack-go-webhook v0.0.0-20200209025033-430dd4e66960
