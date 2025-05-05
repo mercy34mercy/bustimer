@@ -49,6 +49,58 @@ const (
 	FromRitsumeikanUnivMae
 )
 
+// String は From 型を文字列に変換します
+func (f From) String() string {
+	switch f {
+	case Unknown:
+		return "Unknown"
+	case FromRits:
+		return "立命館大学"
+	case FromMinakusa:
+		return "南草津駅"
+	case FromNoji:
+		return "野路"
+	case FromNandayama:
+		return "南田山"
+	case FromTamagawashogakkomae:
+		return "玉川小学校前"
+	case FromOnoyama:
+		return "小野山"
+	case FromPanaHigashi:
+		return "パナソニック東口"
+	case FromPanaMae:
+		return "パナソニック前"
+	case FromPanaNishi:
+		return "パナソニック西口"
+	case FromKasayamaHigashi:
+		return "笠山東"
+	case FromSasanoguchi:
+		return "笹の口"
+	case FromKuresutoKusatsumae:
+		return "クレスト草津前"
+	case FromBkcGreenField:
+		return "BKCグリーンフィールド"
+	case FromNojiKigaguchi:
+		return "野路北口"
+	case FromKusatsuKureaHole:
+		return "草津クレアホール"
+	case FromHigashiyakuraMinami:
+		return "東矢倉南"
+	case FromHigashiyakuraShokuinnjutaku:
+		return "東矢倉職員住宅"
+	case FromMukoyamaNewTown:
+		return "向山ニュータウン"
+	case FromMaruo:
+		return "丸尾"
+	case FromWakakusaKitaguchi:
+		return "若草北口"
+	case FromRitsumeikanUnivMae:
+		return "立命館大学正門前"
+	default:
+		return "Unknown"
+	}
+}
+
 type To int
 
 const (
@@ -56,6 +108,20 @@ const (
 	ToRits
 	ToMinakusa
 )
+
+// String は To 型を文字列に変換します
+func (t To) String() string {
+	switch t {
+	case ToUnknown:
+		return "Unknown"
+	case ToRits:
+		return "立命館大学"
+	case ToMinakusa:
+		return "南草津駅"
+	default:
+		return "Unknown"
+	}
+}
 
 // privateなconst
 const (

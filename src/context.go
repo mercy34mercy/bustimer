@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	"log"
 	"net/http"
@@ -12,6 +13,11 @@ import (
 
 type CustomContext struct {
 	echo.Context
+}
+
+// Request は context.Context を返します
+func (c *CustomContext) Request() context.Context {
+	return c.Context.Request().Context()
 }
 
 // echo.Contextからクエリ情報を取り出して接近情報のスクレイピングをするためのURLを生成する
