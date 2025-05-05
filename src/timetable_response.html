@@ -1,0 +1,2662 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="ja-JP" data-capo="">
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>立命館大学の時刻表 | 近江鉄道・湖国バス</title>
+	<link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="anonymous" data-hid="23dc7e4">
+	<link rel="preconnect" href="https://fonts.googleapis.com/" data-hid="50e9084">
+	<link rel="stylesheet" href="/_nuxt/styles/ohmitetudo.css">
+	<style>
+		#vue3-snackbar--container {
+			margin: 16px 16px 0;
+			padding: 0;
+			pointer-events: none;
+			position: fixed;
+			z-index: var(--snackbar-zindex)
+		}
+
+		#vue3-snackbar--container.is-rtl .vue3-snackbar-message-icon {
+			margin-left: 16px;
+			margin-right: 0
+		}
+
+		#vue3-snackbar--container.is-top {
+			top: 0
+		}
+
+		#vue3-snackbar--container.is-bottom {
+			bottom: 0
+		}
+
+		#vue3-snackbar--container.is-left {
+			left: 0
+		}
+
+		#vue3-snackbar--container.is-right {
+			right: 0
+		}
+
+		#vue3-snackbar--container.is-middle {
+			top: 50%;
+			transform: translateY(-50%)
+		}
+
+		#vue3-snackbar--container.is-centre {
+			left: 50%;
+			transform: translate(-50%)
+		}
+
+		#vue3-snackbar--container.has-shadow .vue3-snackbar-message {
+			box-shadow: 0 10px 15px -3px #0000001a, 0 4px 6px -4px #0000001a
+		}
+
+		.vue3-snackbar-message {
+			border-radius: 4px;
+			color: var(--message-text-color, #fff);
+			display: flex;
+			margin-bottom: 16px;
+			pointer-events: all;
+			position: relative
+		}
+
+		.vue3-snackbar-message-action {
+			display: flex;
+			justify-content: flex-end;
+			width: 100%
+		}
+
+		.vue3-snackbar-message-action:not(:empty) {
+			padding-top: .5rem
+		}
+
+		.vue3-snackbar-message.has-border {
+			background-color: var(--base-background-color, #fff);
+			border: 0 solid;
+			position: relative
+		}
+
+		.vue3-snackbar-message.has-border:before {
+			background-color: var(--background-color);
+			border-radius: inherit;
+			bottom: 0;
+			content: "";
+			left: 0;
+			opacity: var(--background-opacity);
+			position: absolute;
+			right: 0;
+			top: 0
+		}
+
+		.vue3-snackbar-message.has-border.success {
+			color: var(--success-colour)
+		}
+
+		.vue3-snackbar-message.has-border.error {
+			color: var(--error-colour)
+		}
+
+		.vue3-snackbar-message.has-border.info {
+			color: var(--info-colour)
+		}
+
+		.vue3-snackbar-message.has-border.warning {
+			color: var(--warning-colour)
+		}
+
+		.vue3-snackbar-message.has-border.has-background {
+			color: var(--message-background)
+		}
+
+		.vue3-snackbar-message.border-left {
+			border-left-width: 8px
+		}
+
+		.vue3-snackbar-message.border-right {
+			border-right-width: 8px
+		}
+
+		.vue3-snackbar-message.border-top {
+			border-top-width: 8px
+		}
+
+		.vue3-snackbar-message.border-bottom {
+			border-bottom-width: 8px
+		}
+
+		.vue3-snackbar-message.success:not(.has-background):not(.has-border) {
+			background-color: var(--success-colour);
+			border-color: var(--success-colour)
+		}
+
+		.vue3-snackbar-message.error:not(.has-background):not(.has-border) {
+			background-color: var(--error-colour);
+			border-color: var(--error-colour)
+		}
+
+		.vue3-snackbar-message.warning:not(.has-background):not(.has-border) {
+			background-color: var(--warning-colour);
+			border-color: var(--warning-colour)
+		}
+
+		.vue3-snackbar-message.info:not(.has-background):not(.has-border) {
+			background-color: var(--info-colour);
+			border-color: var(--info-colour)
+		}
+
+		.vue3-snackbar-message.has-background:not(.has-border) {
+			background-color: var(--message-background);
+			border-color: var(--message-background)
+		}
+
+		.vue3-snackbar-message-wrapper {
+			align-items: center;
+			border-radius: inherit;
+			display: flex;
+			padding: 16px
+		}
+
+		.vue3-snackbar-message.is-dense .vue3-snackbar-message-wrapper {
+			padding: 8px 16px
+		}
+
+		.vue3-snackbar-message-title {
+			font-weight: 700;
+			position: relative
+		}
+
+		.vue3-snackbar-message-additional {
+			position: relative
+		}
+
+		.vue3-snackbar-message-icon {
+			color: var(--message-icon-color, currentColor);
+			display: flex;
+			margin-right: 16px
+		}
+
+		.vue3-snackbar-message-close {
+			margin-left: 16px;
+			min-width: 30px
+		}
+
+		.vue3-snackbar-message-close button {
+			-webkit-appearance: none
+		}
+
+		.vue3-snackbar-message-close button:focus:not(:focus-visible) {
+			outline: none
+		}
+
+		.vue3-snackbar-message-close button:focus:not(:-moz-focusring) {
+			outline: none
+		}
+
+		.vue3-snackbar-message-close button {
+			background: transparent;
+			border: none;
+			color: inherit;
+			font: inherit;
+			line-height: normal;
+			margin: 0;
+			overflow: visible;
+			padding: 0;
+			-webkit-font-smoothing: inherit;
+			-moz-osx-font-smoothing: inherit;
+			align-items: center;
+			cursor: pointer;
+			display: flex;
+			height: 30px;
+			justify-content: center;
+			position: relative;
+			text-align: inherit;
+			width: 30px
+		}
+
+		.vue3-snackbar-message-close button:before {
+			background: currentColor;
+			border-radius: 50%;
+			bottom: 0;
+			content: "";
+			left: 0;
+			opacity: 0;
+			pointer-events: none;
+			position: absolute;
+			right: 0;
+			top: 0;
+			transition: opacity .3s ease-in-out
+		}
+
+		.vue3-snackbar-message-close button:hover:before {
+			opacity: .22
+		}
+
+		.vue3-snackbar-message-content {
+			display: flex;
+			flex-flow: column;
+			width: min(50vw, 350px)
+		}
+
+		.vue3-snackbar-message-badge {
+			background: #c10015;
+			border: 1px solid crimson;
+			border-radius: 8px;
+			box-shadow: 0 1px 3px #0003, 0 1px 1px #00000024, 0 2px 1px -1px #0000001f;
+			color: #fff;
+			font-size: .9em;
+			font-weight: 700;
+			left: 0;
+			padding: .125em .5em;
+			position: absolute;
+			top: 0;
+			transform: translate(-25%, -25%)
+		}
+
+		.vue3-snackbar-message.border-left .vue3-snackbar-message-badge {
+			left: 0;
+			top: -5px
+		}
+
+		.vue3-snackbar-message-enter-from {
+			opacity: 0;
+			transform: translateY(50%)
+		}
+
+		.vue3-snackbar-message-leave-from {
+			max-height: 1000px
+		}
+
+		.vue3-snackbar .vue3-snackbar-message.vue3-snackbar-message-leave-to {
+			margin-bottom: 0;
+			max-height: 0;
+			opacity: 0;
+			overflow: hidden
+		}
+
+		.vue3-snackbar .vue3-snackbar-message.vue3-snackbar-message-leave-to .vue3-snackbar-message-badge {
+			opacity: 0
+		}
+
+		.vue3-snackbar-message-enter-active {
+			transition: transform .3s, opacity .3s
+		}
+
+		.vue3-snackbar-message-leave-active {
+			transition: max-height .45s cubic-bezier(0, 1, 0, 1), opacity .3s, margin-bottom .3s
+		}
+
+		@keyframes headShake {
+			0% {
+				transform: translate(-25%, -25%)
+			}
+
+			6.5% {
+				transform: translate(calc(-25% - 6px), -25%) rotateY(-9deg)
+			}
+
+			18.5% {
+				transform: translate(calc(-25% + 5px), -25%) rotateY(7deg)
+			}
+
+			31.5% {
+				transform: translate(calc(-25% - 3px), -25%) rotateY(-5deg)
+			}
+
+			43.5% {
+				transform: translate(calc(-25% + 2px), -25%) rotateY(3deg)
+			}
+
+			50% {
+				transform: translate(-25%, -25%)
+			}
+		}
+
+		.shake-baby-shake .vue3-snackbar-message-badge {
+			animation-duration: 1s;
+			animation-fill-mode: both;
+			animation-name: headShake;
+			animation-timing-function: ease-in-out
+		}
+	</style>
+	<style>
+		.vue-universal-modal-enter-to,
+		.vue-universal-modal-leave-from {
+			opacity: 1
+		}
+
+		.vue-universal-modal-enter-from,
+		.vue-universal-modal-leave-to {
+			opacity: 0
+		}
+
+		.vue-universal-modal {
+			-webkit-overflow-scrolling: touch;
+			background-color: #000c;
+			bottom: 0;
+			left: 0;
+			overflow-y: auto;
+			overscroll-behavior: contain;
+			position: fixed;
+			right: 0;
+			text-align: left;
+			top: 0
+		}
+
+		.vue-universal-modal:not(.vue-universal-modal-latest) {
+			background: none
+		}
+
+		.vue-universal-modal-content {
+			align-items: center;
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			min-height: 100%;
+			width: 100%
+		}
+	</style>
+	<style>
+		.v-enter-active[data-v-bd5cd6ac],
+		.v-leave-active[data-v-bd5cd6ac] {
+			transition: transform .5s ease
+		}
+
+		.v-enter-from[data-v-bd5cd6ac],
+		.v-leave-to[data-v-bd5cd6ac] {
+			transform: translateX(1000px)
+		}
+	</style>
+	<style>
+		.no-contents[data-v-8933f69e] {
+			align-items: center;
+			display: flex;
+			flex-direction: column;
+			margin-top: 120px
+		}
+
+		.no-contents .title[data-v-8933f69e] {
+			font-size: 1.25rem;
+			font-weight: 700;
+			margin: 0
+		}
+
+		.no-contents p[data-v-8933f69e] {
+			margin: 2rem 0 0
+		}
+	</style>
+	<style>
+		@page {
+			margin-bottom: 0;
+			margin-top: 0
+		}
+	</style>
+	<link rel="stylesheet" href="/_nuxt/entry.Cg5QcwFf.css">
+	<link rel="modulepreload" as="script" crossorigin href="/_nuxt/B8o6eKK8.js">
+	<link rel="modulepreload" as="script" crossorigin href="/_nuxt/C4ql3Nb-.js">
+	<link rel="modulepreload" as="script" crossorigin href="/_nuxt/7C819fZI.js">
+	<link rel="modulepreload" as="script" crossorigin href="/_nuxt/DooZwMsP.js">
+	<link rel="modulepreload" as="script" crossorigin href="/_nuxt/CSBKsd57.js">
+	<link rel="modulepreload" as="script" crossorigin href="/_nuxt/CWBG0yNQ.js">
+	<link rel="modulepreload" as="script" crossorigin href="/_nuxt/Caz-8JfN.js">
+	<link rel="modulepreload" as="script" crossorigin href="/_nuxt/APS22MP4.js">
+	<link rel="modulepreload" as="script" crossorigin href="/_nuxt/Dk59ijjs.js">
+	<link rel="modulepreload" as="script" crossorigin href="/_nuxt/B3TwxFQn.js">
+	<link rel="modulepreload" as="script" crossorigin href="/_nuxt/BdBfgSq1.js">
+	<link rel="modulepreload" as="script" crossorigin href="/_nuxt/BSt1wWfQ.js">
+	<link rel="modulepreload" as="script" crossorigin href="/_nuxt/BB19WhBK.js">
+	<link rel="modulepreload" as="script" crossorigin href="/_nuxt/BsPO30f4.js">
+	<link rel="modulepreload" as="script" crossorigin href="/_nuxt/C8OJczlE.js">
+	<link rel="modulepreload" as="script" crossorigin href="/_nuxt/E7wqdc8T.js">
+	<link rel="modulepreload" as="script" crossorigin href="/_nuxt/BVugJcl4.js">
+	<link rel="modulepreload" as="script" crossorigin href="/_nuxt/BvPlT_vo.js">
+	<link rel="modulepreload" as="script" crossorigin href="/_nuxt/CwrlJuVp.js">
+	<link rel="modulepreload" as="script" crossorigin href="/_nuxt/AJDP5tKQ.js">
+	<link rel="modulepreload" as="script" crossorigin href="/_nuxt/BiKUGvsp.js">
+	<link rel="modulepreload" as="script" crossorigin href="/_nuxt/BFkajIGR.js">
+	<link rel="modulepreload" as="script" crossorigin href="/_nuxt/BVIp1g51.js">
+	<link rel="modulepreload" as="script" crossorigin href="/_nuxt/BZcXyY5d.js">
+	<link rel="modulepreload" as="script" crossorigin href="/_nuxt/DN6uRe1p.js">
+	<link rel="modulepreload" as="script" crossorigin href="/_nuxt/BjhfpjcG.js">
+	<link rel="modulepreload" as="script" crossorigin href="/_nuxt/BCro_LcQ.js">
+	<link rel="modulepreload" as="script" crossorigin href="/_nuxt/D91fL7Cq.js">
+	<link rel="modulepreload" as="script" crossorigin href="/_nuxt/BtjtJkZH.js">
+	<link rel="modulepreload" as="script" crossorigin href="/_nuxt/C3nYnaVP.js">
+	<link rel="modulepreload" as="script" crossorigin href="/_nuxt/Bj9MvM2g.js">
+	<link rel="modulepreload" as="script" crossorigin href="/_nuxt/C5CXRSoG.js">
+	<link rel="modulepreload" as="script" crossorigin href="/_nuxt/bi4__z10.js">
+	<link rel="modulepreload" as="script" crossorigin href="/_nuxt/BS8y9XxY.js">
+	<link rel="modulepreload" as="script" crossorigin href="/_nuxt/DCkt_030.js">
+	<link rel="modulepreload" as="script" crossorigin href="/_nuxt/Bihlh89T.js">
+	<link rel="modulepreload" as="script" crossorigin href="/_nuxt/DN5bMArF.js">
+	<link rel="modulepreload" as="script" crossorigin href="/_nuxt/PBlQGT_t.js">
+	<link rel="modulepreload" as="script" crossorigin href="/_nuxt/DonMtexL.js">
+	<link rel="modulepreload" as="script" crossorigin href="/_nuxt/CH_VWOFJ.js">
+	<link rel="modulepreload" as="script" crossorigin href="/_nuxt/DM4NwLC2.js">
+	<link rel="modulepreload" as="script" crossorigin href="/_nuxt/C3g3rMZJ.js">
+	<link rel="modulepreload" as="script" crossorigin href="/_nuxt/B25F7TX0.js">
+	<link rel="modulepreload" as="script" crossorigin href="/_nuxt/BRwOZwyw.js">
+	<link rel="modulepreload" as="script" crossorigin href="/_nuxt/DdSo3Z_g.js">
+	<link rel="modulepreload" as="script" crossorigin href="/_nuxt/C9kfM2xq.js">
+	<link rel="modulepreload" as="script" crossorigin href="/_nuxt/Czf_FYoh.js">
+	<link rel="modulepreload" as="script" crossorigin href="/_nuxt/Bhr_Xooo.js">
+	<link rel="modulepreload" as="script" crossorigin href="/_nuxt/Co2Ly-_k.js">
+	<link rel="modulepreload" as="script" crossorigin href="/_nuxt/Dit7eAZD.js">
+	<link rel="modulepreload" as="script" crossorigin href="/_nuxt/CR7Weis-.js">
+	<link rel="modulepreload" as="script" crossorigin href="/_nuxt/2I4V2REd.js">
+	<link rel="modulepreload" as="script" crossorigin href="/_nuxt/Bhk7D6LA.js">
+	<link rel="modulepreload" as="script" crossorigin href="/_nuxt/gjRNygWQ.js">
+	<link rel="dns-prefetch" href="https://fonts.gstatic.com/" data-hid="7475ad2">
+	<link rel="prefetch" as="script" crossorigin href="/_nuxt/SMjakKeG.js">
+	<link rel="prefetch" as="script" crossorigin href="/_nuxt/DMji9k0r.js">
+	<link rel="prefetch" as="script" crossorigin href="/_nuxt/JV-0-qTC.js">
+	<link rel="prefetch" as="script" crossorigin href="/_nuxt/HSo2izp2.js">
+	<link rel="prefetch" as="script" crossorigin href="/_nuxt/iPFbAR_3.js">
+	<link rel="prefetch" as="script" crossorigin href="/_nuxt/DDTTHiYu.js">
+	<link rel="prefetch" as="script" crossorigin href="/_nuxt/CcIob-MM.js">
+	<link rel="prefetch" as="script" crossorigin href="/_nuxt/BHBB-5Sl.js">
+	<link rel="prefetch" as="script" crossorigin href="/_nuxt/BOQrnL2-.js">
+	<link rel="prefetch" as="script" crossorigin href="/_nuxt/C7vckIxD.js">
+	<link rel="prefetch" as="script" crossorigin href="/_nuxt/4pXaY4z9.js">
+	<link rel="prefetch" as="script" crossorigin href="/_nuxt/Te52wRy6.js">
+	<link rel="prefetch" as="script" crossorigin href="/_nuxt/DHpC7VB5.js">
+	<link rel="prefetch" as="script" crossorigin href="/_nuxt/bl4puEq4.js">
+	<link rel="prefetch" as="script" crossorigin href="/_nuxt/CSg3nt0Z.js">
+	<link rel="prefetch" as="script" crossorigin href="/_nuxt/Js3xNKzZ.js">
+	<link rel="prefetch" as="script" crossorigin href="/_nuxt/rE2loMeS.js">
+	<link rel="prefetch" as="script" crossorigin href="/_nuxt/DJG0JnaA.js">
+	<link rel="prefetch" as="script" crossorigin href="/_nuxt/DvmJID29.js">
+	<link rel="prefetch" as="script" crossorigin href="/_nuxt/YbXhaaVF.js">
+	<link rel="prefetch" as="script" crossorigin href="/_nuxt/BBqLL6bT.js">
+	<link rel="prefetch" as="script" crossorigin href="/_nuxt/By3tUlZ5.js">
+	<link rel="prefetch" as="script" crossorigin href="/_nuxt/1lTzLOrR.js">
+	<link rel="prefetch" as="script" crossorigin href="/_nuxt/DWM5tiuw.js">
+	<link rel="prefetch" as="script" crossorigin href="/_nuxt/WyT_bLmh.js">
+	<link rel="prefetch" as="script" crossorigin href="/_nuxt/OTIHsD4g.js">
+	<link rel="prefetch" as="script" crossorigin href="/_nuxt/RiBMQFG9.js">
+	<link rel="prefetch" as="script" crossorigin href="/_nuxt/MM0UrLX_.js">
+	<link rel="prefetch" as="script" crossorigin href="/_nuxt/B4K5DKVd.js">
+	<link rel="prefetch" as="script" crossorigin href="/_nuxt/CNne17ee.js">
+	<link rel="prefetch" as="script" crossorigin href="/_nuxt/BzpdWKZ4.js">
+	<link rel="prefetch" as="script" crossorigin href="/_nuxt/_zPRvSic.js">
+	<link rel="prefetch" as="script" crossorigin href="/_nuxt/BPkH0eUB.js">
+	<link rel="prefetch" as="script" crossorigin href="/_nuxt/C7J-ps_u.js">
+	<link rel="prefetch" as="script" crossorigin href="/_nuxt/BrK57QZt.js">
+	<link rel="prefetch" as="script" crossorigin href="/_nuxt/ZJHCj6AG.js">
+	<link rel="prefetch" as="script" crossorigin href="/_nuxt/DzFSmZgb.js">
+	<link rel="prefetch" as="script" crossorigin href="/_nuxt/Bk-on23p.js">
+	<link rel="prefetch" as="script" crossorigin href="/_nuxt/DPLYK03W.js">
+	<link rel="prefetch" as="script" crossorigin href="/_nuxt/Cof-EvJX.js">
+	<link rel="prefetch" as="script" crossorigin href="/_nuxt/my4N0H3Z.js">
+	<link rel="prefetch" as="script" crossorigin href="/_nuxt/rksIRJNA.js">
+	<link rel="prefetch" as="script" crossorigin href="/_nuxt/DjFtO012.js">
+	<link rel="prefetch" as="script" crossorigin href="/_nuxt/C9CVekhx.js">
+	<link rel="prefetch" as="script" crossorigin href="/_nuxt/BPDIxMLa.js">
+	<link rel="prefetch" as="script" crossorigin href="/_nuxt/DBVeaQC9.js">
+	<link rel="prefetch" as="script" crossorigin href="/_nuxt/D_4Jeg1d.js">
+	<link rel="prefetch" as="script" crossorigin href="/_nuxt/CUjJWUyt.js">
+	<link rel="prefetch" as="script" crossorigin href="/_nuxt/D6rMixq7.js">
+	<link rel="prefetch" as="script" crossorigin href="/_nuxt/BtDEDMH3.js">
+	<link rel="prefetch" as="script" crossorigin href="/_nuxt/C4l4JXXH.js">
+	<link rel="prefetch" as="script" crossorigin href="/_nuxt/CZYwT9K3.js">
+	<link rel="prefetch" as="script" crossorigin href="/_nuxt/D1yfzHdb.js">
+	<link rel="prefetch" as="script" crossorigin href="/_nuxt/CCyYXmT7.js">
+	<link rel="prefetch" as="script" crossorigin href="/_nuxt/CGE8UrOc.js">
+	<link rel="prefetch" as="script" crossorigin href="/_nuxt/BGkiaOuG.js">
+	<link rel="prefetch" as="script" crossorigin href="/_nuxt/CbCgfAeE.js">
+	<link rel="prefetch" as="script" crossorigin href="/_nuxt/z8DHAqxl.js">
+	<link rel="prefetch" as="script" crossorigin href="/_nuxt/CB3YWBxg.js">
+	<link rel="prefetch" as="script" crossorigin href="/_nuxt/DRkx11J_.js">
+	<link rel="prefetch" as="script" crossorigin href="/_nuxt/CGEqx5L5.js">
+	<script data-hid="60bf5ec">
+		(function(){
+        var h=document.querySelector("head");
+        var m=h.querySelector('meta[name="head:count"]');
+        if(m){m.setAttribute('content',Number(m.getAttribute('content'))+1);}
+        else{m=document.createElement('meta');m.setAttribute('name','head:count');m.setAttribute('content','1');h.append(m);}
+        var l=document.createElement('link');l.rel='stylesheet';l.href='https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Roboto:wght@400;500;700&family=Noto+Sans+SC:wght@400;500;700&family=Noto+Sans+TC:wght@400;500;700&family=Noto+Sans+KR:wght@400;500;700&family=Noto+Sans+Thai:wght@400;500;700&display=swap';h.appendChild(l);
+      })();
+	</script>
+	<link rel="icon" type="image/x-icon" href="/images/ohmitetudo/favicon.ico">
+	<link rel="apple-touch-icon" href="/images/ohmitetudo/apple-touch-icon.png">
+	<link rel="shortcut icon" href="/images/ohmitetudo/android-chrome.png">
+	<meta name="description" content="立命館大学の時刻表です。立命館大学を出発するバスの時刻や行先を確認できます。">
+	<meta name="robots" content="noindex">
+	<link rel="canonical"
+		href="https://app_frontend:3000/ohmitetudo/courses/timetables?busstop=00480011&course-sequence=0007900502-1">
+	<script type="module" src="/_nuxt/B8o6eKK8.js" crossorigin></script>
+</head>
+
+<body><noscript>
+		<link rel="stylesheet"
+			href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Roboto:wght@400;500;700&family=Noto+Sans+SC:wght@400;500;700&family=Noto+Sans+TC:wght@400;500;700&family=Noto+Sans+KR:wght@400;500;700&family=Noto+Sans+Thai:wght@400;500;700&display=swap">
+		</noscript>
+	<div id="__nuxt">
+		<!--[-->
+		<div class="nuxt-loading-indicator"
+			style="position:fixed;top:0;right:0;left:0;pointer-events:none;width:auto;height:0px;opacity:0;background:repeating-linear-gradient(to right,#00dc82 0%,#34cdfe 50%,#0047e1 100%);background-size:Infinity% auto;transform:scaleX(0%);transform-origin:left;transition:transform 0.1s, height 0.4s, opacity 0.4s;z-index:999999;">
+			<!--[-->
+			<!---->
+			<!--]-->
+		</div>
+		<!--[-->
+		<div class="flex h-screen flex-col">
+			<header class="flex justify-between border-b border-light-line print:hidden"
+				style="background-color:#FFFFFF;"><a href="https://www.ohmitetudo.co.jp/bus/" rel="noopener noreferrer"
+					target="_blank"><img src="/_nuxt/logo.BRJAwTOA.png" width="200" height="50" decoding="async" alt="近江バス・湖国バス" class="my-5 ml-8 h-[50px] w-auto"></a>
+					<!---->
+			</header>
+			<main class="flex grow flex-col justify-between" data-v-e72d4a4b>
+				<div data-v-e72d4a4b>
+					<nav class="flex items-center justify-between my-2 print:hidden" data-v-e72d4a4b>
+						<ol class="ml-4 flex text-xs">
+							<!--[-->
+							<li>
+								<div class="flex"><a href="https://www.ohmitetudo.co.jp/bus/" rel="noopener noreferrer"
+										target="_blank">近江バス・湖国バス</a><span class="mx-3">&gt;</span></div>
+							</li>
+							<li>
+								<div class="flex"><a href="/ohmitetudo?feature=timetable"
+										class="">バス停・駅時刻表検索</a><span class="mx-3">&gt;</span></div>
+							</li>
+							<li>
+								<div class="flex"><a href="/ohmitetudo/courses?busstop=00480011" class="">立命館大学
+										系統・時刻表・のりば一覧</a><span class="mx-3">&gt;</span></div>
+							</li>
+							<li>
+								<!--[-->立命館大学 時刻表
+								<!--]-->
+							</li>
+							<!--]-->
+						</ol>
+						<div class="mr-4 flex items-center">
+							<ol class="flex space-x-4 text-xs">
+								<!--[-->
+								<li><a href="https://www.ohmitetudo.co.jp/bus/ride/route-price/"
+										rel="noopener noreferrer" target="_blank">路線図／運賃表</a></li>
+								<li><a href="https://ohmitetudo-delay.mobustation.jp/delay/main.aspx?c=ohmi"
+										rel="noopener noreferrer" target="_blank">遅延証明書</a></li>
+								<!--]-->
+								<li><a href="/ohmitetudo" class="">検索トップページ</a></li>
+								<li>
+									<!---->
+								</li>
+							</ol>
+							<!---->
+						</div>
+					</nav>
+					<!---->
+					<!---->
+					<div class="m-auto w-[1000px]" data-v-e72d4a4b>
+						<section class="my-4 flex items-center justify-between" data-v-e72d4a4b>
+							<div class="flex items-end gap-x-10" data-v-e72d4a4b>
+								<h1 class="flex items-end gap-x-6 break-all font-bold" data-v-e72d4a4b><ruby
+										class="flex flex-col-reverse" data-v-e72d4a4b>
+										<!--[--><span class="block w-full pt-0.5 text-2xl" data-v-e72d4a4b>立命館大学</span>
+										<!--]-->
+										<rp>(</rp>
+										<rt class="text-left text-text-grey text-xs">りつめいかんだいがく</rt>
+										<rp>)</rp></ruby><span class="min-w-fit text-xl" data-v-e72d4a4b>時刻表</span></h1>
+								<a href="/ohmitetudo/courses?busstop=00480011" class="min-w-fit leading-7 print:hidden"
+									data-v-e72d4a4b>このバス停の系統一覧</a>
+							</div>
+							<div class="flex min-w-fit items-center" data-v-e72d4a4b>
+								<button type="button" class="h-12 w-32 rounded border border-button px-2 text-base bg-white text-button mx-4 print:hidden" data-v-e72d4a4b>印刷</button>
+								<figure class="flex min-w-fit items-center" data-v-e72d4a4b>
+									<figcaption class="mr-2 whitespace-pre-line text-xs text-text-grey">スマートフォンで
+										時刻表を見る</figcaption><canvas></canvas>
+								</figure>
+							</div>
+						</section>
+						<section class="flex items-center" data-v-e72d4a4b>
+							<!--[-->
+							<h2 class="text-lg font-bold" data-v-e72d4a4b>のりば: 2</h2>
+							<div class="px-3 print:hidden" data-v-e72d4a4b><a
+									href="/ohmitetudo/courses?busstop=00480011#pole-map" class="" data-v-e72d4a4b>地図</a>
+							</div>
+							<!--]-->
+							<!--[-->
+							<div class="border-l border-light-line px-3 print:hidden"><a
+									href="/ohmitetudo/approachings?departure-busstop=00480011&amp;pole=000000000021"
+									class="">バス接近情報</a></div>
+							<!--]-->
+						</section>
+						<!---->
+						<!--[-->
+						<!--[-->
+						<table class="print:border-b print:border-b-light-line mt-8">
+							<tbody>
+								<!--[-->
+								<tr class="border-t border-t-light-line">
+									<td class="whitespace-nowrap py-1">
+										<div class="flex items-center">
+											<input type="checkbox" id="0007900524-9" checked class="my-1 ml-0.5 mr-4 h-5 w-5 cursor-pointer accent-link print:hidden"><label class="flex items-center" for="0007900524-9"><span class="mr-4">南草津飛島線</span></label>
+										</div>
+									</td>
+									<td class="whitespace-nowrap py-1 font-bold"><span>南草津駅行</span></td>
+									<td class="w-full"></td>
+								</tr>
+								<tr class="border-t border-t-light-line">
+									<td class="whitespace-nowrap py-1">
+										<div class="flex items-center">
+											<input type="checkbox" id="0007900504-1" checked class="my-1 ml-0.5 mr-4 h-5 w-5 cursor-pointer accent-link print:hidden"><label class="flex items-center" for="0007900504-1"><span class="mr-4">南草津立命線（かがやき）</span></label>
+										</div>
+									</td>
+									<td class="whitespace-nowrap py-1 font-bold"><span>南草津駅行</span></td>
+									<td class="w-full"></td>
+								</tr>
+								<tr class="border-t border-t-light-line">
+									<td class="whitespace-nowrap py-1">
+										<div class="flex items-center">
+											<input type="checkbox" id="0007900544-1" checked class="my-1 ml-0.5 mr-4 h-5 w-5 cursor-pointer accent-link print:hidden"><label class="flex items-center" for="0007900544-1"><span class="mr-4">南草津立命線（パナ西）</span></label>
+										</div>
+									</td>
+									<td class="whitespace-nowrap py-1 font-bold"><span>南草津駅行</span></td>
+									<td class="w-full"></td>
+								</tr>
+								<tr class="border-t border-t-light-line">
+									<td class="whitespace-nowrap py-1">
+										<div class="flex items-center">
+											<input type="checkbox" id="0007900502-1" checked class="my-1 ml-0.5 mr-4 h-5 w-5 cursor-pointer accent-link print:hidden"><label class="flex items-center" for="0007900502-1"><span class="mr-4">南草津立命線（パナ東）</span></label>
+										</div>
+									</td>
+									<td class="whitespace-nowrap py-1 font-bold"><span>南草津駅行</span></td>
+									<td class="w-full"></td>
+								</tr>
+								<tr class="border-t border-t-light-line">
+									<td class="whitespace-nowrap py-1">
+										<div class="flex items-center">
+											<input type="checkbox" id="0007900571-1" checked class="my-1 ml-0.5 mr-4 h-5 w-5 cursor-pointer accent-link print:hidden"><label class="flex items-center" for="0007900571-1"><span class="mr-4">南草津立命線（直行）</span></label>
+										</div>
+									</td>
+									<td class="whitespace-nowrap py-1 font-bold"><span>南草津駅行</span></td>
+									<td class="w-full"></td>
+								</tr>
+								<!--]-->
+							</tbody>
+							<tfoot class="border-t border-t-light-line print:hidden">
+								<tr>
+									<td colspan="3" class="py-1">
+										<div class="flex items-center">
+											<input type="checkbox" id="selectUnselectAllCourses" checked class="ml-0.5 h-5 w-5 accent-link"><label for="selectUnselectAllCourses" class="ml-2 text-sm">すべて選択・解除</label>
+										</div>
+									</td>
+								</tr>
+							</tfoot>
+						</table>
+						<!--]-->
+						<!--]-->
+						<!--[-->
+						<table class="mt-6 w-full table-fixed border-collapse border border-dark-line">
+							<caption class="mb-4">
+								<div class="flex justify-end">
+									<!----><span class="text-text-grey"><time datetime="2025-04-10" class="mr-2">2025年4月10日</time>現在</span>
+								</div>
+							</caption>
+							<thead>
+								<tr>
+									<th class="border border-dark-line" style="width:4%;">
+										<div class="py-1 text-lg font-normal">時</div>
+									</th>
+									<!--[-->
+									<th class="border border-dark-line" style="background-color:#EDF0F2;">
+										<div>平日</div>
+									</th>
+									<th class="border border-dark-line" style="background-color:#FCCDBB;">
+										<div>土日祝日</div>
+									</th>
+									<!--]-->
+								</tr>
+							</thead>
+							<tbody>
+								<!--[-->
+								<tr>
+									<th class="border border-dark-line">
+										<div class="py-1 text-lg">05</div>
+									</th>
+									<!--[-->
+									<td class="border border-dark-line" style="background-color:#FFFFFF;">
+										<ul class="flex flex-wrap">
+											<!--[-->
+											<!--]-->
+										</ul>
+									</td>
+									<td class="border border-dark-line" style="background-color:#FFF8F8;">
+										<ul class="flex flex-wrap">
+											<!--[-->
+											<!--]-->
+										</ul>
+									</td>
+									<!--]-->
+								</tr>
+								<tr>
+									<th class="border border-dark-line">
+										<div class="py-1 text-lg">06</div>
+									</th>
+									<!--[-->
+									<td class="border border-dark-line" style="background-color:#F3F5F6;">
+										<ul class="flex flex-wrap">
+											<!--[-->
+											<!--]-->
+										</ul>
+									</td>
+									<td class="border border-dark-line" style="background-color:#FBE7E7;">
+										<ul class="flex flex-wrap">
+											<!--[-->
+											<!--]-->
+										</ul>
+									</td>
+									<!--]-->
+								</tr>
+								<tr>
+									<th class="border border-dark-line">
+										<div class="py-1 text-lg">07</div>
+									</th>
+									<!--[-->
+									<td class="border border-dark-line" style="background-color:#FFFFFF;">
+										<ul class="flex flex-wrap">
+											<!--[-->
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/84040010/stops?busstop=00480011&amp;course-sequence=0007900502-1&amp;datetime=2025-04-10T07:00:00%2B09:00"
+														class="text-lg" style="">00</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!--[-->P<!--]--></sup>
+													<!--]-->
+												</div>
+											</li>
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/84040011/stops?busstop=00480011&amp;course-sequence=0007900502-1&amp;datetime=2025-04-10T07:15:00%2B09:00"
+														class="text-lg" style="">15</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!--[-->P<!--]--></sup>
+													<!--]-->
+												</div>
+											</li>
+											<!--]-->
+										</ul>
+									</td>
+									<td class="border border-dark-line" style="background-color:#FFF8F8;">
+										<ul class="flex flex-wrap">
+											<!--[-->
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/84060000/stops?busstop=00480011&amp;course-sequence=0007900544-1&amp;datetime=2025-04-13T07:45:00%2B09:00"
+														class="text-lg" style="">45</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!--[-->西<!--]--></sup>
+													<!--]-->
+												</div>
+											</li>
+											<!--]-->
+										</ul>
+									</td>
+									<!--]-->
+								</tr>
+								<tr>
+									<th class="border border-dark-line">
+										<div class="py-1 text-lg">08</div>
+									</th>
+									<!--[-->
+									<td class="border border-dark-line" style="background-color:#F3F5F6;">
+										<ul class="flex flex-wrap">
+											<!--[-->
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/84040012/stops?busstop=00480011&amp;course-sequence=0007900502-1&amp;datetime=2025-04-10T08:05:00%2B09:00"
+														class="text-lg" style="">05</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!--[-->P<!--]--></sup>
+													<!--]-->
+												</div>
+											</li>
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/84040013/stops?busstop=00480011&amp;course-sequence=0007900502-1&amp;datetime=2025-04-10T08:35:00%2B09:00"
+														class="text-lg" style="">35</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!--[-->P<!--]--></sup>
+													<!--]-->
+												</div>
+											</li>
+											<!--]-->
+										</ul>
+									</td>
+									<td class="border border-dark-line" style="background-color:#FBE7E7;">
+										<ul class="flex flex-wrap">
+											<!--[-->
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/84060001/stops?busstop=00480011&amp;course-sequence=0007900544-1&amp;datetime=2025-04-13T08:45:00%2B09:00"
+														class="text-lg" style="">45</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!--[-->西<!--]--></sup>
+													<!--]-->
+												</div>
+											</li>
+											<!--]-->
+										</ul>
+									</td>
+									<!--]-->
+								</tr>
+								<tr>
+									<th class="border border-dark-line">
+										<div class="py-1 text-lg">09</div>
+									</th>
+									<!--[-->
+									<td class="border border-dark-line" style="background-color:#FFFFFF;">
+										<ul class="flex flex-wrap">
+											<!--[-->
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/84040014/stops?busstop=00480011&amp;course-sequence=0007900502-1&amp;datetime=2025-04-10T09:05:00%2B09:00"
+														class="text-lg" style="">05</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!--[-->P<!--]--></sup>
+													<!--]-->
+												</div>
+											</li>
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/8402002e/stops?busstop=00480011&amp;course-sequence=0007900504-1&amp;datetime=2025-04-10T09:25:00%2B09:00"
+														class="text-lg" style="">25</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!--[-->か<!--]--></sup>
+													<!--]-->
+												</div>
+											</li>
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/84040015/stops?busstop=00480011&amp;course-sequence=0007900502-1&amp;datetime=2025-04-10T09:35:00%2B09:00"
+														class="text-lg" style="">35</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!--[-->P<!--]--></sup>
+													<!--]-->
+												</div>
+											</li>
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/84060016/stops?busstop=00480011&amp;course-sequence=0007900544-1&amp;datetime=2025-04-10T09:45:00%2B09:00"
+														class="text-lg" style="">45</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!--[-->西<!--]--></sup>
+													<!--]-->
+												</div>
+											</li>
+											<!--]-->
+										</ul>
+									</td>
+									<td class="border border-dark-line" style="background-color:#FFF8F8;">
+										<ul class="flex flex-wrap">
+											<!--[-->
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/84040000/stops?busstop=00480011&amp;course-sequence=0007900502-1&amp;datetime=2025-04-13T09:15:00%2B09:00"
+														class="text-lg" style="">15</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!--[-->P<!--]--></sup>
+													<!--]-->
+												</div>
+											</li>
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/84020000/stops?busstop=00480011&amp;course-sequence=0007900504-1&amp;datetime=2025-04-13T09:25:00%2B09:00"
+														class="text-lg" style="">25</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!--[-->か<!--]--></sup>
+													<!--]-->
+												</div>
+											</li>
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/84060002/stops?busstop=00480011&amp;course-sequence=0007900544-1&amp;datetime=2025-04-13T09:45:00%2B09:00"
+														class="text-lg" style="">45</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!--[-->西<!--]--></sup>
+													<!--]-->
+												</div>
+											</li>
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/840e0000/stops?busstop=00480011&amp;course-sequence=0007900524-9&amp;datetime=2025-04-13T09:50:00%2B09:00"
+														class="text-lg" style="">50</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!--[-->P<!--]--></sup>
+													<!--]-->
+												</div>
+											</li>
+											<!--]-->
+										</ul>
+									</td>
+									<!--]-->
+								</tr>
+								<tr>
+									<th class="border border-dark-line">
+										<div class="py-1 text-lg">10</div>
+									</th>
+									<!--[-->
+									<td class="border border-dark-line" style="background-color:#F3F5F6;">
+										<ul class="flex flex-wrap">
+											<!--[-->
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/8402002f/stops?busstop=00480011&amp;course-sequence=0007900504-1&amp;datetime=2025-04-10T10:00:00%2B09:00"
+														class="text-lg" style="">00</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!--[-->か<!--]--></sup>
+													<!--]-->
+												</div>
+											</li>
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/84040016/stops?busstop=00480011&amp;course-sequence=0007900502-1&amp;datetime=2025-04-10T10:05:00%2B09:00"
+														class="text-lg" style="">05</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!--[-->P<!--]--></sup>
+													<!--]-->
+												</div>
+											</li>
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/84020030/stops?busstop=00480011&amp;course-sequence=0007900504-1&amp;datetime=2025-04-10T10:25:00%2B09:00"
+														class="text-lg" style="">25</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!--[-->か<!--]--></sup>
+													<!--]-->
+												</div>
+											</li>
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/84040017/stops?busstop=00480011&amp;course-sequence=0007900502-1&amp;datetime=2025-04-10T10:40:00%2B09:00"
+														class="text-lg" style="">40</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!--[-->P<!--]--></sup>
+													<!--]-->
+												</div>
+											</li>
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/84060017/stops?busstop=00480011&amp;course-sequence=0007900544-1&amp;datetime=2025-04-10T10:45:00%2B09:00"
+														class="text-lg" style="">45</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!--[-->西<!--]--></sup>
+													<!--]-->
+												</div>
+											</li>
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/84090000/stops?busstop=00480011&amp;course-sequence=0007900571-1&amp;datetime=2025-04-10T10:50:00%2B09:00"
+														class="text-lg" style="">50</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!----></sup>
+													<!--]-->
+												</div>
+											</li>
+											<!--]-->
+										</ul>
+									</td>
+									<td class="border border-dark-line" style="background-color:#FBE7E7;">
+										<ul class="flex flex-wrap">
+											<!--[-->
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/84040001/stops?busstop=00480011&amp;course-sequence=0007900502-1&amp;datetime=2025-04-13T10:15:00%2B09:00"
+														class="text-lg" style="">15</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!--[-->P<!--]--></sup>
+													<!--]-->
+												</div>
+											</li>
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/84020001/stops?busstop=00480011&amp;course-sequence=0007900504-1&amp;datetime=2025-04-13T10:25:00%2B09:00"
+														class="text-lg" style="">25</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!--[-->か<!--]--></sup>
+													<!--]-->
+												</div>
+											</li>
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/84060003/stops?busstop=00480011&amp;course-sequence=0007900544-1&amp;datetime=2025-04-13T10:45:00%2B09:00"
+														class="text-lg" style="">45</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!--[-->西<!--]--></sup>
+													<!--]-->
+												</div>
+											</li>
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/840e0001/stops?busstop=00480011&amp;course-sequence=0007900524-9&amp;datetime=2025-04-13T10:50:00%2B09:00"
+														class="text-lg" style="">50</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!--[-->P<!--]--></sup>
+													<!--]-->
+												</div>
+											</li>
+											<!--]-->
+										</ul>
+									</td>
+									<!--]-->
+								</tr>
+								<tr>
+									<th class="border border-dark-line">
+										<div class="py-1 text-lg">11</div>
+									</th>
+									<!--[-->
+									<td class="border border-dark-line" style="background-color:#FFFFFF;">
+										<ul class="flex flex-wrap">
+											<!--[-->
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/84020031/stops?busstop=00480011&amp;course-sequence=0007900504-1&amp;datetime=2025-04-10T11:00:00%2B09:00"
+														class="text-lg" style="">00</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!--[-->か<!--]--></sup>
+													<!--]-->
+												</div>
+											</li>
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/84040018/stops?busstop=00480011&amp;course-sequence=0007900502-1&amp;datetime=2025-04-10T11:05:00%2B09:00"
+														class="text-lg" style="">05</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!--[-->P<!--]--></sup>
+													<!--]-->
+												</div>
+											</li>
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/84020032/stops?busstop=00480011&amp;course-sequence=0007900504-1&amp;datetime=2025-04-10T11:25:00%2B09:00"
+														class="text-lg" style="">25</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!--[-->か<!--]--></sup>
+													<!--]-->
+												</div>
+											</li>
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/84040019/stops?busstop=00480011&amp;course-sequence=0007900502-1&amp;datetime=2025-04-10T11:35:00%2B09:00"
+														class="text-lg" style="">35</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!--[-->P<!--]--></sup>
+													<!--]-->
+												</div>
+											</li>
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/84090001/stops?busstop=00480011&amp;course-sequence=0007900571-1&amp;datetime=2025-04-10T11:50:00%2B09:00"
+														class="text-lg" style="">50</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!----></sup>
+													<!--]-->
+												</div>
+											</li>
+											<!--]-->
+										</ul>
+									</td>
+									<td class="border border-dark-line" style="background-color:#FFF8F8;">
+										<ul class="flex flex-wrap">
+											<!--[-->
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/84020002/stops?busstop=00480011&amp;course-sequence=0007900504-1&amp;datetime=2025-04-13T11:00:00%2B09:00"
+														class="text-lg" style="">00</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!--[-->か<!--]--></sup>
+													<!--]-->
+												</div>
+											</li>
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/840e0002/stops?busstop=00480011&amp;course-sequence=0007900524-9&amp;datetime=2025-04-13T11:05:00%2B09:00"
+														class="text-lg" style="">05</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!--[-->P<!--]--></sup>
+													<!--]-->
+												</div>
+											</li>
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/84020003/stops?busstop=00480011&amp;course-sequence=0007900504-1&amp;datetime=2025-04-13T11:25:00%2B09:00"
+														class="text-lg" style="">25</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!--[-->か<!--]--></sup>
+													<!--]-->
+												</div>
+											</li>
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/840e0003/stops?busstop=00480011&amp;course-sequence=0007900524-9&amp;datetime=2025-04-13T11:35:00%2B09:00"
+														class="text-lg" style="">35</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!--[-->P<!--]--></sup>
+													<!--]-->
+												</div>
+											</li>
+											<!--]-->
+										</ul>
+									</td>
+									<!--]-->
+								</tr>
+								<tr>
+									<th class="border border-dark-line">
+										<div class="py-1 text-lg">12</div>
+									</th>
+									<!--[-->
+									<td class="border border-dark-line" style="background-color:#F3F5F6;">
+										<ul class="flex flex-wrap">
+											<!--[-->
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/84020033/stops?busstop=00480011&amp;course-sequence=0007900504-1&amp;datetime=2025-04-10T12:00:00%2B09:00"
+														class="text-lg" style="">00</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!--[-->か<!--]--></sup>
+													<!--]-->
+												</div>
+											</li>
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/8404001a/stops?busstop=00480011&amp;course-sequence=0007900502-1&amp;datetime=2025-04-10T12:05:00%2B09:00"
+														class="text-lg" style="">05</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!--[-->P<!--]--></sup>
+													<!--]-->
+												</div>
+											</li>
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/84090002/stops?busstop=00480011&amp;course-sequence=0007900571-1&amp;datetime=2025-04-10T12:25:00%2B09:00"
+														class="text-lg" style="">25</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!----></sup>
+													<!--]-->
+												</div>
+											</li>
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/84020034/stops?busstop=00480011&amp;course-sequence=0007900504-1&amp;datetime=2025-04-10T12:30:00%2B09:00"
+														class="text-lg" style="">30</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!--[-->か<!--]--></sup>
+													<!--]-->
+												</div>
+											</li>
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/84090003/stops?busstop=00480011&amp;course-sequence=0007900571-1&amp;datetime=2025-04-10T12:30:00%2B09:00"
+														class="text-lg" style="">30</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!----></sup>
+													<!--]-->
+												</div>
+											</li>
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/8404001b/stops?busstop=00480011&amp;course-sequence=0007900502-1&amp;datetime=2025-04-10T12:35:00%2B09:00"
+														class="text-lg" style="">35</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!--[-->P<!--]--></sup>
+													<!--]-->
+												</div>
+											</li>
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/84090004/stops?busstop=00480011&amp;course-sequence=0007900571-1&amp;datetime=2025-04-10T12:43:00%2B09:00"
+														class="text-lg" style="">43</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!----></sup>
+													<!--]-->
+												</div>
+											</li>
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/84090005/stops?busstop=00480011&amp;course-sequence=0007900571-1&amp;datetime=2025-04-10T12:50:00%2B09:00"
+														class="text-lg" style="">50</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!----></sup>
+													<!--]-->
+												</div>
+											</li>
+											<!--]-->
+										</ul>
+									</td>
+									<td class="border border-dark-line" style="background-color:#FBE7E7;">
+										<ul class="flex flex-wrap">
+											<!--[-->
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/84020004/stops?busstop=00480011&amp;course-sequence=0007900504-1&amp;datetime=2025-04-13T12:00:00%2B09:00"
+														class="text-lg" style="">00</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!--[-->か<!--]--></sup>
+													<!--]-->
+												</div>
+											</li>
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/840e0004/stops?busstop=00480011&amp;course-sequence=0007900524-9&amp;datetime=2025-04-13T12:05:00%2B09:00"
+														class="text-lg" style="">05</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!--[-->P<!--]--></sup>
+													<!--]-->
+												</div>
+											</li>
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/84020005/stops?busstop=00480011&amp;course-sequence=0007900504-1&amp;datetime=2025-04-13T12:30:00%2B09:00"
+														class="text-lg" style="">30</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!--[-->か<!--]--></sup>
+													<!--]-->
+												</div>
+											</li>
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/840e0005/stops?busstop=00480011&amp;course-sequence=0007900524-9&amp;datetime=2025-04-13T12:35:00%2B09:00"
+														class="text-lg" style="">35</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!--[-->P<!--]--></sup>
+													<!--]-->
+												</div>
+											</li>
+											<!--]-->
+										</ul>
+									</td>
+									<!--]-->
+								</tr>
+								<tr>
+									<th class="border border-dark-line">
+										<div class="py-1 text-lg">13</div>
+									</th>
+									<!--[-->
+									<td class="border border-dark-line" style="background-color:#FFFFFF;">
+										<ul class="flex flex-wrap">
+											<!--[-->
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/84020035/stops?busstop=00480011&amp;course-sequence=0007900504-1&amp;datetime=2025-04-10T13:00:00%2B09:00"
+														class="text-lg" style="">00</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!--[-->か<!--]--></sup>
+													<!--]-->
+												</div>
+											</li>
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/8404001c/stops?busstop=00480011&amp;course-sequence=0007900502-1&amp;datetime=2025-04-10T13:05:00%2B09:00"
+														class="text-lg" style="">05</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!--[-->P<!--]--></sup>
+													<!--]-->
+												</div>
+											</li>
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/84090006/stops?busstop=00480011&amp;course-sequence=0007900571-1&amp;datetime=2025-04-10T13:10:00%2B09:00"
+														class="text-lg" style="">10</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!----></sup>
+													<!--]-->
+												</div>
+											</li>
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/84020036/stops?busstop=00480011&amp;course-sequence=0007900504-1&amp;datetime=2025-04-10T13:25:00%2B09:00"
+														class="text-lg" style="">25</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!--[-->か<!--]--></sup>
+													<!--]-->
+												</div>
+											</li>
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/84090007/stops?busstop=00480011&amp;course-sequence=0007900571-1&amp;datetime=2025-04-10T13:30:00%2B09:00"
+														class="text-lg" style="">30</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!----></sup>
+													<!--]-->
+												</div>
+											</li>
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/8404001d/stops?busstop=00480011&amp;course-sequence=0007900502-1&amp;datetime=2025-04-10T13:35:00%2B09:00"
+														class="text-lg" style="">35</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!--[-->P<!--]--></sup>
+													<!--]-->
+												</div>
+											</li>
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/84060018/stops?busstop=00480011&amp;course-sequence=0007900544-1&amp;datetime=2025-04-10T13:45:00%2B09:00"
+														class="text-lg" style="">45</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!--[-->西<!--]--></sup>
+													<!--]-->
+												</div>
+											</li>
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/84090008/stops?busstop=00480011&amp;course-sequence=0007900571-1&amp;datetime=2025-04-10T13:50:00%2B09:00"
+														class="text-lg" style="">50</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!----></sup>
+													<!--]-->
+												</div>
+											</li>
+											<!--]-->
+										</ul>
+									</td>
+									<td class="border border-dark-line" style="background-color:#FFF8F8;">
+										<ul class="flex flex-wrap">
+											<!--[-->
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/84020006/stops?busstop=00480011&amp;course-sequence=0007900504-1&amp;datetime=2025-04-13T13:00:00%2B09:00"
+														class="text-lg" style="">00</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!--[-->か<!--]--></sup>
+													<!--]-->
+												</div>
+											</li>
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/840e0006/stops?busstop=00480011&amp;course-sequence=0007900524-9&amp;datetime=2025-04-13T13:05:00%2B09:00"
+														class="text-lg" style="">05</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!--[-->P<!--]--></sup>
+													<!--]-->
+												</div>
+											</li>
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/84020007/stops?busstop=00480011&amp;course-sequence=0007900504-1&amp;datetime=2025-04-13T13:25:00%2B09:00"
+														class="text-lg" style="">25</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!--[-->か<!--]--></sup>
+													<!--]-->
+												</div>
+											</li>
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/840e0007/stops?busstop=00480011&amp;course-sequence=0007900524-9&amp;datetime=2025-04-13T13:35:00%2B09:00"
+														class="text-lg" style="">35</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!--[-->P<!--]--></sup>
+													<!--]-->
+												</div>
+											</li>
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/84060004/stops?busstop=00480011&amp;course-sequence=0007900544-1&amp;datetime=2025-04-13T13:45:00%2B09:00"
+														class="text-lg" style="">45</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!--[-->西<!--]--></sup>
+													<!--]-->
+												</div>
+											</li>
+											<!--]-->
+										</ul>
+									</td>
+									<!--]-->
+								</tr>
+								<tr>
+									<th class="border border-dark-line">
+										<div class="py-1 text-lg">14</div>
+									</th>
+									<!--[-->
+									<td class="border border-dark-line" style="background-color:#F3F5F6;">
+										<ul class="flex flex-wrap">
+											<!--[-->
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/84020037/stops?busstop=00480011&amp;course-sequence=0007900504-1&amp;datetime=2025-04-10T14:00:00%2B09:00"
+														class="text-lg" style="">00</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!--[-->か<!--]--></sup>
+													<!--]-->
+												</div>
+											</li>
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/8404001e/stops?busstop=00480011&amp;course-sequence=0007900502-1&amp;datetime=2025-04-10T14:05:00%2B09:00"
+														class="text-lg" style="">05</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!--[-->P<!--]--></sup>
+													<!--]-->
+												</div>
+											</li>
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/84090009/stops?busstop=00480011&amp;course-sequence=0007900571-1&amp;datetime=2025-04-10T14:10:00%2B09:00"
+														class="text-lg" style="">10</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!----></sup>
+													<!--]-->
+												</div>
+											</li>
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/84020038/stops?busstop=00480011&amp;course-sequence=0007900504-1&amp;datetime=2025-04-10T14:25:00%2B09:00"
+														class="text-lg" style="">25</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!--[-->か<!--]--></sup>
+													<!--]-->
+												</div>
+											</li>
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/8409000a/stops?busstop=00480011&amp;course-sequence=0007900571-1&amp;datetime=2025-04-10T14:30:00%2B09:00"
+														class="text-lg" style="">30</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!----></sup>
+													<!--]-->
+												</div>
+											</li>
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/8404001f/stops?busstop=00480011&amp;course-sequence=0007900502-1&amp;datetime=2025-04-10T14:35:00%2B09:00"
+														class="text-lg" style="">35</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!--[-->P<!--]--></sup>
+													<!--]-->
+												</div>
+											</li>
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/8409000b/stops?busstop=00480011&amp;course-sequence=0007900571-1&amp;datetime=2025-04-10T14:40:00%2B09:00"
+														class="text-lg" style="">40</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!----></sup>
+													<!--]-->
+												</div>
+											</li>
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/8409000c/stops?busstop=00480011&amp;course-sequence=0007900571-1&amp;datetime=2025-04-10T14:50:00%2B09:00"
+														class="text-lg" style="">50</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!----></sup>
+													<!--]-->
+												</div>
+											</li>
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/8409000d/stops?busstop=00480011&amp;course-sequence=0007900571-1&amp;datetime=2025-04-10T14:53:00%2B09:00"
+														class="text-lg" style="">53</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!----></sup>
+													<!--]-->
+												</div>
+											</li>
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/84060019/stops?busstop=00480011&amp;course-sequence=0007900544-1&amp;datetime=2025-04-10T14:55:00%2B09:00"
+														class="text-lg" style="">55</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!--[-->西<!--]--></sup>
+													<!--]-->
+												</div>
+											</li>
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/8409000e/stops?busstop=00480011&amp;course-sequence=0007900571-1&amp;datetime=2025-04-10T14:58:00%2B09:00"
+														class="text-lg" style="">58</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!----></sup>
+													<!--]-->
+												</div>
+											</li>
+											<!--]-->
+										</ul>
+									</td>
+									<td class="border border-dark-line" style="background-color:#FBE7E7;">
+										<ul class="flex flex-wrap">
+											<!--[-->
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/84020008/stops?busstop=00480011&amp;course-sequence=0007900504-1&amp;datetime=2025-04-13T14:00:00%2B09:00"
+														class="text-lg" style="">00</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!--[-->か<!--]--></sup>
+													<!--]-->
+												</div>
+											</li>
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/840e0008/stops?busstop=00480011&amp;course-sequence=0007900524-9&amp;datetime=2025-04-13T14:05:00%2B09:00"
+														class="text-lg" style="">05</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!--[-->P<!--]--></sup>
+													<!--]-->
+												</div>
+											</li>
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/84020009/stops?busstop=00480011&amp;course-sequence=0007900504-1&amp;datetime=2025-04-13T14:25:00%2B09:00"
+														class="text-lg" style="">25</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!--[-->か<!--]--></sup>
+													<!--]-->
+												</div>
+											</li>
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/840e0009/stops?busstop=00480011&amp;course-sequence=0007900524-9&amp;datetime=2025-04-13T14:35:00%2B09:00"
+														class="text-lg" style="">35</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!--[-->P<!--]--></sup>
+													<!--]-->
+												</div>
+											</li>
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/84060005/stops?busstop=00480011&amp;course-sequence=0007900544-1&amp;datetime=2025-04-13T14:55:00%2B09:00"
+														class="text-lg" style="">55</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!--[-->西<!--]--></sup>
+													<!--]-->
+												</div>
+											</li>
+											<!--]-->
+										</ul>
+									</td>
+									<!--]-->
+								</tr>
+								<tr>
+									<th class="border border-dark-line">
+										<div class="py-1 text-lg">15</div>
+									</th>
+									<!--[-->
+									<td class="border border-dark-line" style="background-color:#FFFFFF;">
+										<ul class="flex flex-wrap">
+											<!--[-->
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/84020039/stops?busstop=00480011&amp;course-sequence=0007900504-1&amp;datetime=2025-04-10T15:00:00%2B09:00"
+														class="text-lg" style="">00</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!--[-->か<!--]--></sup>
+													<!--]-->
+												</div>
+											</li>
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/8409000f/stops?busstop=00480011&amp;course-sequence=0007900571-1&amp;datetime=2025-04-10T15:03:00%2B09:00"
+														class="text-lg" style="">03</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!----></sup>
+													<!--]-->
+												</div>
+											</li>
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/84040020/stops?busstop=00480011&amp;course-sequence=0007900502-1&amp;datetime=2025-04-10T15:05:00%2B09:00"
+														class="text-lg" style="">05</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!--[-->P<!--]--></sup>
+													<!--]-->
+												</div>
+											</li>
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/84090010/stops?busstop=00480011&amp;course-sequence=0007900571-1&amp;datetime=2025-04-10T15:10:00%2B09:00"
+														class="text-lg" style="">10</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!----></sup>
+													<!--]-->
+												</div>
+											</li>
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/84090011/stops?busstop=00480011&amp;course-sequence=0007900571-1&amp;datetime=2025-04-10T15:20:00%2B09:00"
+														class="text-lg" style="">20</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!----></sup>
+													<!--]-->
+												</div>
+											</li>
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/8402003a/stops?busstop=00480011&amp;course-sequence=0007900504-1&amp;datetime=2025-04-10T15:25:00%2B09:00"
+														class="text-lg" style="">25</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!--[-->か<!--]--></sup>
+													<!--]-->
+												</div>
+											</li>
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/84090012/stops?busstop=00480011&amp;course-sequence=0007900571-1&amp;datetime=2025-04-10T15:30:00%2B09:00"
+														class="text-lg" style="">30</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!----></sup>
+													<!--]-->
+												</div>
+											</li>
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/84040021/stops?busstop=00480011&amp;course-sequence=0007900502-1&amp;datetime=2025-04-10T15:35:00%2B09:00"
+														class="text-lg" style="">35</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!--[-->P<!--]--></sup>
+													<!--]-->
+												</div>
+											</li>
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/84090013/stops?busstop=00480011&amp;course-sequence=0007900571-1&amp;datetime=2025-04-10T15:40:00%2B09:00"
+														class="text-lg" style="">40</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!----></sup>
+													<!--]-->
+												</div>
+											</li>
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/8406001a/stops?busstop=00480011&amp;course-sequence=0007900544-1&amp;datetime=2025-04-10T15:45:00%2B09:00"
+														class="text-lg" style="">45</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!--[-->西<!--]--></sup>
+													<!--]-->
+												</div>
+											</li>
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/84090014/stops?busstop=00480011&amp;course-sequence=0007900571-1&amp;datetime=2025-04-10T15:50:00%2B09:00"
+														class="text-lg" style="">50</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!----></sup>
+													<!--]-->
+												</div>
+											</li>
+											<!--]-->
+										</ul>
+									</td>
+									<td class="border border-dark-line" style="background-color:#FFF8F8;">
+										<ul class="flex flex-wrap">
+											<!--[-->
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/8402000a/stops?busstop=00480011&amp;course-sequence=0007900504-1&amp;datetime=2025-04-13T15:00:00%2B09:00"
+														class="text-lg" style="">00</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!--[-->か<!--]--></sup>
+													<!--]-->
+												</div>
+											</li>
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/840e000a/stops?busstop=00480011&amp;course-sequence=0007900524-9&amp;datetime=2025-04-13T15:05:00%2B09:00"
+														class="text-lg" style="">05</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!--[-->P<!--]--></sup>
+													<!--]-->
+												</div>
+											</li>
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/8402000b/stops?busstop=00480011&amp;course-sequence=0007900504-1&amp;datetime=2025-04-13T15:25:00%2B09:00"
+														class="text-lg" style="">25</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!--[-->か<!--]--></sup>
+													<!--]-->
+												</div>
+											</li>
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/840e000b/stops?busstop=00480011&amp;course-sequence=0007900524-9&amp;datetime=2025-04-13T15:35:00%2B09:00"
+														class="text-lg" style="">35</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!--[-->P<!--]--></sup>
+													<!--]-->
+												</div>
+											</li>
+											<!--]-->
+										</ul>
+									</td>
+									<!--]-->
+								</tr>
+								<tr>
+									<th class="border border-dark-line">
+										<div class="py-1 text-lg">16</div>
+									</th>
+									<!--[-->
+									<td class="border border-dark-line" style="background-color:#F3F5F6;">
+										<ul class="flex flex-wrap">
+											<!--[-->
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/8402003b/stops?busstop=00480011&amp;course-sequence=0007900504-1&amp;datetime=2025-04-10T16:00:00%2B09:00"
+														class="text-lg" style="">00</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!--[-->か<!--]--></sup>
+													<!--]-->
+												</div>
+											</li>
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/84090015/stops?busstop=00480011&amp;course-sequence=0007900571-1&amp;datetime=2025-04-10T16:00:00%2B09:00"
+														class="text-lg" style="">00</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!----></sup>
+													<!--]-->
+												</div>
+											</li>
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/84040022/stops?busstop=00480011&amp;course-sequence=0007900502-1&amp;datetime=2025-04-10T16:05:00%2B09:00"
+														class="text-lg" style="">05</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!--[-->P<!--]--></sup>
+													<!--]-->
+												</div>
+											</li>
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/84090016/stops?busstop=00480011&amp;course-sequence=0007900571-1&amp;datetime=2025-04-10T16:10:00%2B09:00"
+														class="text-lg" style="">10</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!----></sup>
+													<!--]-->
+												</div>
+											</li>
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/84090017/stops?busstop=00480011&amp;course-sequence=0007900571-1&amp;datetime=2025-04-10T16:20:00%2B09:00"
+														class="text-lg" style="">20</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!----></sup>
+													<!--]-->
+												</div>
+											</li>
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/8402003c/stops?busstop=00480011&amp;course-sequence=0007900504-1&amp;datetime=2025-04-10T16:25:00%2B09:00"
+														class="text-lg" style="">25</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!--[-->か<!--]--></sup>
+													<!--]-->
+												</div>
+											</li>
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/84090018/stops?busstop=00480011&amp;course-sequence=0007900571-1&amp;datetime=2025-04-10T16:30:00%2B09:00"
+														class="text-lg" style="">30</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!----></sup>
+													<!--]-->
+												</div>
+											</li>
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/84090019/stops?busstop=00480011&amp;course-sequence=0007900571-1&amp;datetime=2025-04-10T16:37:00%2B09:00"
+														class="text-lg" style="">37</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!----></sup>
+													<!--]-->
+												</div>
+											</li>
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/84040023/stops?busstop=00480011&amp;course-sequence=0007900502-1&amp;datetime=2025-04-10T16:40:00%2B09:00"
+														class="text-lg" style="">40</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!--[-->P<!--]--></sup>
+													<!--]-->
+												</div>
+											</li>
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/8409001a/stops?busstop=00480011&amp;course-sequence=0007900571-1&amp;datetime=2025-04-10T16:40:00%2B09:00"
+														class="text-lg" style="">40</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!----></sup>
+													<!--]-->
+												</div>
+											</li>
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/8409001b/stops?busstop=00480011&amp;course-sequence=0007900571-1&amp;datetime=2025-04-10T16:43:00%2B09:00"
+														class="text-lg" style="">43</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!----></sup>
+													<!--]-->
+												</div>
+											</li>
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/8406001b/stops?busstop=00480011&amp;course-sequence=0007900544-1&amp;datetime=2025-04-10T16:45:00%2B09:00"
+														class="text-lg" style="">45</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!--[-->西<!--]--></sup>
+													<!--]-->
+												</div>
+											</li>
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/8409001c/stops?busstop=00480011&amp;course-sequence=0007900571-1&amp;datetime=2025-04-10T16:47:00%2B09:00"
+														class="text-lg" style="">47</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!----></sup>
+													<!--]-->
+												</div>
+											</li>
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/8409001d/stops?busstop=00480011&amp;course-sequence=0007900571-1&amp;datetime=2025-04-10T16:50:00%2B09:00"
+														class="text-lg" style="">50</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!----></sup>
+													<!--]-->
+												</div>
+											</li>
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/8409001e/stops?busstop=00480011&amp;course-sequence=0007900571-1&amp;datetime=2025-04-10T16:53:00%2B09:00"
+														class="text-lg" style="">53</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!----></sup>
+													<!--]-->
+												</div>
+											</li>
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/8409001f/stops?busstop=00480011&amp;course-sequence=0007900571-1&amp;datetime=2025-04-10T16:57:00%2B09:00"
+														class="text-lg" style="">57</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!----></sup>
+													<!--]-->
+												</div>
+											</li>
+											<!--]-->
+										</ul>
+									</td>
+									<td class="border border-dark-line" style="background-color:#FBE7E7;">
+										<ul class="flex flex-wrap">
+											<!--[-->
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/8402000c/stops?busstop=00480011&amp;course-sequence=0007900504-1&amp;datetime=2025-04-13T16:00:00%2B09:00"
+														class="text-lg" style="">00</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!--[-->か<!--]--></sup>
+													<!--]-->
+												</div>
+											</li>
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/840e000c/stops?busstop=00480011&amp;course-sequence=0007900524-9&amp;datetime=2025-04-13T16:05:00%2B09:00"
+														class="text-lg" style="">05</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!--[-->P<!--]--></sup>
+													<!--]-->
+												</div>
+											</li>
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/8402000d/stops?busstop=00480011&amp;course-sequence=0007900504-1&amp;datetime=2025-04-13T16:25:00%2B09:00"
+														class="text-lg" style="">25</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!--[-->か<!--]--></sup>
+													<!--]-->
+												</div>
+											</li>
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/840e000d/stops?busstop=00480011&amp;course-sequence=0007900524-9&amp;datetime=2025-04-13T16:40:00%2B09:00"
+														class="text-lg" style="">40</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!--[-->P<!--]--></sup>
+													<!--]-->
+												</div>
+											</li>
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/84060006/stops?busstop=00480011&amp;course-sequence=0007900544-1&amp;datetime=2025-04-13T16:45:00%2B09:00"
+														class="text-lg" style="">45</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!--[-->西<!--]--></sup>
+													<!--]-->
+												</div>
+											</li>
+											<!--]-->
+										</ul>
+									</td>
+									<!--]-->
+								</tr>
+								<tr>
+									<th class="border border-dark-line">
+										<div class="py-1 text-lg">17</div>
+									</th>
+									<!--[-->
+									<td class="border border-dark-line" style="background-color:#FFFFFF;">
+										<ul class="flex flex-wrap">
+											<!--[-->
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/8402003d/stops?busstop=00480011&amp;course-sequence=0007900504-1&amp;datetime=2025-04-10T17:00:00%2B09:00"
+														class="text-lg" style="">00</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!--[-->か<!--]--></sup>
+													<!--]-->
+												</div>
+											</li>
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/84090020/stops?busstop=00480011&amp;course-sequence=0007900571-1&amp;datetime=2025-04-10T17:03:00%2B09:00"
+														class="text-lg" style="">03</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!----></sup>
+													<!--]-->
+												</div>
+											</li>
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/84040024/stops?busstop=00480011&amp;course-sequence=0007900502-1&amp;datetime=2025-04-10T17:05:00%2B09:00"
+														class="text-lg" style="">05</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!--[-->P<!--]--></sup>
+													<!--]-->
+												</div>
+											</li>
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/8406001c/stops?busstop=00480011&amp;course-sequence=0007900544-1&amp;datetime=2025-04-10T17:10:00%2B09:00"
+														class="text-lg" style="">10</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!--[-->西<!--]--></sup>
+													<!--]-->
+												</div>
+											</li>
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/84090021/stops?busstop=00480011&amp;course-sequence=0007900571-1&amp;datetime=2025-04-10T17:15:00%2B09:00"
+														class="text-lg" style="">15</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!----></sup>
+													<!--]-->
+												</div>
+											</li>
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/84040025/stops?busstop=00480011&amp;course-sequence=0007900502-1&amp;datetime=2025-04-10T17:20:00%2B09:00"
+														class="text-lg" style="">20</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!--[-->P<!--]--></sup>
+													<!--]-->
+												</div>
+											</li>
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/84090022/stops?busstop=00480011&amp;course-sequence=0007900571-1&amp;datetime=2025-04-10T17:20:00%2B09:00"
+														class="text-lg" style="">20</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!----></sup>
+													<!--]-->
+												</div>
+											</li>
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/8406001d/stops?busstop=00480011&amp;course-sequence=0007900544-1&amp;datetime=2025-04-10T17:25:00%2B09:00"
+														class="text-lg" style="">25</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!--[-->西<!--]--></sup>
+													<!--]-->
+												</div>
+											</li>
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/8402003e/stops?busstop=00480011&amp;course-sequence=0007900504-1&amp;datetime=2025-04-10T17:30:00%2B09:00"
+														class="text-lg" style="">30</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!--[-->か<!--]--></sup>
+													<!--]-->
+												</div>
+											</li>
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/840e001e/stops?busstop=00480011&amp;course-sequence=0007900524-9&amp;datetime=2025-04-10T17:35:00%2B09:00"
+														class="text-lg" style="">35</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!--[-->P<!--]--></sup>
+													<!--]-->
+												</div>
+											</li>
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/8406001e/stops?busstop=00480011&amp;course-sequence=0007900544-1&amp;datetime=2025-04-10T17:40:00%2B09:00"
+														class="text-lg" style="">40</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!--[-->西<!--]--></sup>
+													<!--]-->
+												</div>
+											</li>
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/84090023/stops?busstop=00480011&amp;course-sequence=0007900571-1&amp;datetime=2025-04-10T17:40:00%2B09:00"
+														class="text-lg" style="">40</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!----></sup>
+													<!--]-->
+												</div>
+											</li>
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/84040026/stops?busstop=00480011&amp;course-sequence=0007900502-1&amp;datetime=2025-04-10T17:50:00%2B09:00"
+														class="text-lg" style="">50</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!--[-->P<!--]--></sup>
+													<!--]-->
+												</div>
+											</li>
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/84090024/stops?busstop=00480011&amp;course-sequence=0007900571-1&amp;datetime=2025-04-10T17:50:00%2B09:00"
+														class="text-lg" style="">50</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!----></sup>
+													<!--]-->
+												</div>
+											</li>
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/8406001f/stops?busstop=00480011&amp;course-sequence=0007900544-1&amp;datetime=2025-04-10T17:55:00%2B09:00"
+														class="text-lg" style="">55</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!--[-->西<!--]--></sup>
+													<!--]-->
+												</div>
+											</li>
+											<!--]-->
+										</ul>
+									</td>
+									<td class="border border-dark-line" style="background-color:#FFF8F8;">
+										<ul class="flex flex-wrap">
+											<!--[-->
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/8402000e/stops?busstop=00480011&amp;course-sequence=0007900504-1&amp;datetime=2025-04-13T17:00:00%2B09:00"
+														class="text-lg" style="">00</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!--[-->か<!--]--></sup>
+													<!--]-->
+												</div>
+											</li>
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/840e000e/stops?busstop=00480011&amp;course-sequence=0007900524-9&amp;datetime=2025-04-13T17:15:00%2B09:00"
+														class="text-lg" style="">15</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!--[-->P<!--]--></sup>
+													<!--]-->
+												</div>
+											</li>
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/84040002/stops?busstop=00480011&amp;course-sequence=0007900502-1&amp;datetime=2025-04-13T17:25:00%2B09:00"
+														class="text-lg" style="">25</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!--[-->P<!--]--></sup>
+													<!--]-->
+												</div>
+											</li>
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/8402000f/stops?busstop=00480011&amp;course-sequence=0007900504-1&amp;datetime=2025-04-13T17:30:00%2B09:00"
+														class="text-lg" style="">30</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!--[-->か<!--]--></sup>
+													<!--]-->
+												</div>
+											</li>
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/84060007/stops?busstop=00480011&amp;course-sequence=0007900544-1&amp;datetime=2025-04-13T17:45:00%2B09:00"
+														class="text-lg" style="">45</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!--[-->西<!--]--></sup>
+													<!--]-->
+												</div>
+											</li>
+											<!--]-->
+										</ul>
+									</td>
+									<!--]-->
+								</tr>
+								<tr>
+									<th class="border border-dark-line">
+										<div class="py-1 text-lg">18</div>
+									</th>
+									<!--[-->
+									<td class="border border-dark-line" style="background-color:#F3F5F6;">
+										<ul class="flex flex-wrap">
+											<!--[-->
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/8402003f/stops?busstop=00480011&amp;course-sequence=0007900504-1&amp;datetime=2025-04-10T18:00:00%2B09:00"
+														class="text-lg" style="">00</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!--[-->か<!--]--></sup>
+													<!--]-->
+												</div>
+											</li>
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/840e001f/stops?busstop=00480011&amp;course-sequence=0007900524-9&amp;datetime=2025-04-10T18:05:00%2B09:00"
+														class="text-lg" style="">05</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!--[-->P<!--]--></sup>
+													<!--]-->
+												</div>
+											</li>
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/84090025/stops?busstop=00480011&amp;course-sequence=0007900571-1&amp;datetime=2025-04-10T18:05:00%2B09:00"
+														class="text-lg" style="">05</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!----></sup>
+													<!--]-->
+												</div>
+											</li>
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/84060020/stops?busstop=00480011&amp;course-sequence=0007900544-1&amp;datetime=2025-04-10T18:10:00%2B09:00"
+														class="text-lg" style="">10</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!--[-->西<!--]--></sup>
+													<!--]-->
+												</div>
+											</li>
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/84040027/stops?busstop=00480011&amp;course-sequence=0007900502-1&amp;datetime=2025-04-10T18:20:00%2B09:00"
+														class="text-lg" style="">20</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!--[-->P<!--]--></sup>
+													<!--]-->
+												</div>
+											</li>
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/84090026/stops?busstop=00480011&amp;course-sequence=0007900571-1&amp;datetime=2025-04-10T18:20:00%2B09:00"
+														class="text-lg" style="">20</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!----></sup>
+													<!--]-->
+												</div>
+											</li>
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/84090027/stops?busstop=00480011&amp;course-sequence=0007900571-1&amp;datetime=2025-04-10T18:23:00%2B09:00"
+														class="text-lg" style="">23</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!----></sup>
+													<!--]-->
+												</div>
+											</li>
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/84060021/stops?busstop=00480011&amp;course-sequence=0007900544-1&amp;datetime=2025-04-10T18:25:00%2B09:00"
+														class="text-lg" style="">25</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!--[-->西<!--]--></sup>
+													<!--]-->
+												</div>
+											</li>
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/84090028/stops?busstop=00480011&amp;course-sequence=0007900571-1&amp;datetime=2025-04-10T18:28:00%2B09:00"
+														class="text-lg" style="">28</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!----></sup>
+													<!--]-->
+												</div>
+											</li>
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/84020040/stops?busstop=00480011&amp;course-sequence=0007900504-1&amp;datetime=2025-04-10T18:30:00%2B09:00"
+														class="text-lg" style="">30</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!--[-->か<!--]--></sup>
+													<!--]-->
+												</div>
+											</li>
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/84090029/stops?busstop=00480011&amp;course-sequence=0007900571-1&amp;datetime=2025-04-10T18:33:00%2B09:00"
+														class="text-lg" style="">33</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!----></sup>
+													<!--]-->
+												</div>
+											</li>
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/840e0020/stops?busstop=00480011&amp;course-sequence=0007900524-9&amp;datetime=2025-04-10T18:35:00%2B09:00"
+														class="text-lg" style="">35</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!--[-->P<!--]--></sup>
+													<!--]-->
+												</div>
+											</li>
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/8409002a/stops?busstop=00480011&amp;course-sequence=0007900571-1&amp;datetime=2025-04-10T18:38:00%2B09:00"
+														class="text-lg" style="">38</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!----></sup>
+													<!--]-->
+												</div>
+											</li>
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/84060022/stops?busstop=00480011&amp;course-sequence=0007900544-1&amp;datetime=2025-04-10T18:40:00%2B09:00"
+														class="text-lg" style="">40</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!--[-->西<!--]--></sup>
+													<!--]-->
+												</div>
+											</li>
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/8409002b/stops?busstop=00480011&amp;course-sequence=0007900571-1&amp;datetime=2025-04-10T18:48:00%2B09:00"
+														class="text-lg" style="">48</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!----></sup>
+													<!--]-->
+												</div>
+											</li>
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/84060023/stops?busstop=00480011&amp;course-sequence=0007900544-1&amp;datetime=2025-04-10T18:55:00%2B09:00"
+														class="text-lg" style="">55</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!--[-->西<!--]--></sup>
+													<!--]-->
+												</div>
+											</li>
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/8409002c/stops?busstop=00480011&amp;course-sequence=0007900571-1&amp;datetime=2025-04-10T18:58:00%2B09:00"
+														class="text-lg" style="">58</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!----></sup>
+													<!--]-->
+												</div>
+											</li>
+											<!--]-->
+										</ul>
+									</td>
+									<td class="border border-dark-line" style="background-color:#FBE7E7;">
+										<ul class="flex flex-wrap">
+											<!--[-->
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/84040003/stops?busstop=00480011&amp;course-sequence=0007900502-1&amp;datetime=2025-04-13T18:00:00%2B09:00"
+														class="text-lg" style="">00</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!--[-->P<!--]--></sup>
+													<!--]-->
+												</div>
+											</li>
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/84040004/stops?busstop=00480011&amp;course-sequence=0007900502-1&amp;datetime=2025-04-13T18:15:00%2B09:00"
+														class="text-lg" style="">15</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!--[-->P<!--]--></sup>
+													<!--]-->
+												</div>
+											</li>
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/84020010/stops?busstop=00480011&amp;course-sequence=0007900504-1&amp;datetime=2025-04-13T18:30:00%2B09:00"
+														class="text-lg" style="">30</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!--[-->か<!--]--></sup>
+													<!--]-->
+												</div>
+											</li>
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/84060008/stops?busstop=00480011&amp;course-sequence=0007900544-1&amp;datetime=2025-04-13T18:45:00%2B09:00"
+														class="text-lg" style="">45</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!--[-->西<!--]--></sup>
+													<!--]-->
+												</div>
+											</li>
+											<!--]-->
+										</ul>
+									</td>
+									<!--]-->
+								</tr>
+								<tr>
+									<th class="border border-dark-line">
+										<div class="py-1 text-lg">19</div>
+									</th>
+									<!--[-->
+									<td class="border border-dark-line" style="background-color:#FFFFFF;">
+										<ul class="flex flex-wrap">
+											<!--[-->
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/84020041/stops?busstop=00480011&amp;course-sequence=0007900504-1&amp;datetime=2025-04-10T19:00:00%2B09:00"
+														class="text-lg" style="">00</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!--[-->か<!--]--></sup>
+													<!--]-->
+												</div>
+											</li>
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/8409002d/stops?busstop=00480011&amp;course-sequence=0007900571-1&amp;datetime=2025-04-10T19:03:00%2B09:00"
+														class="text-lg" style="">03</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!----></sup>
+													<!--]-->
+												</div>
+											</li>
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/840e0021/stops?busstop=00480011&amp;course-sequence=0007900524-9&amp;datetime=2025-04-10T19:05:00%2B09:00"
+														class="text-lg" style="">05</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!--[-->P<!--]--></sup>
+													<!--]-->
+												</div>
+											</li>
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/84060024/stops?busstop=00480011&amp;course-sequence=0007900544-1&amp;datetime=2025-04-10T19:10:00%2B09:00"
+														class="text-lg" style="">10</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!--[-->西<!--]--></sup>
+													<!--]-->
+												</div>
+											</li>
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/8409002e/stops?busstop=00480011&amp;course-sequence=0007900571-1&amp;datetime=2025-04-10T19:18:00%2B09:00"
+														class="text-lg" style="">18</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!----></sup>
+													<!--]-->
+												</div>
+											</li>
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/84040028/stops?busstop=00480011&amp;course-sequence=0007900502-1&amp;datetime=2025-04-10T19:20:00%2B09:00"
+														class="text-lg" style="">20</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!--[-->P<!--]--></sup>
+													<!--]-->
+												</div>
+											</li>
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/84060025/stops?busstop=00480011&amp;course-sequence=0007900544-1&amp;datetime=2025-04-10T19:25:00%2B09:00"
+														class="text-lg" style="">25</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!--[-->西<!--]--></sup>
+													<!--]-->
+												</div>
+											</li>
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/8409002f/stops?busstop=00480011&amp;course-sequence=0007900571-1&amp;datetime=2025-04-10T19:33:00%2B09:00"
+														class="text-lg" style="">33</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!----></sup>
+													<!--]-->
+												</div>
+											</li>
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/84040029/stops?busstop=00480011&amp;course-sequence=0007900502-1&amp;datetime=2025-04-10T19:35:00%2B09:00"
+														class="text-lg" style="">35</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!--[-->P<!--]--></sup>
+													<!--]-->
+												</div>
+											</li>
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/84060026/stops?busstop=00480011&amp;course-sequence=0007900544-1&amp;datetime=2025-04-10T19:40:00%2B09:00"
+														class="text-lg" style="">40</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!--[-->西<!--]--></sup>
+													<!--]-->
+												</div>
+											</li>
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/84090030/stops?busstop=00480011&amp;course-sequence=0007900571-1&amp;datetime=2025-04-10T19:48:00%2B09:00"
+														class="text-lg" style="">48</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!----></sup>
+													<!--]-->
+												</div>
+											</li>
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/8404002a/stops?busstop=00480011&amp;course-sequence=0007900502-1&amp;datetime=2025-04-10T19:50:00%2B09:00"
+														class="text-lg" style="">50</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!--[-->P<!--]--></sup>
+													<!--]-->
+												</div>
+											</li>
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/84060027/stops?busstop=00480011&amp;course-sequence=0007900544-1&amp;datetime=2025-04-10T19:55:00%2B09:00"
+														class="text-lg" style="">55</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!--[-->西<!--]--></sup>
+													<!--]-->
+												</div>
+											</li>
+											<!--]-->
+										</ul>
+									</td>
+									<td class="border border-dark-line" style="background-color:#FFF8F8;">
+										<ul class="flex flex-wrap">
+											<!--[-->
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/84020011/stops?busstop=00480011&amp;course-sequence=0007900504-1&amp;datetime=2025-04-13T19:00:00%2B09:00"
+														class="text-lg" style="">00</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!--[-->か<!--]--></sup>
+													<!--]-->
+												</div>
+											</li>
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/84040005/stops?busstop=00480011&amp;course-sequence=0007900502-1&amp;datetime=2025-04-13T19:15:00%2B09:00"
+														class="text-lg" style="">15</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!--[-->P<!--]--></sup>
+													<!--]-->
+												</div>
+											</li>
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/84020012/stops?busstop=00480011&amp;course-sequence=0007900504-1&amp;datetime=2025-04-13T19:30:00%2B09:00"
+														class="text-lg" style="">30</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!--[-->か<!--]--></sup>
+													<!--]-->
+												</div>
+											</li>
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/84060009/stops?busstop=00480011&amp;course-sequence=0007900544-1&amp;datetime=2025-04-13T19:45:00%2B09:00"
+														class="text-lg" style="">45</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!--[-->西<!--]--></sup>
+													<!--]-->
+												</div>
+											</li>
+											<!--]-->
+										</ul>
+									</td>
+									<!--]-->
+								</tr>
+								<tr>
+									<th class="border border-dark-line">
+										<div class="py-1 text-lg">20</div>
+									</th>
+									<!--[-->
+									<td class="border border-dark-line" style="background-color:#F3F5F6;">
+										<ul class="flex flex-wrap">
+											<!--[-->
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/84020042/stops?busstop=00480011&amp;course-sequence=0007900504-1&amp;datetime=2025-04-10T20:00:00%2B09:00"
+														class="text-lg" style="">00</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!--[-->か<!--]--></sup>
+													<!--]-->
+												</div>
+											</li>
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/8404002b/stops?busstop=00480011&amp;course-sequence=0007900502-1&amp;datetime=2025-04-10T20:05:00%2B09:00"
+														class="text-lg" style="">05</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!--[-->P<!--]--></sup>
+													<!--]-->
+												</div>
+											</li>
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/84090031/stops?busstop=00480011&amp;course-sequence=0007900571-1&amp;datetime=2025-04-10T20:08:00%2B09:00"
+														class="text-lg" style="">08</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!----></sup>
+													<!--]-->
+												</div>
+											</li>
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/84060028/stops?busstop=00480011&amp;course-sequence=0007900544-1&amp;datetime=2025-04-10T20:10:00%2B09:00"
+														class="text-lg" style="">10</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!--[-->西<!--]--></sup>
+													<!--]-->
+												</div>
+											</li>
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/8404002c/stops?busstop=00480011&amp;course-sequence=0007900502-1&amp;datetime=2025-04-10T20:20:00%2B09:00"
+														class="text-lg" style="">20</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!--[-->P<!--]--></sup>
+													<!--]-->
+												</div>
+											</li>
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/84060029/stops?busstop=00480011&amp;course-sequence=0007900544-1&amp;datetime=2025-04-10T20:25:00%2B09:00"
+														class="text-lg" style="">25</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!--[-->西<!--]--></sup>
+													<!--]-->
+												</div>
+											</li>
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/84020043/stops?busstop=00480011&amp;course-sequence=0007900504-1&amp;datetime=2025-04-10T20:30:00%2B09:00"
+														class="text-lg" style="">30</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!--[-->か<!--]--></sup>
+													<!--]-->
+												</div>
+											</li>
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/8406002a/stops?busstop=00480011&amp;course-sequence=0007900544-1&amp;datetime=2025-04-10T20:40:00%2B09:00"
+														class="text-lg" style="">40</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!--[-->西<!--]--></sup>
+													<!--]-->
+												</div>
+											</li>
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/84090032/stops?busstop=00480011&amp;course-sequence=0007900571-1&amp;datetime=2025-04-10T20:45:00%2B09:00"
+														class="text-lg" style="">45</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!----></sup>
+													<!--]-->
+												</div>
+											</li>
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/8404002d/stops?busstop=00480011&amp;course-sequence=0007900502-1&amp;datetime=2025-04-10T20:50:00%2B09:00"
+														class="text-lg" style="">50</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!--[-->P<!--]--></sup>
+													<!--]-->
+												</div>
+											</li>
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/8406002b/stops?busstop=00480011&amp;course-sequence=0007900544-1&amp;datetime=2025-04-10T20:55:00%2B09:00"
+														class="text-lg" style="">55</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!--[-->西<!--]--></sup>
+													<!--]-->
+												</div>
+											</li>
+											<!--]-->
+										</ul>
+									</td>
+									<td class="border border-dark-line" style="background-color:#FBE7E7;">
+										<ul class="flex flex-wrap">
+											<!--[-->
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/84020013/stops?busstop=00480011&amp;course-sequence=0007900504-1&amp;datetime=2025-04-13T20:00:00%2B09:00"
+														class="text-lg" style="">00</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!--[-->か<!--]--></sup>
+													<!--]-->
+												</div>
+											</li>
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/84040006/stops?busstop=00480011&amp;course-sequence=0007900502-1&amp;datetime=2025-04-13T20:15:00%2B09:00"
+														class="text-lg" style="">15</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!--[-->P<!--]--></sup>
+													<!--]-->
+												</div>
+											</li>
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/84020014/stops?busstop=00480011&amp;course-sequence=0007900504-1&amp;datetime=2025-04-13T20:30:00%2B09:00"
+														class="text-lg" style="">30</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!--[-->か<!--]--></sup>
+													<!--]-->
+												</div>
+											</li>
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/8406000a/stops?busstop=00480011&amp;course-sequence=0007900544-1&amp;datetime=2025-04-13T20:45:00%2B09:00"
+														class="text-lg" style="">45</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!--[-->西<!--]--></sup>
+													<!--]-->
+												</div>
+											</li>
+											<!--]-->
+										</ul>
+									</td>
+									<!--]-->
+								</tr>
+								<tr>
+									<th class="border border-dark-line">
+										<div class="py-1 text-lg">21</div>
+									</th>
+									<!--[-->
+									<td class="border border-dark-line" style="background-color:#FFFFFF;">
+										<ul class="flex flex-wrap">
+											<!--[-->
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/84020044/stops?busstop=00480011&amp;course-sequence=0007900504-1&amp;datetime=2025-04-10T21:00:00%2B09:00"
+														class="text-lg" style="">00</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!--[-->か<!--]--></sup>
+													<!--]-->
+												</div>
+											</li>
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/8406002c/stops?busstop=00480011&amp;course-sequence=0007900544-1&amp;datetime=2025-04-10T21:10:00%2B09:00"
+														class="text-lg" style="">10</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!--[-->西<!--]--></sup>
+													<!--]-->
+												</div>
+											</li>
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/8406002d/stops?busstop=00480011&amp;course-sequence=0007900544-1&amp;datetime=2025-04-10T21:25:00%2B09:00"
+														class="text-lg" style="">25</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!--[-->西<!--]--></sup>
+													<!--]-->
+												</div>
+											</li>
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/8406002e/stops?busstop=00480011&amp;course-sequence=0007900544-1&amp;datetime=2025-04-10T21:40:00%2B09:00"
+														class="text-lg" style="">40</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!--[-->西<!--]--></sup>
+													<!--]-->
+												</div>
+											</li>
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/8404002e/stops?busstop=00480011&amp;course-sequence=0007900502-1&amp;datetime=2025-04-10T21:50:00%2B09:00"
+														class="text-lg" style="">50</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!--[-->P<!--]--></sup>
+													<!--]-->
+												</div>
+											</li>
+											<!--]-->
+										</ul>
+									</td>
+									<td class="border border-dark-line" style="background-color:#FFF8F8;">
+										<ul class="flex flex-wrap">
+											<!--[-->
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/84020015/stops?busstop=00480011&amp;course-sequence=0007900504-1&amp;datetime=2025-04-13T21:00:00%2B09:00"
+														class="text-lg" style="">00</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!--[-->か<!--]--></sup>
+													<!--]-->
+												</div>
+											</li>
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/84040007/stops?busstop=00480011&amp;course-sequence=0007900502-1&amp;datetime=2025-04-13T21:15:00%2B09:00"
+														class="text-lg" style="">15</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!--[-->P<!--]--></sup>
+													<!--]-->
+												</div>
+											</li>
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/84020016/stops?busstop=00480011&amp;course-sequence=0007900504-1&amp;datetime=2025-04-13T21:30:00%2B09:00"
+														class="text-lg" style="">30</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!--[-->か<!--]--></sup>
+													<!--]-->
+												</div>
+											</li>
+											<!--]-->
+										</ul>
+									</td>
+									<!--]-->
+								</tr>
+								<tr>
+									<th class="border border-dark-line">
+										<div class="py-1 text-lg">22</div>
+									</th>
+									<!--[-->
+									<td class="border border-dark-line" style="background-color:#F3F5F6;">
+										<ul class="flex flex-wrap">
+											<!--[-->
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/8406002f/stops?busstop=00480011&amp;course-sequence=0007900544-1&amp;datetime=2025-04-10T22:00:00%2B09:00"
+														class="text-lg" style="">00</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!--[-->西<!--]--></sup>
+													<!--]-->
+												</div>
+											</li>
+											<li>
+												<div style="" class="mx-1"><a
+														href="/ohmitetudo/courses/timetables/8404002f/stops?busstop=00480011&amp;course-sequence=0007900502-1&amp;datetime=2025-04-10T22:40:00%2B09:00"
+														class="text-lg" style="">40</a>
+													<!--[--><sup class="ml-0.5 text-xs"><!--[-->P<!--]--></sup>
+													<!--]-->
+												</div>
+											</li>
+											<!--]-->
+										</ul>
+									</td>
+									<td class="border border-dark-line" style="background-color:#FBE7E7;">
+										<ul class="flex flex-wrap">
+											<!--[-->
+											<!--]-->
+										</ul>
+									</td>
+									<!--]-->
+								</tr>
+								<tr>
+									<th class="border border-dark-line">
+										<div class="py-1 text-lg">23</div>
+									</th>
+									<!--[-->
+									<td class="border border-dark-line" style="background-color:#FFFFFF;">
+										<ul class="flex flex-wrap">
+											<!--[-->
+											<!--]-->
+										</ul>
+									</td>
+									<td class="border border-dark-line" style="background-color:#FFF8F8;">
+										<ul class="flex flex-wrap">
+											<!--[-->
+											<!--]-->
+										</ul>
+									</td>
+									<!--]-->
+								</tr>
+								<!--]-->
+							</tbody>
+							<tfoot>
+								<tr>
+									<td colspan="3" class="px-4 py-2">
+										<ul class="flex flex-wrap">
+											<!--[-->
+											<li class="mr-2">P…パナソニック東口経由です。</li>
+											<li class="mr-2">か…かがやき通り経由です。</li>
+											<li class="mr-2">西…パナソニック西口経由です。</li>
+											<!--]-->
+										</ul>
+										<!---->
+									</td>
+								</tr>
+							</tfoot>
+						</table>
+						<!--]--><button type="button" class="link relative mb-4 mr-6 mt-6 flex min-h-[2rem] items-center ml-auto self-end print:hidden" data-v-e72d4a4b>ページの先頭へ戻る <div class="relative ml-2 h-5 w-5 rounded-full bg-link"><div class="up-arrow after:border-white"></div></div></button>
+					</div>
+				</div>
+				<footer class="bg-grey mt-20 print:hidden" data-v-e72d4a4b>
+					<div class="flex w-[1000px] items-center justify-between py-4 text-xs mx-auto"><a
+							href="/ohmitetudo/terms-of-use"
+							class="flex items-center font-bold">ご利用にあたって（免責について等）</a><small class="text-xs text-black">Copyright© 2022 OhmiRailway Corporation. All rights reserved.</small>
+						<figure class="flex items-center justify-end">
+							<figcaption class="mr-2 text-black">Powered by</figcaption>
+							<img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTA3IiBoZWlnaHQ9IjI0IiB2aWV3Qm94PSIwIDAgMTA3IDI0IiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8ZyBjbGlwLXBhdGg9InVybCgjY2xpcDBfNzAyMl81ODE1KSI+CjxwYXRoIGQ9Ik0xMDYuMzIzIDBIMFYyNEgxMDYuMzIzVjBaIiBmaWxsPSIjMDA2NDAwIi8+CjxwYXRoIGQ9Ik0xNS43MDQ2IDYuNjExMDRMMjEuMDIyNCAxMy4zMDU3VjguNjYxNzJDMjEuMDIyNCA4LjAxNTA5IDIwLjkyOTcgNy41NzY0NSAyMC43NDQzIDcuMzUwMzZDMjAuNDg5NSA3LjA0ODkgMjAuMDYzIDYuODk4MTcgMTkuNDY0NiA2Ljg5ODE3VjYuNjA0MjVIMjMuMDI1NlY2Ljg5ODE3QzIyLjcwODEgNi45MTk3NSAyMi4zOTY3IDYuOTk2MjUgMjIuMTA1NCA3LjEyNDI2QzIxLjkzNzYgNy4yMzA5IDIxLjgwOTcgNy4zODk4MiAyMS43NDE0IDcuNTc2NDVDMjEuNjM0MiA3LjkyNTM2IDIxLjU4OTggOC4yOTA1MSAyMS42MTAyIDguNjU0OTNWMTcuNjI4NkgyMS4zMzg5TDE0LjA0OTYgOC42NTQ5M1YxNS41MDU2QzE0LjA0OTYgMTYuMTI1MSAxNC4xOTIgMTYuNTQ1NiAxNC40NzQ3IDE2Ljc2MjdDMTQuNzUzNSAxNi45NzggMTUuMDk2OSAxNy4wOTI3IDE1LjQ0OTEgMTcuMDg4M0gxNS43MDQ2VjE3LjM4MjJIMTEuODgxM1YxNy4wODgzQzEyLjQ3MzcgMTcuMDg4MyAxMi44ODc1IDE2Ljk2MTcgMTMuMTIwMyAxNi43MjJDMTMuMzUzMiAxNi40ODIzIDEzLjQ3MDggMTYuMDc3NiAxMy40NzA4IDE1LjUwNTZWNy45MDY1NkwxMy4yNDQ3IDcuNjE5NDFDMTMuMDgyOCA3LjM5MzU1IDEyLjg3NzYgNy4yMDIxOCAxMi42NDEgNy4wNTY0NEMxMi40MDMyIDYuOTUxOSAxMi4xNDU2IDYuOTAwMjIgMTEuODg1OSA2LjkwNDk2VjYuNjExMDRIMTUuNzA0NloiIGZpbGw9IndoaXRlIi8+CjxwYXRoIGQ9Ik0yOS42OTA4IDE0LjMyMDlIMjUuODgzNEwyNS40MzEyIDE1LjM3QzI1LjMwMTIgMTUuNjQxNSAyNS4yMjQ1IDE1LjkzNTUgMjUuMjA1MSAxNi4yMzU5QzI1LjE5NzQgMTYuMzcwMyAyNS4yMjc2IDE2LjUwNDEgMjUuMjkyNCAxNi42MjJDMjUuMzU3MiAxNi43NCAyNS40NTM5IDE2LjgzNzMgMjUuNTcxNCAxNi45MDI5QzI1LjcxMzggMTYuOTg4OCAyNi4wNjY1IDE3LjA1MjEgMjYuNjI3MiAxNy4wOTUxVjE3LjM4OUgyMy4wNDU5VjE3LjA5NTFDMjMuNDA4OSAxNy4wNDgxIDIzLjc0NDkgMTYuODc4MSAyMy45OTc4IDE2LjYxMzVDMjQuMjQ5NSAxNi4zNTEyIDI0LjU1NyAxNS44MDkzIDI0LjkyMDIgMTQuOTg3OUwyOC43NzUxIDYuMzk2MjRIMjguOTI2NkwzMi44MTMyIDE1LjIzNjZDMzMuMTg0IDE2LjA3MzEgMzMuNDg5MiAxNi42MDA3IDMzLjcyODkgMTYuODE5MkMzMy45NDM1IDE2Ljk5NzcgMzQuMjExOCAxNy4wOTg5IDM0LjQ5MDggMTcuMTA2NFYxNy40MDAzSDI5LjI3NzFWMTcuMTA2NEgyOS40OTE5QzI5Ljc5NjUgMTcuMTMxOSAzMC4xMDIyIDE3LjA3MDggMzAuMzczNiAxNi45M0MzMC40MzEgMTYuODg4OSAzMC40NzcgMTYuODM0IDMwLjUwNzUgMTYuNzcwNEMzMC41Mzc5IDE2LjcwNjcgMzAuNTUxOCAxNi42MzY0IDMwLjU0NzcgMTYuNTY2QzMwLjU0NzEgMTYuNDY2MiAzMC41MzExIDE2LjM2NyAzMC41MDAzIDE2LjI3MjFDMzAuNTAwMyAxNi4yMjQ2IDMwLjQwOTggMTYuMDI1NiAzMC4yNjI5IDE1LjY3NTJMMjkuNjkwOCAxNC4zMjA5Wk0yOS40MTk1IDEzLjczM0wyNy44MTQyIDEwLjAyMDVMMjYuMTYzNyAxMy43MzNIMjkuNDE5NVoiIGZpbGw9IndoaXRlIi8+CjxwYXRoIGQ9Ik00My43MjIyIDYuNjEwOTFWNi45MDQ4M0M0My4zMDg2IDYuOTgwNTggNDIuOTM2MSA3LjIwMjk0IDQyLjY3MzIgNy41MzExMUM0Mi40NTE2IDcuNzk3OTEgNDIuMTIwNyA4LjQyMTE3IDQxLjY4MDYgOS40MDA5MUwzNy45NjgxIDE3LjYzNTNIMzcuNzA1OEwzNC4wMDkyIDkuMDY2M0MzMy41NjYgOC4wMzIyOSAzMy4yNjg0IDcuNDI5MzcgMzMuMTE2MSA3LjI1NzUzQzMyLjk2NDYgNy4wNzY2NiAzMi42Nzk4IDYuOTYzNjEgMzIuMjYxNSA2LjkxNjEzVjYuNjIyMjFIMzcuNDI3N1Y2LjkxNjEzSDM3LjI1MzdDMzYuOTI1OCA2Ljg4NzQ3IDM2LjU5NjIgNi45NDc2MSAzNi4yOTk1IDcuMDkwMjNDMzYuMjQxOCA3LjEyNTM4IDM2LjE5NDIgNy4xNzQ5IDM2LjE2MTMgNy4yMzM5NEMzNi4xMjg0IDcuMjkyOTggMzYuMTExNCA3LjM1OTUzIDM2LjExMTkgNy40MjcxMUMzNi4xMTUgNy41NDIwNCAzNi4xMzY0IDcuNjU1NzQgMzYuMTc1MiA3Ljc2Mzk5QzM2LjIxNzQgNy44OTUxMiAzNi4zNjA2IDguMjQzMzEgMzYuNjA0OCA4LjgwODU0TDM4LjkwMTkgMTQuMTc2TDQxLjAzMTcgOS4zOTg2NUM0MS4yODc5IDguODE5ODUgNDEuNDQ0NyA4LjQzMjQ4IDQxLjUwMiA4LjIzNjUzQzQxLjU1MzQgOC4wNzQ3MSA0MS41ODIzIDcuOTA2NTcgNDEuNTg3OSA3LjczNjg2QzQxLjU5MTUgNy41ODY3NyA0MS41NDcyIDcuNDM5NDYgNDEuNDYxMyA3LjMxNjMyQzQxLjM2ODEgNy4xODc4MyA0MS4yMzggNy4wOTA4MiA0MS4wODgyIDcuMDM4MjNDNDAuNzk3NiA2LjkzODA1IDQwLjQ5MTEgNi44OTIwNiA0MC4xODM4IDYuOTAyNTZWNi42MDg2NEw0My43MjIyIDYuNjEwOTFaIiBmaWxsPSJ3aGl0ZSIvPgo8cGF0aCBkPSJNNTAuNTUyNiAxNy4wOTUxVjE3LjM4OUg0NC45MTZWMTcuMDk1MUg0NS4yNzMyQzQ1LjUzNTMgMTcuMTA2OCA0NS43OTU4IDE3LjA0OTEgNDYuMDI4NCAxNi45Mjc4QzQ2LjE3NjQgMTYuODQyIDQ2LjI4OTMgMTYuNzA2NyA0Ni4zNDcyIDE2LjU0NTdDNDYuNDI4NCAxNi4yMTg0IDQ2LjQ1ODIgMTUuODgwNSA0Ni40MzU0IDE1LjU0NDFWOC40NTM3NUM0Ni40NTcxIDguMTA2ODcgNDYuNDI3NCA3Ljc1ODY4IDQ2LjM0NzIgNy40MjA0OUM0Ni4yNzE2IDcuMjY1MDkgNDYuMTQ3OSA3LjEzODIyIDQ1Ljk5NDUgNy4wNTg3NUM0NS43NzEzIDYuOTQ2MzYgNDUuNTIyOSA2Ljg5MzQxIDQ1LjI3MzIgNi45MDVINDQuOTE2VjYuNjExMDhINTAuNTUyNlY2LjkwNUg1MC4xOTUzQzQ5LjkzMzIgNi44OTIxMiA0OS42NzI0IDYuOTQ5OTEgNDkuNDQwMiA3LjA3MjMxQzQ5LjI5MTQgNy4xNTg1NiA0OS4xNzU5IDcuMjkyMzQgNDkuMTEyMyA3LjQ1MjE1QzQ5LjAzMzcgNy43Nzk4NCA0OS4wMDQ4IDguMTE3NDcgNDkuMDI2NCA4LjQ1Mzc1VjE1LjU0NDFDNDkuMDAzNCAxNS44OTExIDQ5LjAzMzkgMTYuMjM5NiA0OS4xMTY5IDE2LjU3NzNDNDkuMTk0NCAxNi43MzI5IDQ5LjMxOTUgMTYuODU5NiA0OS40NzQxIDE2LjkzOTFDNDkuNjk2NyAxNy4wNTM0IDQ5Ljk0NTQgMTcuMTA3MiA1MC4xOTUzIDE3LjA5NTFINTAuNTUyNloiIGZpbGw9IndoaXRlIi8+CjxwYXRoIGQ9Ik02MS4yOTI0IDYuNjExMVY5LjUyNzcySDYxLjAwNzVDNjAuOTAyNiA5LjAxNTM4IDYwLjcxMTUgOC41MjQ1NyA2MC40NDIzIDguMDc2MkM2MC4yMjM4IDcuNzcyOTIgNTkuOTMxMSA3LjUzMDgyIDU5LjU5MjIgNy4zNzMwNEM1OS4yNTIzIDcuMjU2NTMgNTguODkyNyA3LjIwODEzIDU4LjUzNDEgNy4yMzA2SDU3LjczMTRWMTUuNTQ0MUM1Ny43MDg5IDE1Ljg5MTMgNTcuNzQwMSAxNi4yMzk4IDU3LjgyNDEgMTYuNTc3NEM1Ny45MDEgMTYuNzMzNCA1OC4wMjYzIDE2Ljg2MDMgNTguMTgxNCAxNi45MzkxQzU4LjQwNjEgMTcuMDU0MSA1OC42NTcyIDE3LjEwNzkgNTguOTA5NCAxNy4wOTUxSDU5LjI2NjZWMTcuMzg5MUg1My42MTQyVjE3LjA5NTFINTMuOTczN0M1NC4yMzU3IDE3LjEwNjMgNTQuNDk2MSAxNy4wNDg2IDU0LjcyODkgMTYuOTI3OEM1NC44Nzc3IDE2Ljg0MTIgNTQuOTkyNSAxNi43MDY0IDU1LjA1NDUgMTYuNTQ1N0M1NS4xMzU3IDE2LjIxODUgNTUuMTY1NCAxNS44ODA1IDU1LjE0MjYgMTUuNTQ0MVY3LjIzMDZINTQuMzYyNkM1My42Mzc2IDcuMjMwNiA1My4xMSA3LjM4MTMzIDUyLjc3OTkgNy42ODI3OUM1Mi4yODgxIDguMTc3MjggNTEuOTgwMiA4LjgyNTA4IDUxLjkwNzIgOS41MTg2OEg1MS42MDQyVjYuNjAyMDVMNjEuMjkyNCA2LjYxMTFaIiBmaWxsPSJ3aGl0ZSIvPgo8cGF0aCBkPSJNNjguMDA0NiAxNy4wOTUxVjE3LjM4OUg2Mi4zNzA0VjE3LjA5NTFINjIuNzI3NkM2Mi45ODk2IDE3LjEwNjMgNjMuMjUgMTcuMDQ4NiA2My40ODI3IDE2LjkyNzhDNjMuNjMwNSAxNi44NDIzIDYzLjc0MjggMTYuNzA2OCA2My43OTkzIDE2LjU0NTdDNjMuODgwNSAxNi4yMTg0IDYzLjkxMDMgMTUuODgwNSA2My44ODc1IDE1LjU0NDFWOC40NTM3NUM2My45MDkyIDguMTA2ODcgNjMuODc5NSA3Ljc1ODY4IDYzLjc5OTMgNy40MjA0OUM2My43MjQ0IDcuMjY0NjEgNjMuNjAwNSA3LjEzNzU1IDYzLjQ0NjYgNy4wNTg3NUM2My4yMjQxIDYuOTQ2NjUgNjIuOTc2NSA2Ljg5MzcgNjIuNzI3NiA2LjkwNUg2Mi4zNzA0VjYuNjExMDhINjguMDA0NlY2LjkwNUg2Ny42NDc0QzY3LjM4NTMgNi44OTI0NiA2Ny4xMjQ2IDYuOTUwMjIgNjYuODkyMyA3LjA3MjMxQzY2Ljc0MzUgNy4xNTc5NyA2Ni42Mjg2IDcuMjkyMDMgNjYuNTY2NyA3LjQ1MjE1QzY2LjQ4NTYgNy43Nzk0NCA2Ni40NTU5IDguMTE3MzMgNjYuNDc4NSA4LjQ1Mzc1VjE1LjU0NDFDNjYuNDU1OSAxNS44OTEyIDY2LjQ4NzIgMTYuMjM5OCA2Ni41NzEyIDE2LjU3NzNDNjYuNjQ4MSAxNi43MzM0IDY2Ljc3MzQgMTYuODYwMyA2Ni45Mjg0IDE2LjkzOTFDNjcuMTUwMSAxNy4wNTM3IDY3LjM5ODIgMTcuMTA3NSA2Ny42NDc0IDE3LjA5NTFINjguMDA0NloiIGZpbGw9IndoaXRlIi8+CjxwYXRoIGQ9Ik03Ni40OTUyIDEzLjcxN0w3OS40MjA4IDYuNjEwODRIODMuODE4NFY2LjkwNDc2SDgzLjQ3MDJDODMuMjA1MSA2Ljg5MTggODIuOTQxNCA2Ljk0OTU0IDgyLjcwNiA3LjA3MjA3QzgyLjU2MjQgNy4xNTgyNCA4Mi40NTExIDcuMjg5MzYgODIuMzg5NSA3LjQ0NTEzQzgyLjMwODUgNy43NjkzNiA4Mi4yNzg3IDguMTA0MjUgODIuMzAxMyA4LjQzNzY4VjE1LjU0MzlDODIuMjc5NCAxNS44OTA3IDgyLjMwOTEgMTYuMjM4OSA4Mi4zODk1IDE2LjU3NzFDODIuNDY0MiAxNi43MzQ2IDgyLjU5MDIgMTYuODYyMSA4Mi43NDY3IDE2LjkzODlDODIuOTcwMSAxNy4wNTMxIDgzLjIxOTYgMTcuMTA2OSA4My40NzAyIDE3LjA5NDlIODMuODE4NFYxNy4zODg4SDc4LjE3OTZWMTcuMDk0OUg3OC41M0M3OC43OTYyIDE3LjEwNTggNzkuMDYwNSAxNy4wNDY1IDc5LjI5NjUgMTYuOTIzQzc5LjQ0MDkgMTYuODMzNiA3OS41NTIxIDE2LjY5OTQgNzkuNjEzIDE2LjU0MDlDNzkuNjk0MiAxNi4yMTM3IDc5LjcyNCAxNS44NzU4IDc5LjcwMTIgMTUuNTM5M1Y3LjU1NTkyTDc1LjU2NTkgMTcuMzg4OEg3NS4zNzM3TDcxLjE3NzQgNy42MjgyN1YxNS4yMTgzQzcxLjE2NjYgMTUuNTQ1MiA3MS4xODAyIDE1Ljg3MjQgNzEuMjE4MSAxNi4xOTczQzcxLjI4NjMgMTYuNDYwMSA3MS40NDY4IDE2LjY4OTcgNzEuNjcwMyAxNi44NDM5QzcxLjk5OCAxNy4wMzYxIDcyLjM3NjcgMTcuMTIzNyA3Mi43NTU2IDE3LjA5NDlWMTcuMzg4OEg2OS4wNjM0VjE3LjA5NDlINjkuMTc0MkM2OS40MDU4IDE3LjEwMjQgNjkuNjM2NSAxNy4wNjMyIDY5Ljg1MjUgMTYuOTc5NkM3MC4wMzUxIDE2LjkxMzIgNzAuMTk2NyAxNi43OTkyIDcwLjMyMDUgMTYuNjQ5NUM3MC40NDIyIDE2LjQ3NSA3MC41MjYxIDE2LjI3NzEgNzAuNTY3IDE2LjA2ODRDNzAuNTY3IDE2LjAwOTYgNzAuNTgyOCAxNS43NDA2IDcwLjU4MjggMTUuMjU5VjguNDM3NjhDNzAuNTk4NCA4LjA5NzUgNzAuNTYzMyA3Ljc1NjkxIDcwLjQ3ODggNy40MjcwNEM3MC40MDE3IDcuMjcyMzMgNzAuMjc2MyA3LjE0NjkzIDcwLjEyMTYgNy4wNjk4MUM2OS44OTc0IDYuOTU3NzEgNjkuNjQ4NCA2LjkwNDc5IDY5LjM5OCA2LjkxNjA2SDY5LjA1NjZWNi42MjIxNEg3My40NjFMNzYuNDk1MiAxMy43MTdaIiBmaWxsPSJ3aGl0ZSIvPgo8cGF0aCBkPSJNODguOTc3MyA3LjIzMDQxVjExLjYxODlIODkuMTg5OEM4OS44NzU2IDExLjYxODkgOTAuMzcxNSAxMS40MDQxIDkwLjY3NzUgMTAuOTc0NUM5MC45ODM1IDEwLjU0NSA5MS4xNzk1IDkuOTExODkgOTEuMjY1NCA5LjA3NTM0SDkxLjU2ODNWMTQuNzI3N0g5MS4yNjU0QzkxLjIyNyAxNC4yMDM4IDkxLjA5MTMgMTMuNjkxNiA5MC44NjUyIDEzLjIxNzRDOTAuNzE2IDEyLjg4NTkgOTAuNDY3IDEyLjYwOTIgOTAuMTUzIDEyLjQyNjFDODkuNzgxMiAxMi4yNzEzIDg5LjM3OTUgMTIuMjAxOCA4OC45NzczIDEyLjIyMjZWMTUuMjVDODguOTU3MiAxNS42MTQ5IDg4Ljk4MjMgMTUuOTgxIDg5LjA1MTkgMTYuMzM5OEM4OS4xMDcgMTYuNDc2OSA4OS4yMDY1IDE2LjU5MTUgODkuMzM0NSAxNi42NjU0Qzg5LjU0NTYgMTYuNzY2MyA4OS43Nzk1IDE2LjgxIDkwLjAxMjggMTYuNzkySDkwLjY1NzJDOTEuNjY0MSAxNi43OTIgOTIuNDcwNSAxNi41NTkxIDkzLjA3NjQgMTYuMDkzM0M5My42ODQ2IDE1LjYyNzYgOTQuMTE4NyAxNC45MTU0IDk0LjM4NTUgMTMuOTYzNUg5NC42NzA0TDk0LjE4NDMgMTcuMzg4OUg4NC44NjkxVjE3LjA5NDlIODUuMjI2NEM4NS40ODg0IDE3LjEwNjQgODUuNzQ4OSAxNy4wNDg3IDg1Ljk4MTUgMTYuOTI3NkM4Ni4xMjk1IDE2Ljg0MTggODYuMjQyNCAxNi43MDY1IDg2LjMwMDMgMTYuNTQ1NUM4Ni4zODAzIDE2LjIxODEgODYuNDA5MyAxNS44ODAyIDg2LjM4NjIgMTUuNTQzOVY4LjQ1MzU4Qzg2LjM5NzcgOC4xNTE1OCA4Ni4zODQ4IDcuODQ5MTQgODYuMzQ3OCA3LjU0OTJDODYuMzAyMiA3LjM3NjQyIDg2LjE5ODQgNy4yMjQ2OCA4Ni4wNTM5IDcuMTE5NjNDODUuODA5MiA2Ljk1ODA3IDg1LjUxOTIgNi44Nzg4NiA4NS4yMjY0IDYuODkzNTNIODQuODY5MVY2LjU5OTYxSDkzLjg5MDNWOS43ODUyOEg5My41ODk2QzkzLjQzODkgOS4wMDc1MSA5My4yMjI2IDguNDQ5MDcgOTIuOTQwNyA4LjEwOTkyQzkyLjYzMDIgNy43NDg5NyA5Mi4yMTk0IDcuNDg4NDcgOTEuNzYwNSA3LjM2MTU1QzkxLjIxMyA3LjI0MTMgOTAuNjUyIDcuMTkzNDEgOTAuMDkxOSA3LjIxOTExTDg4Ljk3NzMgNy4yMzA0MVoiIGZpbGw9IndoaXRlIi8+CjwvZz4KPGRlZnM+CjxjbGlwUGF0aCBpZD0iY2xpcDBfNzAyMl81ODE1Ij4KPHJlY3Qgd2lkdGg9IjEwNi4zMjMiIGhlaWdodD0iMjQiIGZpbGw9IndoaXRlIi8+CjwvY2xpcFBhdGg+CjwvZGVmcz4KPC9zdmc+Cg==" width="107" height="24" alt="NAVITIME" decoding="async"></figure>
+					</div>
+				</footer>
+			</main>
+		</div>
+		<div id="modals"></div>
+		<!--]--><span></span>
+		<!--]-->
+	</div>
+	<div id="teleports"></div>
+	<script type="application/json" id="__NUXT_DATA__" data-ssr="true">
+		[["ShallowReactive",1],{"data":2,"state":919,"once":1013,"_errors":1014,"serverRendered":18,"path":1017,"pinia":1018},["ShallowReactive",3],{"$gaS7XU7TrU":4,"$QVU3s92gGq":917},{"busstopId":5,"busstopKana":6,"busstopName":7,"latitude":8,"longitude":9,"operationalToday":10,"regular":11},"00480011","りつめいかんだいがく","立命館大学",34.982704,135.962391,"2025-04-10",[12],{"courseStops":13,"poleId":35,"poleName":36,"revisionDate":37,"revisionId":38,"schedules":39,"updatedOn":37},[14,22,25,29,32],{"courseId":15,"courseName":16,"destination":17,"hasRealtime":18,"operatorId":19,"operatorName":20,"sequence":21},"0007900502","南草津立命線（パナ東）","南草津駅",true,"00011300","近江鉄道",1,{"courseId":23,"courseName":24,"destination":17,"hasRealtime":18,"operatorId":19,"operatorName":20,"sequence":21},"0007900504","南草津立命線（かがやき）",{"courseId":26,"courseName":27,"destination":17,"hasRealtime":18,"operatorId":19,"operatorName":20,"sequence":28},"0007900524","南草津飛島線",9,{"courseId":30,"courseName":31,"destination":17,"hasRealtime":18,"operatorId":19,"operatorName":20,"sequence":21},"0007900544","南草津立命線（パナ西）",{"courseId":33,"courseName":34,"destination":17,"hasRealtime":18,"operatorId":19,"operatorName":20,"sequence":21},"0007900571","南草津立命線（直行）","000000000021","2","2025-04-07",34,[40,623],{"inScheduleForToday":18,"legends":41,"operationalDate":10,"scheduleType":51,"trips":52},[42,45,48],{"caption":43,"description":44},"P","パナソニック東口経由です。",{"caption":46,"description":47},"か","かがやき通り経由です。",{"caption":49,"description":50},"西","パナソニック西口経由です。","weekday",[53,58,63,68,73,78,83,88,93,98,103,108,113,118,121,126,131,136,141,144,149,154,157,162,164,169,172,175,180,185,188,193,196,201,206,209,214,219,222,227,230,235,238,241,244,249,252,257,260,265,268,271,276,279,284,287,292,295,300,302,307,310,313,318,321,324,329,331,334,339,342,345,348,351,356,359,364,369,372,377,379,384,389,394,399,401,406,408,413,418,423,425,430,435,437,440,445,448,453,456,461,464,469,472,477,480,485,488,493,498,501,506,511,514,519,524,527,532,537,542,547,550,555,560,565,570,575,578,583,588,593,598,603,608,613,618],{"courseId":15,"courseName":16,"departureTime":54,"destination":17,"hasArrivalTime":18,"id":55,"operatorId":19,"operatorName":20,"rubies":56,"sequence":21},"2025-04-10T07:00:00+09:00","84040010",[57],{"caption":43},{"courseId":15,"courseName":16,"departureTime":59,"destination":17,"hasArrivalTime":18,"id":60,"operatorId":19,"operatorName":20,"rubies":61,"sequence":21},"2025-04-10T07:15:00+09:00","84040011",[62],{"caption":43},{"courseId":15,"courseName":16,"departureTime":64,"destination":17,"hasArrivalTime":18,"id":65,"operatorId":19,"operatorName":20,"rubies":66,"sequence":21},"2025-04-10T08:05:00+09:00","84040012",[67],{"caption":43},{"courseId":15,"courseName":16,"departureTime":69,"destination":17,"hasArrivalTime":18,"id":70,"operatorId":19,"operatorName":20,"rubies":71,"sequence":21},"2025-04-10T08:35:00+09:00","84040013",[72],{"caption":43},{"courseId":15,"courseName":16,"departureTime":74,"destination":17,"hasArrivalTime":18,"id":75,"operatorId":19,"operatorName":20,"rubies":76,"sequence":21},"2025-04-10T09:05:00+09:00","84040014",[77],{"caption":43},{"courseId":23,"courseName":24,"departureTime":79,"destination":17,"hasArrivalTime":18,"id":80,"operatorId":19,"operatorName":20,"rubies":81,"sequence":21},"2025-04-10T09:25:00+09:00","8402002e",[82],{"caption":46},{"courseId":15,"courseName":16,"departureTime":84,"destination":17,"hasArrivalTime":18,"id":85,"operatorId":19,"operatorName":20,"rubies":86,"sequence":21},"2025-04-10T09:35:00+09:00","84040015",[87],{"caption":43},{"courseId":30,"courseName":31,"departureTime":89,"destination":17,"hasArrivalTime":18,"id":90,"operatorId":19,"operatorName":20,"rubies":91,"sequence":21},"2025-04-10T09:45:00+09:00","84060016",[92],{"caption":49},{"courseId":23,"courseName":24,"departureTime":94,"destination":17,"hasArrivalTime":18,"id":95,"operatorId":19,"operatorName":20,"rubies":96,"sequence":21},"2025-04-10T10:00:00+09:00","8402002f",[97],{"caption":46},{"courseId":15,"courseName":16,"departureTime":99,"destination":17,"hasArrivalTime":18,"id":100,"operatorId":19,"operatorName":20,"rubies":101,"sequence":21},"2025-04-10T10:05:00+09:00","84040016",[102],{"caption":43},{"courseId":23,"courseName":24,"departureTime":104,"destination":17,"hasArrivalTime":18,"id":105,"operatorId":19,"operatorName":20,"rubies":106,"sequence":21},"2025-04-10T10:25:00+09:00","84020030",[107],{"caption":46},{"courseId":15,"courseName":16,"departureTime":109,"destination":17,"hasArrivalTime":18,"id":110,"operatorId":19,"operatorName":20,"rubies":111,"sequence":21},"2025-04-10T10:40:00+09:00","84040017",[112],{"caption":43},{"courseId":30,"courseName":31,"departureTime":114,"destination":17,"hasArrivalTime":18,"id":115,"operatorId":19,"operatorName":20,"rubies":116,"sequence":21},"2025-04-10T10:45:00+09:00","84060017",[117],{"caption":49},{"courseId":33,"courseName":34,"departureTime":119,"destination":17,"hasArrivalTime":18,"id":120,"operatorId":19,"operatorName":20,"sequence":21},"2025-04-10T10:50:00+09:00","84090000",{"courseId":23,"courseName":24,"departureTime":122,"destination":17,"hasArrivalTime":18,"id":123,"operatorId":19,"operatorName":20,"rubies":124,"sequence":21},"2025-04-10T11:00:00+09:00","84020031",[125],{"caption":46},{"courseId":15,"courseName":16,"departureTime":127,"destination":17,"hasArrivalTime":18,"id":128,"operatorId":19,"operatorName":20,"rubies":129,"sequence":21},"2025-04-10T11:05:00+09:00","84040018",[130],{"caption":43},{"courseId":23,"courseName":24,"departureTime":132,"destination":17,"hasArrivalTime":18,"id":133,"operatorId":19,"operatorName":20,"rubies":134,"sequence":21},"2025-04-10T11:25:00+09:00","84020032",[135],{"caption":46},{"courseId":15,"courseName":16,"departureTime":137,"destination":17,"hasArrivalTime":18,"id":138,"operatorId":19,"operatorName":20,"rubies":139,"sequence":21},"2025-04-10T11:35:00+09:00","84040019",[140],{"caption":43},{"courseId":33,"courseName":34,"departureTime":142,"destination":17,"hasArrivalTime":18,"id":143,"operatorId":19,"operatorName":20,"sequence":21},"2025-04-10T11:50:00+09:00","84090001",{"courseId":23,"courseName":24,"departureTime":145,"destination":17,"hasArrivalTime":18,"id":146,"operatorId":19,"operatorName":20,"rubies":147,"sequence":21},"2025-04-10T12:00:00+09:00","84020033",[148],{"caption":46},{"courseId":15,"courseName":16,"departureTime":150,"destination":17,"hasArrivalTime":18,"id":151,"operatorId":19,"operatorName":20,"rubies":152,"sequence":21},"2025-04-10T12:05:00+09:00","8404001a",[153],{"caption":43},{"courseId":33,"courseName":34,"departureTime":155,"destination":17,"hasArrivalTime":18,"id":156,"operatorId":19,"operatorName":20,"sequence":21},"2025-04-10T12:25:00+09:00","84090002",{"courseId":23,"courseName":24,"departureTime":158,"destination":17,"hasArrivalTime":18,"id":159,"operatorId":19,"operatorName":20,"rubies":160,"sequence":21},"2025-04-10T12:30:00+09:00","84020034",[161],{"caption":46},{"courseId":33,"courseName":34,"departureTime":158,"destination":17,"hasArrivalTime":18,"id":163,"operatorId":19,"operatorName":20,"sequence":21},"84090003",{"courseId":15,"courseName":16,"departureTime":165,"destination":17,"hasArrivalTime":18,"id":166,"operatorId":19,"operatorName":20,"rubies":167,"sequence":21},"2025-04-10T12:35:00+09:00","8404001b",[168],{"caption":43},{"courseId":33,"courseName":34,"departureTime":170,"destination":17,"hasArrivalTime":18,"id":171,"operatorId":19,"operatorName":20,"sequence":21},"2025-04-10T12:43:00+09:00","84090004",{"courseId":33,"courseName":34,"departureTime":173,"destination":17,"hasArrivalTime":18,"id":174,"operatorId":19,"operatorName":20,"sequence":21},"2025-04-10T12:50:00+09:00","84090005",{"courseId":23,"courseName":24,"departureTime":176,"destination":17,"hasArrivalTime":18,"id":177,"operatorId":19,"operatorName":20,"rubies":178,"sequence":21},"2025-04-10T13:00:00+09:00","84020035",[179],{"caption":46},{"courseId":15,"courseName":16,"departureTime":181,"destination":17,"hasArrivalTime":18,"id":182,"operatorId":19,"operatorName":20,"rubies":183,"sequence":21},"2025-04-10T13:05:00+09:00","8404001c",[184],{"caption":43},{"courseId":33,"courseName":34,"departureTime":186,"destination":17,"hasArrivalTime":18,"id":187,"operatorId":19,"operatorName":20,"sequence":21},"2025-04-10T13:10:00+09:00","84090006",{"courseId":23,"courseName":24,"departureTime":189,"destination":17,"hasArrivalTime":18,"id":190,"operatorId":19,"operatorName":20,"rubies":191,"sequence":21},"2025-04-10T13:25:00+09:00","84020036",[192],{"caption":46},{"courseId":33,"courseName":34,"departureTime":194,"destination":17,"hasArrivalTime":18,"id":195,"operatorId":19,"operatorName":20,"sequence":21},"2025-04-10T13:30:00+09:00","84090007",{"courseId":15,"courseName":16,"departureTime":197,"destination":17,"hasArrivalTime":18,"id":198,"operatorId":19,"operatorName":20,"rubies":199,"sequence":21},"2025-04-10T13:35:00+09:00","8404001d",[200],{"caption":43},{"courseId":30,"courseName":31,"departureTime":202,"destination":17,"hasArrivalTime":18,"id":203,"operatorId":19,"operatorName":20,"rubies":204,"sequence":21},"2025-04-10T13:45:00+09:00","84060018",[205],{"caption":49},{"courseId":33,"courseName":34,"departureTime":207,"destination":17,"hasArrivalTime":18,"id":208,"operatorId":19,"operatorName":20,"sequence":21},"2025-04-10T13:50:00+09:00","84090008",{"courseId":23,"courseName":24,"departureTime":210,"destination":17,"hasArrivalTime":18,"id":211,"operatorId":19,"operatorName":20,"rubies":212,"sequence":21},"2025-04-10T14:00:00+09:00","84020037",[213],{"caption":46},{"courseId":15,"courseName":16,"departureTime":215,"destination":17,"hasArrivalTime":18,"id":216,"operatorId":19,"operatorName":20,"rubies":217,"sequence":21},"2025-04-10T14:05:00+09:00","8404001e",[218],{"caption":43},{"courseId":33,"courseName":34,"departureTime":220,"destination":17,"hasArrivalTime":18,"id":221,"operatorId":19,"operatorName":20,"sequence":21},"2025-04-10T14:10:00+09:00","84090009",{"courseId":23,"courseName":24,"departureTime":223,"destination":17,"hasArrivalTime":18,"id":224,"operatorId":19,"operatorName":20,"rubies":225,"sequence":21},"2025-04-10T14:25:00+09:00","84020038",[226],{"caption":46},{"courseId":33,"courseName":34,"departureTime":228,"destination":17,"hasArrivalTime":18,"id":229,"operatorId":19,"operatorName":20,"sequence":21},"2025-04-10T14:30:00+09:00","8409000a",{"courseId":15,"courseName":16,"departureTime":231,"destination":17,"hasArrivalTime":18,"id":232,"operatorId":19,"operatorName":20,"rubies":233,"sequence":21},"2025-04-10T14:35:00+09:00","8404001f",[234],{"caption":43},{"courseId":33,"courseName":34,"departureTime":236,"destination":17,"hasArrivalTime":18,"id":237,"operatorId":19,"operatorName":20,"sequence":21},"2025-04-10T14:40:00+09:00","8409000b",{"courseId":33,"courseName":34,"departureTime":239,"destination":17,"hasArrivalTime":18,"id":240,"operatorId":19,"operatorName":20,"sequence":21},"2025-04-10T14:50:00+09:00","8409000c",{"courseId":33,"courseName":34,"departureTime":242,"destination":17,"hasArrivalTime":18,"id":243,"operatorId":19,"operatorName":20,"sequence":21},"2025-04-10T14:53:00+09:00","8409000d",{"courseId":30,"courseName":31,"departureTime":245,"destination":17,"hasArrivalTime":18,"id":246,"operatorId":19,"operatorName":20,"rubies":247,"sequence":21},"2025-04-10T14:55:00+09:00","84060019",[248],{"caption":49},{"courseId":33,"courseName":34,"departureTime":250,"destination":17,"hasArrivalTime":18,"id":251,"operatorId":19,"operatorName":20,"sequence":21},"2025-04-10T14:58:00+09:00","8409000e",{"courseId":23,"courseName":24,"departureTime":253,"destination":17,"hasArrivalTime":18,"id":254,"operatorId":19,"operatorName":20,"rubies":255,"sequence":21},"2025-04-10T15:00:00+09:00","84020039",[256],{"caption":46},{"courseId":33,"courseName":34,"departureTime":258,"destination":17,"hasArrivalTime":18,"id":259,"operatorId":19,"operatorName":20,"sequence":21},"2025-04-10T15:03:00+09:00","8409000f",{"courseId":15,"courseName":16,"departureTime":261,"destination":17,"hasArrivalTime":18,"id":262,"operatorId":19,"operatorName":20,"rubies":263,"sequence":21},"2025-04-10T15:05:00+09:00","84040020",[264],{"caption":43},{"courseId":33,"courseName":34,"departureTime":266,"destination":17,"hasArrivalTime":18,"id":267,"operatorId":19,"operatorName":20,"sequence":21},"2025-04-10T15:10:00+09:00","84090010",{"courseId":33,"courseName":34,"departureTime":269,"destination":17,"hasArrivalTime":18,"id":270,"operatorId":19,"operatorName":20,"sequence":21},"2025-04-10T15:20:00+09:00","84090011",{"courseId":23,"courseName":24,"departureTime":272,"destination":17,"hasArrivalTime":18,"id":273,"operatorId":19,"operatorName":20,"rubies":274,"sequence":21},"2025-04-10T15:25:00+09:00","8402003a",[275],{"caption":46},{"courseId":33,"courseName":34,"departureTime":277,"destination":17,"hasArrivalTime":18,"id":278,"operatorId":19,"operatorName":20,"sequence":21},"2025-04-10T15:30:00+09:00","84090012",{"courseId":15,"courseName":16,"departureTime":280,"destination":17,"hasArrivalTime":18,"id":281,"operatorId":19,"operatorName":20,"rubies":282,"sequence":21},"2025-04-10T15:35:00+09:00","84040021",[283],{"caption":43},{"courseId":33,"courseName":34,"departureTime":285,"destination":17,"hasArrivalTime":18,"id":286,"operatorId":19,"operatorName":20,"sequence":21},"2025-04-10T15:40:00+09:00","84090013",{"courseId":30,"courseName":31,"departureTime":288,"destination":17,"hasArrivalTime":18,"id":289,"operatorId":19,"operatorName":20,"rubies":290,"sequence":21},"2025-04-10T15:45:00+09:00","8406001a",[291],{"caption":49},{"courseId":33,"courseName":34,"departureTime":293,"destination":17,"hasArrivalTime":18,"id":294,"operatorId":19,"operatorName":20,"sequence":21},"2025-04-10T15:50:00+09:00","84090014",{"courseId":23,"courseName":24,"departureTime":296,"destination":17,"hasArrivalTime":18,"id":297,"operatorId":19,"operatorName":20,"rubies":298,"sequence":21},"2025-04-10T16:00:00+09:00","8402003b",[299],{"caption":46},{"courseId":33,"courseName":34,"departureTime":296,"destination":17,"hasArrivalTime":18,"id":301,"operatorId":19,"operatorName":20,"sequence":21},"84090015",{"courseId":15,"courseName":16,"departureTime":303,"destination":17,"hasArrivalTime":18,"id":304,"operatorId":19,"operatorName":20,"rubies":305,"sequence":21},"2025-04-10T16:05:00+09:00","84040022",[306],{"caption":43},{"courseId":33,"courseName":34,"departureTime":308,"destination":17,"hasArrivalTime":18,"id":309,"operatorId":19,"operatorName":20,"sequence":21},"2025-04-10T16:10:00+09:00","84090016",{"courseId":33,"courseName":34,"departureTime":311,"destination":17,"hasArrivalTime":18,"id":312,"operatorId":19,"operatorName":20,"sequence":21},"2025-04-10T16:20:00+09:00","84090017",{"courseId":23,"courseName":24,"departureTime":314,"destination":17,"hasArrivalTime":18,"id":315,"operatorId":19,"operatorName":20,"rubies":316,"sequence":21},"2025-04-10T16:25:00+09:00","8402003c",[317],{"caption":46},{"courseId":33,"courseName":34,"departureTime":319,"destination":17,"hasArrivalTime":18,"id":320,"operatorId":19,"operatorName":20,"sequence":21},"2025-04-10T16:30:00+09:00","84090018",{"courseId":33,"courseName":34,"departureTime":322,"destination":17,"hasArrivalTime":18,"id":323,"operatorId":19,"operatorName":20,"sequence":21},"2025-04-10T16:37:00+09:00","84090019",{"courseId":15,"courseName":16,"departureTime":325,"destination":17,"hasArrivalTime":18,"id":326,"operatorId":19,"operatorName":20,"rubies":327,"sequence":21},"2025-04-10T16:40:00+09:00","84040023",[328],{"caption":43},{"courseId":33,"courseName":34,"departureTime":325,"destination":17,"hasArrivalTime":18,"id":330,"operatorId":19,"operatorName":20,"sequence":21},"8409001a",{"courseId":33,"courseName":34,"departureTime":332,"destination":17,"hasArrivalTime":18,"id":333,"operatorId":19,"operatorName":20,"sequence":21},"2025-04-10T16:43:00+09:00","8409001b",{"courseId":30,"courseName":31,"departureTime":335,"destination":17,"hasArrivalTime":18,"id":336,"operatorId":19,"operatorName":20,"rubies":337,"sequence":21},"2025-04-10T16:45:00+09:00","8406001b",[338],{"caption":49},{"courseId":33,"courseName":34,"departureTime":340,"destination":17,"hasArrivalTime":18,"id":341,"operatorId":19,"operatorName":20,"sequence":21},"2025-04-10T16:47:00+09:00","8409001c",{"courseId":33,"courseName":34,"departureTime":343,"destination":17,"hasArrivalTime":18,"id":344,"operatorId":19,"operatorName":20,"sequence":21},"2025-04-10T16:50:00+09:00","8409001d",{"courseId":33,"courseName":34,"departureTime":346,"destination":17,"hasArrivalTime":18,"id":347,"operatorId":19,"operatorName":20,"sequence":21},"2025-04-10T16:53:00+09:00","8409001e",{"courseId":33,"courseName":34,"departureTime":349,"destination":17,"hasArrivalTime":18,"id":350,"operatorId":19,"operatorName":20,"sequence":21},"2025-04-10T16:57:00+09:00","8409001f",{"courseId":23,"courseName":24,"departureTime":352,"destination":17,"hasArrivalTime":18,"id":353,"operatorId":19,"operatorName":20,"rubies":354,"sequence":21},"2025-04-10T17:00:00+09:00","8402003d",[355],{"caption":46},{"courseId":33,"courseName":34,"departureTime":357,"destination":17,"hasArrivalTime":18,"id":358,"operatorId":19,"operatorName":20,"sequence":21},"2025-04-10T17:03:00+09:00","84090020",{"courseId":15,"courseName":16,"departureTime":360,"destination":17,"hasArrivalTime":18,"id":361,"operatorId":19,"operatorName":20,"rubies":362,"sequence":21},"2025-04-10T17:05:00+09:00","84040024",[363],{"caption":43},{"courseId":30,"courseName":31,"departureTime":365,"destination":17,"hasArrivalTime":18,"id":366,"operatorId":19,"operatorName":20,"rubies":367,"sequence":21},"2025-04-10T17:10:00+09:00","8406001c",[368],{"caption":49},{"courseId":33,"courseName":34,"departureTime":370,"destination":17,"hasArrivalTime":18,"id":371,"operatorId":19,"operatorName":20,"sequence":21},"2025-04-10T17:15:00+09:00","84090021",{"courseId":15,"courseName":16,"departureTime":373,"destination":17,"hasArrivalTime":18,"id":374,"operatorId":19,"operatorName":20,"rubies":375,"sequence":21},"2025-04-10T17:20:00+09:00","84040025",[376],{"caption":43},{"courseId":33,"courseName":34,"departureTime":373,"destination":17,"hasArrivalTime":18,"id":378,"operatorId":19,"operatorName":20,"sequence":21},"84090022",{"courseId":30,"courseName":31,"departureTime":380,"destination":17,"hasArrivalTime":18,"id":381,"operatorId":19,"operatorName":20,"rubies":382,"sequence":21},"2025-04-10T17:25:00+09:00","8406001d",[383],{"caption":49},{"courseId":23,"courseName":24,"departureTime":385,"destination":17,"hasArrivalTime":18,"id":386,"operatorId":19,"operatorName":20,"rubies":387,"sequence":21},"2025-04-10T17:30:00+09:00","8402003e",[388],{"caption":46},{"courseId":26,"courseName":27,"departureTime":390,"destination":17,"hasArrivalTime":18,"id":391,"operatorId":19,"operatorName":20,"rubies":392,"sequence":28},"2025-04-10T17:35:00+09:00","840e001e",[393],{"caption":43},{"courseId":30,"courseName":31,"departureTime":395,"destination":17,"hasArrivalTime":18,"id":396,"operatorId":19,"operatorName":20,"rubies":397,"sequence":21},"2025-04-10T17:40:00+09:00","8406001e",[398],{"caption":49},{"courseId":33,"courseName":34,"departureTime":395,"destination":17,"hasArrivalTime":18,"id":400,"operatorId":19,"operatorName":20,"sequence":21},"84090023",{"courseId":15,"courseName":16,"departureTime":402,"destination":17,"hasArrivalTime":18,"id":403,"operatorId":19,"operatorName":20,"rubies":404,"sequence":21},"2025-04-10T17:50:00+09:00","84040026",[405],{"caption":43},{"courseId":33,"courseName":34,"departureTime":402,"destination":17,"hasArrivalTime":18,"id":407,"operatorId":19,"operatorName":20,"sequence":21},"84090024",{"courseId":30,"courseName":31,"departureTime":409,"destination":17,"hasArrivalTime":18,"id":410,"operatorId":19,"operatorName":20,"rubies":411,"sequence":21},"2025-04-10T17:55:00+09:00","8406001f",[412],{"caption":49},{"courseId":23,"courseName":24,"departureTime":414,"destination":17,"hasArrivalTime":18,"id":415,"operatorId":19,"operatorName":20,"rubies":416,"sequence":21},"2025-04-10T18:00:00+09:00","8402003f",[417],{"caption":46},{"courseId":26,"courseName":27,"departureTime":419,"destination":17,"hasArrivalTime":18,"id":420,"operatorId":19,"operatorName":20,"rubies":421,"sequence":28},"2025-04-10T18:05:00+09:00","840e001f",[422],{"caption":43},{"courseId":33,"courseName":34,"departureTime":419,"destination":17,"hasArrivalTime":18,"id":424,"operatorId":19,"operatorName":20,"sequence":21},"84090025",{"courseId":30,"courseName":31,"departureTime":426,"destination":17,"hasArrivalTime":18,"id":427,"operatorId":19,"operatorName":20,"rubies":428,"sequence":21},"2025-04-10T18:10:00+09:00","84060020",[429],{"caption":49},{"courseId":15,"courseName":16,"departureTime":431,"destination":17,"hasArrivalTime":18,"id":432,"operatorId":19,"operatorName":20,"rubies":433,"sequence":21},"2025-04-10T18:20:00+09:00","84040027",[434],{"caption":43},{"courseId":33,"courseName":34,"departureTime":431,"destination":17,"hasArrivalTime":18,"id":436,"operatorId":19,"operatorName":20,"sequence":21},"84090026",{"courseId":33,"courseName":34,"departureTime":438,"destination":17,"hasArrivalTime":18,"id":439,"operatorId":19,"operatorName":20,"sequence":21},"2025-04-10T18:23:00+09:00","84090027",{"courseId":30,"courseName":31,"departureTime":441,"destination":17,"hasArrivalTime":18,"id":442,"operatorId":19,"operatorName":20,"rubies":443,"sequence":21},"2025-04-10T18:25:00+09:00","84060021",[444],{"caption":49},{"courseId":33,"courseName":34,"departureTime":446,"destination":17,"hasArrivalTime":18,"id":447,"operatorId":19,"operatorName":20,"sequence":21},"2025-04-10T18:28:00+09:00","84090028",{"courseId":23,"courseName":24,"departureTime":449,"destination":17,"hasArrivalTime":18,"id":450,"operatorId":19,"operatorName":20,"rubies":451,"sequence":21},"2025-04-10T18:30:00+09:00","84020040",[452],{"caption":46},{"courseId":33,"courseName":34,"departureTime":454,"destination":17,"hasArrivalTime":18,"id":455,"operatorId":19,"operatorName":20,"sequence":21},"2025-04-10T18:33:00+09:00","84090029",{"courseId":26,"courseName":27,"departureTime":457,"destination":17,"hasArrivalTime":18,"id":458,"operatorId":19,"operatorName":20,"rubies":459,"sequence":28},"2025-04-10T18:35:00+09:00","840e0020",[460],{"caption":43},{"courseId":33,"courseName":34,"departureTime":462,"destination":17,"hasArrivalTime":18,"id":463,"operatorId":19,"operatorName":20,"sequence":21},"2025-04-10T18:38:00+09:00","8409002a",{"courseId":30,"courseName":31,"departureTime":465,"destination":17,"hasArrivalTime":18,"id":466,"operatorId":19,"operatorName":20,"rubies":467,"sequence":21},"2025-04-10T18:40:00+09:00","84060022",[468],{"caption":49},{"courseId":33,"courseName":34,"departureTime":470,"destination":17,"hasArrivalTime":18,"id":471,"operatorId":19,"operatorName":20,"sequence":21},"2025-04-10T18:48:00+09:00","8409002b",{"courseId":30,"courseName":31,"departureTime":473,"destination":17,"hasArrivalTime":18,"id":474,"operatorId":19,"operatorName":20,"rubies":475,"sequence":21},"2025-04-10T18:55:00+09:00","84060023",[476],{"caption":49},{"courseId":33,"courseName":34,"departureTime":478,"destination":17,"hasArrivalTime":18,"id":479,"operatorId":19,"operatorName":20,"sequence":21},"2025-04-10T18:58:00+09:00","8409002c",{"courseId":23,"courseName":24,"departureTime":481,"destination":17,"hasArrivalTime":18,"id":482,"operatorId":19,"operatorName":20,"rubies":483,"sequence":21},"2025-04-10T19:00:00+09:00","84020041",[484],{"caption":46},{"courseId":33,"courseName":34,"departureTime":486,"destination":17,"hasArrivalTime":18,"id":487,"operatorId":19,"operatorName":20,"sequence":21},"2025-04-10T19:03:00+09:00","8409002d",{"courseId":26,"courseName":27,"departureTime":489,"destination":17,"hasArrivalTime":18,"id":490,"operatorId":19,"operatorName":20,"rubies":491,"sequence":28},"2025-04-10T19:05:00+09:00","840e0021",[492],{"caption":43},{"courseId":30,"courseName":31,"departureTime":494,"destination":17,"hasArrivalTime":18,"id":495,"operatorId":19,"operatorName":20,"rubies":496,"sequence":21},"2025-04-10T19:10:00+09:00","84060024",[497],{"caption":49},{"courseId":33,"courseName":34,"departureTime":499,"destination":17,"hasArrivalTime":18,"id":500,"operatorId":19,"operatorName":20,"sequence":21},"2025-04-10T19:18:00+09:00","8409002e",{"courseId":15,"courseName":16,"departureTime":502,"destination":17,"hasArrivalTime":18,"id":503,"operatorId":19,"operatorName":20,"rubies":504,"sequence":21},"2025-04-10T19:20:00+09:00","84040028",[505],{"caption":43},{"courseId":30,"courseName":31,"departureTime":507,"destination":17,"hasArrivalTime":18,"id":508,"operatorId":19,"operatorName":20,"rubies":509,"sequence":21},"2025-04-10T19:25:00+09:00","84060025",[510],{"caption":49},{"courseId":33,"courseName":34,"departureTime":512,"destination":17,"hasArrivalTime":18,"id":513,"operatorId":19,"operatorName":20,"sequence":21},"2025-04-10T19:33:00+09:00","8409002f",{"courseId":15,"courseName":16,"departureTime":515,"destination":17,"hasArrivalTime":18,"id":516,"operatorId":19,"operatorName":20,"rubies":517,"sequence":21},"2025-04-10T19:35:00+09:00","84040029",[518],{"caption":43},{"courseId":30,"courseName":31,"departureTime":520,"destination":17,"hasArrivalTime":18,"id":521,"operatorId":19,"operatorName":20,"rubies":522,"sequence":21},"2025-04-10T19:40:00+09:00","84060026",[523],{"caption":49},{"courseId":33,"courseName":34,"departureTime":525,"destination":17,"hasArrivalTime":18,"id":526,"operatorId":19,"operatorName":20,"sequence":21},"2025-04-10T19:48:00+09:00","84090030",{"courseId":15,"courseName":16,"departureTime":528,"destination":17,"hasArrivalTime":18,"id":529,"operatorId":19,"operatorName":20,"rubies":530,"sequence":21},"2025-04-10T19:50:00+09:00","8404002a",[531],{"caption":43},{"courseId":30,"courseName":31,"departureTime":533,"destination":17,"hasArrivalTime":18,"id":534,"operatorId":19,"operatorName":20,"rubies":535,"sequence":21},"2025-04-10T19:55:00+09:00","84060027",[536],{"caption":49},{"courseId":23,"courseName":24,"departureTime":538,"destination":17,"hasArrivalTime":18,"id":539,"operatorId":19,"operatorName":20,"rubies":540,"sequence":21},"2025-04-10T20:00:00+09:00","84020042",[541],{"caption":46},{"courseId":15,"courseName":16,"departureTime":543,"destination":17,"hasArrivalTime":18,"id":544,"operatorId":19,"operatorName":20,"rubies":545,"sequence":21},"2025-04-10T20:05:00+09:00","8404002b",[546],{"caption":43},{"courseId":33,"courseName":34,"departureTime":548,"destination":17,"hasArrivalTime":18,"id":549,"operatorId":19,"operatorName":20,"sequence":21},"2025-04-10T20:08:00+09:00","84090031",{"courseId":30,"courseName":31,"departureTime":551,"destination":17,"hasArrivalTime":18,"id":552,"operatorId":19,"operatorName":20,"rubies":553,"sequence":21},"2025-04-10T20:10:00+09:00","84060028",[554],{"caption":49},{"courseId":15,"courseName":16,"departureTime":556,"destination":17,"hasArrivalTime":18,"id":557,"operatorId":19,"operatorName":20,"rubies":558,"sequence":21},"2025-04-10T20:20:00+09:00","8404002c",[559],{"caption":43},{"courseId":30,"courseName":31,"departureTime":561,"destination":17,"hasArrivalTime":18,"id":562,"operatorId":19,"operatorName":20,"rubies":563,"sequence":21},"2025-04-10T20:25:00+09:00","84060029",[564],{"caption":49},{"courseId":23,"courseName":24,"departureTime":566,"destination":17,"hasArrivalTime":18,"id":567,"operatorId":19,"operatorName":20,"rubies":568,"sequence":21},"2025-04-10T20:30:00+09:00","84020043",[569],{"caption":46},{"courseId":30,"courseName":31,"departureTime":571,"destination":17,"hasArrivalTime":18,"id":572,"operatorId":19,"operatorName":20,"rubies":573,"sequence":21},"2025-04-10T20:40:00+09:00","8406002a",[574],{"caption":49},{"courseId":33,"courseName":34,"departureTime":576,"destination":17,"hasArrivalTime":18,"id":577,"operatorId":19,"operatorName":20,"sequence":21},"2025-04-10T20:45:00+09:00","84090032",{"courseId":15,"courseName":16,"departureTime":579,"destination":17,"hasArrivalTime":18,"id":580,"operatorId":19,"operatorName":20,"rubies":581,"sequence":21},"2025-04-10T20:50:00+09:00","8404002d",[582],{"caption":43},{"courseId":30,"courseName":31,"departureTime":584,"destination":17,"hasArrivalTime":18,"id":585,"operatorId":19,"operatorName":20,"rubies":586,"sequence":21},"2025-04-10T20:55:00+09:00","8406002b",[587],{"caption":49},{"courseId":23,"courseName":24,"departureTime":589,"destination":17,"hasArrivalTime":18,"id":590,"operatorId":19,"operatorName":20,"rubies":591,"sequence":21},"2025-04-10T21:00:00+09:00","84020044",[592],{"caption":46},{"courseId":30,"courseName":31,"departureTime":594,"destination":17,"hasArrivalTime":18,"id":595,"operatorId":19,"operatorName":20,"rubies":596,"sequence":21},"2025-04-10T21:10:00+09:00","8406002c",[597],{"caption":49},{"courseId":30,"courseName":31,"departureTime":599,"destination":17,"hasArrivalTime":18,"id":600,"operatorId":19,"operatorName":20,"rubies":601,"sequence":21},"2025-04-10T21:25:00+09:00","8406002d",[602],{"caption":49},{"courseId":30,"courseName":31,"departureTime":604,"destination":17,"hasArrivalTime":18,"id":605,"operatorId":19,"operatorName":20,"rubies":606,"sequence":21},"2025-04-10T21:40:00+09:00","8406002e",[607],{"caption":49},{"courseId":15,"courseName":16,"departureTime":609,"destination":17,"hasArrivalTime":18,"id":610,"operatorId":19,"operatorName":20,"rubies":611,"sequence":21},"2025-04-10T21:50:00+09:00","8404002e",[612],{"caption":43},{"courseId":30,"courseName":31,"departureTime":614,"destination":17,"hasArrivalTime":18,"id":615,"operatorId":19,"operatorName":20,"rubies":616,"sequence":21},"2025-04-10T22:00:00+09:00","8406002f",[617],{"caption":49},{"courseId":15,"courseName":16,"departureTime":619,"destination":17,"hasArrivalTime":18,"id":620,"operatorId":19,"operatorName":20,"rubies":621,"sequence":21},"2025-04-10T22:40:00+09:00","8404002f",[622],{"caption":43},{"inScheduleForToday":624,"legends":625,"operationalDate":629,"scheduleType":630,"trips":631},false,[626,627,628],{"caption":43,"description":44},{"caption":46,"description":47},{"caption":49,"description":50},"2025-04-13","weekend",[632,637,642,647,652,657,662,667,672,677,682,687,692,697,702,707,712,717,722,727,732,737,742,747,752,757,762,767,772,777,782,787,792,797,802,807,812,817,822,827,832,837,842,847,852,857,862,867,872,877,882,887,892,897,902,907,912],{"courseId":30,"courseName":31,"departureTime":633,"destination":17,"hasArrivalTime":18,"id":634,"operatorId":19,"operatorName":20,"rubies":635,"sequence":21},"2025-04-13T07:45:00+09:00","84060000",[636],{"caption":49},{"courseId":30,"courseName":31,"departureTime":638,"destination":17,"hasArrivalTime":18,"id":639,"operatorId":19,"operatorName":20,"rubies":640,"sequence":21},"2025-04-13T08:45:00+09:00","84060001",[641],{"caption":49},{"courseId":15,"courseName":16,"departureTime":643,"destination":17,"hasArrivalTime":18,"id":644,"operatorId":19,"operatorName":20,"rubies":645,"sequence":21},"2025-04-13T09:15:00+09:00","84040000",[646],{"caption":43},{"courseId":23,"courseName":24,"departureTime":648,"destination":17,"hasArrivalTime":18,"id":649,"operatorId":19,"operatorName":20,"rubies":650,"sequence":21},"2025-04-13T09:25:00+09:00","84020000",[651],{"caption":46},{"courseId":30,"courseName":31,"departureTime":653,"destination":17,"hasArrivalTime":18,"id":654,"operatorId":19,"operatorName":20,"rubies":655,"sequence":21},"2025-04-13T09:45:00+09:00","84060002",[656],{"caption":49},{"courseId":26,"courseName":27,"departureTime":658,"destination":17,"hasArrivalTime":18,"id":659,"operatorId":19,"operatorName":20,"rubies":660,"sequence":28},"2025-04-13T09:50:00+09:00","840e0000",[661],{"caption":43},{"courseId":15,"courseName":16,"departureTime":663,"destination":17,"hasArrivalTime":18,"id":664,"operatorId":19,"operatorName":20,"rubies":665,"sequence":21},"2025-04-13T10:15:00+09:00","84040001",[666],{"caption":43},{"courseId":23,"courseName":24,"departureTime":668,"destination":17,"hasArrivalTime":18,"id":669,"operatorId":19,"operatorName":20,"rubies":670,"sequence":21},"2025-04-13T10:25:00+09:00","84020001",[671],{"caption":46},{"courseId":30,"courseName":31,"departureTime":673,"destination":17,"hasArrivalTime":18,"id":674,"operatorId":19,"operatorName":20,"rubies":675,"sequence":21},"2025-04-13T10:45:00+09:00","84060003",[676],{"caption":49},{"courseId":26,"courseName":27,"departureTime":678,"destination":17,"hasArrivalTime":18,"id":679,"operatorId":19,"operatorName":20,"rubies":680,"sequence":28},"2025-04-13T10:50:00+09:00","840e0001",[681],{"caption":43},{"courseId":23,"courseName":24,"departureTime":683,"destination":17,"hasArrivalTime":18,"id":684,"operatorId":19,"operatorName":20,"rubies":685,"sequence":21},"2025-04-13T11:00:00+09:00","84020002",[686],{"caption":46},{"courseId":26,"courseName":27,"departureTime":688,"destination":17,"hasArrivalTime":18,"id":689,"operatorId":19,"operatorName":20,"rubies":690,"sequence":28},"2025-04-13T11:05:00+09:00","840e0002",[691],{"caption":43},{"courseId":23,"courseName":24,"departureTime":693,"destination":17,"hasArrivalTime":18,"id":694,"operatorId":19,"operatorName":20,"rubies":695,"sequence":21},"2025-04-13T11:25:00+09:00","84020003",[696],{"caption":46},{"courseId":26,"courseName":27,"departureTime":698,"destination":17,"hasArrivalTime":18,"id":699,"operatorId":19,"operatorName":20,"rubies":700,"sequence":28},"2025-04-13T11:35:00+09:00","840e0003",[701],{"caption":43},{"courseId":23,"courseName":24,"departureTime":703,"destination":17,"hasArrivalTime":18,"id":704,"operatorId":19,"operatorName":20,"rubies":705,"sequence":21},"2025-04-13T12:00:00+09:00","84020004",[706],{"caption":46},{"courseId":26,"courseName":27,"departureTime":708,"destination":17,"hasArrivalTime":18,"id":709,"operatorId":19,"operatorName":20,"rubies":710,"sequence":28},"2025-04-13T12:05:00+09:00","840e0004",[711],{"caption":43},{"courseId":23,"courseName":24,"departureTime":713,"destination":17,"hasArrivalTime":18,"id":714,"operatorId":19,"operatorName":20,"rubies":715,"sequence":21},"2025-04-13T12:30:00+09:00","84020005",[716],{"caption":46},{"courseId":26,"courseName":27,"departureTime":718,"destination":17,"hasArrivalTime":18,"id":719,"operatorId":19,"operatorName":20,"rubies":720,"sequence":28},"2025-04-13T12:35:00+09:00","840e0005",[721],{"caption":43},{"courseId":23,"courseName":24,"departureTime":723,"destination":17,"hasArrivalTime":18,"id":724,"operatorId":19,"operatorName":20,"rubies":725,"sequence":21},"2025-04-13T13:00:00+09:00","84020006",[726],{"caption":46},{"courseId":26,"courseName":27,"departureTime":728,"destination":17,"hasArrivalTime":18,"id":729,"operatorId":19,"operatorName":20,"rubies":730,"sequence":28},"2025-04-13T13:05:00+09:00","840e0006",[731],{"caption":43},{"courseId":23,"courseName":24,"departureTime":733,"destination":17,"hasArrivalTime":18,"id":734,"operatorId":19,"operatorName":20,"rubies":735,"sequence":21},"2025-04-13T13:25:00+09:00","84020007",[736],{"caption":46},{"courseId":26,"courseName":27,"departureTime":738,"destination":17,"hasArrivalTime":18,"id":739,"operatorId":19,"operatorName":20,"rubies":740,"sequence":28},"2025-04-13T13:35:00+09:00","840e0007",[741],{"caption":43},{"courseId":30,"courseName":31,"departureTime":743,"destination":17,"hasArrivalTime":18,"id":744,"operatorId":19,"operatorName":20,"rubies":745,"sequence":21},"2025-04-13T13:45:00+09:00","84060004",[746],{"caption":49},{"courseId":23,"courseName":24,"departureTime":748,"destination":17,"hasArrivalTime":18,"id":749,"operatorId":19,"operatorName":20,"rubies":750,"sequence":21},"2025-04-13T14:00:00+09:00","84020008",[751],{"caption":46},{"courseId":26,"courseName":27,"departureTime":753,"destination":17,"hasArrivalTime":18,"id":754,"operatorId":19,"operatorName":20,"rubies":755,"sequence":28},"2025-04-13T14:05:00+09:00","840e0008",[756],{"caption":43},{"courseId":23,"courseName":24,"departureTime":758,"destination":17,"hasArrivalTime":18,"id":759,"operatorId":19,"operatorName":20,"rubies":760,"sequence":21},"2025-04-13T14:25:00+09:00","84020009",[761],{"caption":46},{"courseId":26,"courseName":27,"departureTime":763,"destination":17,"hasArrivalTime":18,"id":764,"operatorId":19,"operatorName":20,"rubies":765,"sequence":28},"2025-04-13T14:35:00+09:00","840e0009",[766],{"caption":43},{"courseId":30,"courseName":31,"departureTime":768,"destination":17,"hasArrivalTime":18,"id":769,"operatorId":19,"operatorName":20,"rubies":770,"sequence":21},"2025-04-13T14:55:00+09:00","84060005",[771],{"caption":49},{"courseId":23,"courseName":24,"departureTime":773,"destination":17,"hasArrivalTime":18,"id":774,"operatorId":19,"operatorName":20,"rubies":775,"sequence":21},"2025-04-13T15:00:00+09:00","8402000a",[776],{"caption":46},{"courseId":26,"courseName":27,"departureTime":778,"destination":17,"hasArrivalTime":18,"id":779,"operatorId":19,"operatorName":20,"rubies":780,"sequence":28},"2025-04-13T15:05:00+09:00","840e000a",[781],{"caption":43},{"courseId":23,"courseName":24,"departureTime":783,"destination":17,"hasArrivalTime":18,"id":784,"operatorId":19,"operatorName":20,"rubies":785,"sequence":21},"2025-04-13T15:25:00+09:00","8402000b",[786],{"caption":46},{"courseId":26,"courseName":27,"departureTime":788,"destination":17,"hasArrivalTime":18,"id":789,"operatorId":19,"operatorName":20,"rubies":790,"sequence":28},"2025-04-13T15:35:00+09:00","840e000b",[791],{"caption":43},{"courseId":23,"courseName":24,"departureTime":793,"destination":17,"hasArrivalTime":18,"id":794,"operatorId":19,"operatorName":20,"rubies":795,"sequence":21},"2025-04-13T16:00:00+09:00","8402000c",[796],{"caption":46},{"courseId":26,"courseName":27,"departureTime":798,"destination":17,"hasArrivalTime":18,"id":799,"operatorId":19,"operatorName":20,"rubies":800,"sequence":28},"2025-04-13T16:05:00+09:00","840e000c",[801],{"caption":43},{"courseId":23,"courseName":24,"departureTime":803,"destination":17,"hasArrivalTime":18,"id":804,"operatorId":19,"operatorName":20,"rubies":805,"sequence":21},"2025-04-13T16:25:00+09:00","8402000d",[806],{"caption":46},{"courseId":26,"courseName":27,"departureTime":808,"destination":17,"hasArrivalTime":18,"id":809,"operatorId":19,"operatorName":20,"rubies":810,"sequence":28},"2025-04-13T16:40:00+09:00","840e000d",[811],{"caption":43},{"courseId":30,"courseName":31,"departureTime":813,"destination":17,"hasArrivalTime":18,"id":814,"operatorId":19,"operatorName":20,"rubies":815,"sequence":21},"2025-04-13T16:45:00+09:00","84060006",[816],{"caption":49},{"courseId":23,"courseName":24,"departureTime":818,"destination":17,"hasArrivalTime":18,"id":819,"operatorId":19,"operatorName":20,"rubies":820,"sequence":21},"2025-04-13T17:00:00+09:00","8402000e",[821],{"caption":46},{"courseId":26,"courseName":27,"departureTime":823,"destination":17,"hasArrivalTime":18,"id":824,"operatorId":19,"operatorName":20,"rubies":825,"sequence":28},"2025-04-13T17:15:00+09:00","840e000e",[826],{"caption":43},{"courseId":15,"courseName":16,"departureTime":828,"destination":17,"hasArrivalTime":18,"id":829,"operatorId":19,"operatorName":20,"rubies":830,"sequence":21},"2025-04-13T17:25:00+09:00","84040002",[831],{"caption":43},{"courseId":23,"courseName":24,"departureTime":833,"destination":17,"hasArrivalTime":18,"id":834,"operatorId":19,"operatorName":20,"rubies":835,"sequence":21},"2025-04-13T17:30:00+09:00","8402000f",[836],{"caption":46},{"courseId":30,"courseName":31,"departureTime":838,"destination":17,"hasArrivalTime":18,"id":839,"operatorId":19,"operatorName":20,"rubies":840,"sequence":21},"2025-04-13T17:45:00+09:00","84060007",[841],{"caption":49},{"courseId":15,"courseName":16,"departureTime":843,"destination":17,"hasArrivalTime":18,"id":844,"operatorId":19,"operatorName":20,"rubies":845,"sequence":21},"2025-04-13T18:00:00+09:00","84040003",[846],{"caption":43},{"courseId":15,"courseName":16,"departureTime":848,"destination":17,"hasArrivalTime":18,"id":849,"operatorId":19,"operatorName":20,"rubies":850,"sequence":21},"2025-04-13T18:15:00+09:00","84040004",[851],{"caption":43},{"courseId":23,"courseName":24,"departureTime":853,"destination":17,"hasArrivalTime":18,"id":854,"operatorId":19,"operatorName":20,"rubies":855,"sequence":21},"2025-04-13T18:30:00+09:00","84020010",[856],{"caption":46},{"courseId":30,"courseName":31,"departureTime":858,"destination":17,"hasArrivalTime":18,"id":859,"operatorId":19,"operatorName":20,"rubies":860,"sequence":21},"2025-04-13T18:45:00+09:00","84060008",[861],{"caption":49},{"courseId":23,"courseName":24,"departureTime":863,"destination":17,"hasArrivalTime":18,"id":864,"operatorId":19,"operatorName":20,"rubies":865,"sequence":21},"2025-04-13T19:00:00+09:00","84020011",[866],{"caption":46},{"courseId":15,"courseName":16,"departureTime":868,"destination":17,"hasArrivalTime":18,"id":869,"operatorId":19,"operatorName":20,"rubies":870,"sequence":21},"2025-04-13T19:15:00+09:00","84040005",[871],{"caption":43},{"courseId":23,"courseName":24,"departureTime":873,"destination":17,"hasArrivalTime":18,"id":874,"operatorId":19,"operatorName":20,"rubies":875,"sequence":21},"2025-04-13T19:30:00+09:00","84020012",[876],{"caption":46},{"courseId":30,"courseName":31,"departureTime":878,"destination":17,"hasArrivalTime":18,"id":879,"operatorId":19,"operatorName":20,"rubies":880,"sequence":21},"2025-04-13T19:45:00+09:00","84060009",[881],{"caption":49},{"courseId":23,"courseName":24,"departureTime":883,"destination":17,"hasArrivalTime":18,"id":884,"operatorId":19,"operatorName":20,"rubies":885,"sequence":21},"2025-04-13T20:00:00+09:00","84020013",[886],{"caption":46},{"courseId":15,"courseName":16,"departureTime":888,"destination":17,"hasArrivalTime":18,"id":889,"operatorId":19,"operatorName":20,"rubies":890,"sequence":21},"2025-04-13T20:15:00+09:00","84040006",[891],{"caption":43},{"courseId":23,"courseName":24,"departureTime":893,"destination":17,"hasArrivalTime":18,"id":894,"operatorId":19,"operatorName":20,"rubies":895,"sequence":21},"2025-04-13T20:30:00+09:00","84020014",[896],{"caption":46},{"courseId":30,"courseName":31,"departureTime":898,"destination":17,"hasArrivalTime":18,"id":899,"operatorId":19,"operatorName":20,"rubies":900,"sequence":21},"2025-04-13T20:45:00+09:00","8406000a",[901],{"caption":49},{"courseId":23,"courseName":24,"departureTime":903,"destination":17,"hasArrivalTime":18,"id":904,"operatorId":19,"operatorName":20,"rubies":905,"sequence":21},"2025-04-13T21:00:00+09:00","84020015",[906],{"caption":46},{"courseId":15,"courseName":16,"departureTime":908,"destination":17,"hasArrivalTime":18,"id":909,"operatorId":19,"operatorName":20,"rubies":910,"sequence":21},"2025-04-13T21:15:00+09:00","84040007",[911],{"caption":43},{"courseId":23,"courseName":24,"departureTime":913,"destination":17,"hasArrivalTime":18,"id":914,"operatorId":19,"operatorName":20,"rubies":915,"sequence":21},"2025-04-13T21:30:00+09:00","84020016",[916],{"caption":46},{"notice":918},[],["Reactive",920],{"$snuxt-i18n-meta":921,"$ssettings":922},{},{"acceptanceSid":923,"availableLanguages":924,"busOperatorIDsWithArrivalTime":926,"busRealtime":927,"buslocationProxyCompany":938,"busstopTimetables":939,"canSearchByBusRoute":624,"customer":945,"fareCertificates":946,"hasCourseShape":624,"map":950,"mobustationCompanyIds":973,"packageId":975,"prioritisedRailroadOperatorIds":976,"radiusToSearchBusstopsAroundStation":978,"railroadOperatorIDsWithTimetableLicense":979,"searchableAddressCodes":980,"shouldNotifyCashPayment":624,"sid":997,"stationTimetables":998,"trains":1000,"transfers":1001},"40002173",[925],"ja",[19],{"approaching":928,"autoRefreshInterval":937,"enableAutoRefreshByDefault":624,"needsCongestionStatus":624,"shouldNotifyVehicleNumber":624},{"availableOrders":929,"defaultOrderWhenSearchedBySection":930,"enabled":18,"searchableMethods":934},[930,931,932,933],"departure_predictedDepartureTime","departure_scheduledDepartureTime","arrival_predictedDepartureTime","arrival_scheduledDepartureTime",[935,936],"pole","section","R/PT1M","omi-kokoku-bus",{"asOfDateType":940,"availableHours":941,"customizeCourses":624,"customized":624,"defaultViewOnMobile":944,"disableHourNormalization":624,"hasEverydaySchedule":624,"hasWeekendSchedule":18},"today",{"earliestHour":942,"latestHour":943},5,23,"table","ohmitetudo",{"enabled":18,"searchablePeriod":947,"targetedOperatorIDs":949},{"monthsAfter":948,"monthsBefore":21},2,[19],{"areas":951,"initialCenterCoordinate":972},[952,957,962,967],{"initialCenterCoordinate":953,"spot":956},{"latitude":954,"longitude":955},35.00337,135.86462,"aroundOtsu",{"initialCenterCoordinate":958,"spot":961},{"latitude":959,"longitude":960},35.02234,135.96196,"aroundKusatsu",{"initialCenterCoordinate":963,"spot":966},{"latitude":964,"longitude":965},35.2721,136.26321,"aroundHikone",{"initialCenterCoordinate":968,"spot":971},{"latitude":969,"longitude":970},35.37841,136.26524,"aroundNagahama",{"latitude":959,"longitude":960},[974],"52200740","0079",[977],"00000044",300,[977],[981,982,983,984,985,986,987,988,989,990,991,992,993,994,995,996],"18202","25201","25202","25203","25204","25206","25207","25210","25212","25213","25214","25383","25384","25425","25442","25443","40002172",{"availableHours":999,"disableHourNormalization":624},{"earliestHour":942,"latestHour":943},{"needsFare":18},{"availableOperatorIds":1002,"defaultSearchCondition":1003,"distance":1011,"limitedDistanceOnlyByWalking":1012},[977,19],{"mobility":1004,"mode":1008,"order":1009,"walkingSpeed":1010},[1005,1006,1007],"bus","train","walking","departure","transfer","standard",{"enabled":624,"needsTotalDistance":624,"needsTotalDistanceByBus":624,"needsTotalDistanceByWalking":624},10000,["Set"],["ShallowReactive",1015],{"$gaS7XU7TrU":1016,"$QVU3s92gGq":1016},null,"/ohmitetudo/courses/timetables?busstop=00480011&course-sequence=0007900502-1",["Reactive",1019],{"settings":1020},{"settings":1021},["Ref",1022],["Reactive",922]]
+	</script>
+	<script>
+		window.__NUXT__={};window.__NUXT__.config={public:{loggerLegel:"WARN",apiBaseURL:"https://transfer-cloud.navitime.biz/apiv1/",gaiaBaseUrl:"https://mapscript.cld.navitime.jp/gaia/",gaiaShouldUseAcceptanceSID:"false",locationAdNetworkScript:"https://static.media.cld.navitime.jp/scripts/media/biz/panel/location/tag.bundle.js",i18n:{baseUrl:"",defaultLocale:"ja",defaultDirection:"ltr",strategy:"prefix_except_default",lazy:true,rootRedirect:"",routesNameSeparator:"___",defaultLocaleRouteNameSuffix:"default",skipSettingLocaleOnNavigate:false,differentDomains:false,trailingSlash:false,configLocales:[{code:"ja",iso:"ja-JP",name:"日本語",files:["locales/ja.ts","locales/ja-bochobus.ts","locales/ja-chuo-bus.ts","locales/ja-echigo-kotsu.ts","locales/ja-entetsu.ts","locales/ja-hiroden.ts","locales/ja-justline.ts","locales/ja-kan-etsu.ts","locales/ja-kanachu.ts","locales/ja-keio.ts","locales/ja-keiseibus.ts","locales/ja-kokusaibus.ts","locales/ja-miyagikotsu.ts","locales/ja-miyazaki.ts","locales/ja-nagasaki-bus.ts","locales/ja-nankaibus.ts","locales/ja-navitime.ts","locales/ja-niigata.ts","locales/ja-odakyubus.ts","locales/ja-ohmitetudo.ts","locales/ja-sankobus.ts","locales/ja-seibubus.ts","locales/ja-sotetsu.ts","locales/ja-tachikawabus.ts","locales/ja-takatsuki.ts","locales/ja-tobubus.ts","locales/ja-tokaibus.ts","locales/ja-tokushima.ts","locales/ja-tokyubus.ts","locales/ja-wakayamabus.ts","locales/ja-yokohama.ts"]},{code:"en",iso:"en-US",name:"English",files:["locales/en.ts","locales/en-chuo-bus.ts","locales/en-entetsu.ts","locales/en-justline.ts","locales/en-keio.ts","locales/en-keiseibus.ts","locales/en-miyagikotsu.ts","locales/en-miyazaki.ts","locales/en-nagasaki-bus.ts","locales/en-nankaibus.ts","locales/en-navitime.ts","locales/en-niigata.ts","locales/en-sankobus.ts","locales/en-seibubus.ts","locales/en-tobubus.ts","locales/en-tokaibus.ts","locales/en-tokushima.ts","locales/en-tokyubus.ts","locales/en-wakayamabus.ts","locales/en-yokohama.ts"]},{code:"zh-CN",iso:"zh-CN",name:"中国（简体）",files:["locales/zh-cn.ts","locales/zh-cn-chuo-bus.ts","locales/zh-cn-justline.ts","locales/zh-cn-keiseibus.ts","locales/zh-cn-miyazaki.ts","locales/zh-cn-nankaibus.ts","locales/zh-cn-navitime.ts","locales/zh-cn-niigata.ts","locales/zh-cn-tokaibus.ts","locales/zh-cn-tokushima.ts"]},{code:"zh-TW",iso:"zh-TW",name:"中國（繁體）",files:["locales/zh-tw.ts","locales/zh-tw-chuo-bus.ts","locales/zh-tw-justline.ts","locales/zh-tw-keiseibus.ts","locales/zh-tw-miyazaki.ts","locales/zh-tw-nankaibus.ts","locales/zh-tw-navitime.ts","locales/zh-tw-niigata.ts","locales/zh-tw-tokushima.ts"]},{code:"ko",iso:"ko-KR",name:"한국",files:["locales/ko.ts","locales/ko-chuo-bus.ts","locales/ko-justline.ts","locales/ko-keiseibus.ts","locales/ko-miyazaki.ts","locales/ko-nankaibus.ts","locales/ko-navitime.ts","locales/ko-niigata.ts","locales/ko-tokaibus.ts","locales/ko-tokushima.ts"]},{code:"th",iso:"th-TH",name:"ภาษาไทย",files:["locales/th.ts","locales/th-keiseibus.ts","locales/th-navitime.ts"]}],locales:{ja:{domain:""},en:{domain:""},"zh-CN":{domain:""},"zh-TW":{domain:""},ko:{domain:""},th:{domain:""}},detectBrowserLanguage:{alwaysRedirect:false,cookieCrossOrigin:false,cookieDomain:"",cookieKey:"i18n_redirected",cookieSecure:false,fallbackLocale:"",redirectOn:"root",useCookie:true},experimental:{localeDetector:"",switchLocalePathLinkSSR:false,autoImportTranslationFunctions:false}},device:{enabled:true,defaultUserAgent:"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/64.0.3282.39 Safari/537.36",refreshOnResize:true},persistedState:{storage:"sessionStorage",debug:false,cookieOptions:{sameSite:"strict"}},gtag:{enabled:true,initMode:"manual",id:"",initCommands:[],config:{},tags:[],loadingStrategy:"defer",url:"https://www.googletagmanager.com/gtag/js"},snackbar:{top:false,bottom:true,left:false,right:true,groups:true,success:"#4caf50",error:"#ff5252",warning:"#fb8c00",info:"#2196f3",duration:5000,messageClass:"",zIndex:9999,dense:false,shadow:true,reverse:false,border:"",backgroundOpacity:.12,backgroundColor:"currentColor",baseBackgroundColor:"#ffffff"}},app:{baseURL:"/",buildId:"b676f7bd-caf5-4175-9cce-eb51175d67a9",buildAssetsDir:"/_nuxt/",cdnURL:""}}
+	</script>
+</body>
+
+</html>

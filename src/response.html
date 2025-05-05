@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="ja-JP" data-capo="">
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>南草津駅から立命館大学のバス接近情報 | 近江鉄道・湖国バス</title>
+	<link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="anonymous" data-hid="23dc7e4">
+	<link rel="preconnect" href="https://fonts.googleapis.com/" data-hid="50e9084">
+	<link rel="stylesheet" href="/_nuxt/styles/ohmitetudo.css">
+	<style>
+		#vue3-snackbar--container {
+			margin: 16px 16px 0;
+			padding: 0;
+			pointer-events: none;
+			position: fixed;
+			z-index: var(--snackbar-zindex)
+		}
+
+		#vue3-snackbar--container.is-rtl .vue3-snackbar-message-icon {
+			margin-left: 16px;
+			margin-right: 0
+		}
+
+		#vue3-snackbar--container.is-top {
+			top: 0
+		}
+
+		#vue3-snackbar--container.is-bottom {
+			bottom: 0
+		}
+
+		#vue3-snackbar--container.is-left {
+			left: 0
+		}
+
+		#vue3-snackbar--container.is-right {
+			right: 0
+		}
+
+		#vue3-snackbar--container.is-middle {
+			top: 50%;
+			transform: translateY(-50%)
+		}
+
+		#vue3-snackbar--container.is-centre {
+			left: 50%;
+			transform: translate(-50%)
+		}
+
+		#vue3-snackbar--container.has-shadow .vue3-snackbar-message {
+			box-shadow: 0 10px 15px -3px #0000001a, 0 4px 6px -4px #0000001a
+		}
+
+		.vue3-snackbar-message {
+			border-radius: 4px;
+			color: var(--message-text-color, #fff);
+			display: flex;
+			margin-bottom: 16px;
+			pointer-events: all;
+			position: relative
+		}
+
+		.vue3-snackbar-message-action {
+			display: flex;
+			justify-content: flex-end;
+			width: 100%
+		}
+
+		.vue3-snackbar-message-action:not(:empty) {
+			padding-top: .5rem
+		}
+
+		.vue3-snackbar-message.has-border {
+			background-color: var(--base-background-color, #fff);
+			border: 0 solid;
+			position: relative
+		}
+
+		.vue3-snackbar-message.has-border:before {
+			background-color: var(--background-color);
+			border-radius: inherit;
+			bottom: 0;
+			content: "";
+			left: 0;
+			opacity: var(--background-opacity);
+			position: absolute;
+			right: 0;
+			top: 0
+		}
+
+		.vue3-snackbar-message.has-border.success {
+			color: var(--success-colour)
+		}
+
+		.vue3-snackbar-message.has-border.error {
+			color: var(--error-colour)
+		}
+
+		.vue3-snackbar-message.has-border.info {
+			color: var(--info-colour)
+		}
+
+		.vue3-snackbar-message.has-border.warning {
+			color: var(--warning-colour)
+		}
+
+		.vue3-snackbar-message.has-border.has-background {
+			color: var(--message-background)
+		}
+
+		.vue3-snackbar-message.border-left {
+			border-left-width: 8px
+		}
+
+		.vue3-snackbar-message.border-right {
+			border-right-width: 8px
+		}
+
+		.vue3-snackbar-message.border-top {
+			border-top-width: 8px
+		}
+
+		.vue3-snackbar-message.border-bottom {
+			border-bottom-width: 8px
+		}
+
+		.vue3-snackbar-message.success:not(.has-background):not(.has-border) {
+			background-color: var(--success-colour);
+			border-color: var(--success-colour)
+		}
+
+		.vue3-snackbar-message.error:not(.has-background):not(.has-border) {
+			background-color: var(--error-colour);
+			border-color: var(--error-colour)
+		}
+
+		.vue3-snackbar-message.warning:not(.has-background):not(.has-border) {
+			background-color: var(--warning-colour);
+			border-color: var(--warning-colour)
+		}
+
+		.vue3-snackbar-message.info:not(.has-background):not(.has-border) {
+			background-color: var(--info-colour);
+			border-color: var(--info-colour)
+		}
+
+		.vue3-snackbar-message.has-background:not(.has-border) {
+			background-color: var(--message-background);
+			border-color: var(--message-background)
+		}
+
+		.vue3-snackbar-message-wrapper {
+			align-items: center;
+			border-radius: inherit;
+			display: flex;
+			padding: 16px
+		}
+
+		.vue3-snackbar-message.is-dense .vue3-snackbar-message-wrapper {
+			padding: 8px 16px
+		}
+
+		.vue3-snackbar-message-title {
+			font-weight: 700;
+			position: relative
+		}
+
+		.vue3-snackbar-message-additional {
+			position: relative
+		}
+
+		.vue3-snackbar-message-icon {
+			color: var(--message-icon-color, currentColor);
+			display: flex;
+			margin-right: 16px
+		}
+
+		.vue3-snackbar-message-close {
+			margin-left: 16px;
+			min-width: 30px
+		}
+
+		.vue3-snackbar-message-close button {
+			-webkit-appearance: none
+		}
+
+		.vue3-snackbar-message-close button:focus:not(:focus-visible) {
+			outline: none
+		}
+
+		.vue3-snackbar-message-close button:focus:not(:-moz-focusring) {
+			outline: none
+		}
+
+		.vue3-snackbar-message-close button {
+			background: transparent;
+			border: none;
+			color: inherit;
+			font: inherit;
+			line-height: normal;
+			margin: 0;
+			overflow: visible;
+			padding: 0;
+			-webkit-font-smoothing: inherit;
+			-moz-osx-font-smoothing: inherit;
+			align-items: center;
+			cursor: pointer;
+			display: flex;
+			height: 30px;
+			justify-content: center;
+			position: relative;
+			text-align: inherit;
+			width: 30px
+		}
+
+		.vue3-snackbar-message-close button:before {
+			background: currentColor;
+			border-radius: 50%;
+			bottom: 0;
+			content: "";
+			left: 0;
+			opacity: 0;
+			pointer-events: none;
+			position: absolute;
+			right: 0;
+			top: 0;
+			transition: opacity .3s ease-in-out
+		}
+
+		.vue3-snackbar-message-close button:hover:before {
+			opacity: .22
+		}
+
+		.vue3-snackbar-message-content {
+			display: flex;
+			flex-flow: column;
+			width: min(50vw, 350px)
+		}
+
+		.vue3-snackbar-message-badge {
+			background: #c10015;
+			border: 1px solid crimson;
+			border-radius: 8px;
+			box-shadow: 0 1px 3px #0003, 0 1px 1px #00000024, 0 2px 1px -1px #0000001f;
+			color: #fff;
+			font-size: .9em;
+			font-weight: 700;
+			left: 0;
+			padding: .125em .5em;
+			position: absolute;
+			top: 0;
+			transform: translate(-25%, -25%)
+		}
+
+		.vue3-snackbar-message.border-left .vue3-snackbar-message-badge {
+			left: 0;
+			top: -5px
+		}
+
+		.vue3-snackbar-message-enter-from {
+			opacity: 0;
+			transform: translateY(50%)
+		}
+
+		.vue3-snackbar-message-leave-from {
+			max-height: 1000px
+		}
+
+		.vue3-snackbar .vue3-snackbar-message.vue3-snackbar-message-leave-to {
+			margin-bottom: 0;
+			max-height: 0;
+			opacity: 0;
+			overflow: hidden
+		}
+
+		.vue3-snackbar .vue3-snackbar-message.vue3-snackbar-message-leave-to .vue3-snackbar-message-badge {
+			opacity: 0
+		}
+
+		.vue3-snackbar-message-enter-active {
+			transition: transform .3s, opacity .3s
+		}
+
+		.vue3-snackbar-message-leave-active {
+			transition: max-height .45s cubic-bezier(0, 1, 0, 1), opacity .3s, margin-bottom .3s
+		}
+
+		@keyframes headShake {
+			0% {
+				transform: translate(-25%, -25%)
+			}
+
+			6.5% {
+				transform: translate(calc(-25% - 6px), -25%) rotateY(-9deg)
+			}
+
+			18.5% {
+				transform: translate(calc(-25% + 5px), -25%) rotateY(7deg)
+			}
+
+			31.5% {
+				transform: translate(calc(-25% - 3px), -25%) rotateY(-5deg)
+			}
+
+			43.5% {
+				transform: translate(calc(-25% + 2px), -25%) rotateY(3deg)
+			}
+
+			50% {
+				transform: translate(-25%, -25%)
+			}
+		}
+
+		.shake-baby-shake .vue3-snackbar-message-badge {
+			animation-duration: 1s;
+			animation-fill-mode: both;
+			animation-name: headShake;
+			animation-timing-function: ease-in-out
+		}
+	</style>
+	<style>
+		.vue-universal-modal-enter-to,
+		.vue-universal-modal-leave-from {
+			opacity: 1
+		}
+
+		.vue-universal-modal-enter-from,
+		.vue-universal-modal-leave-to {
+			opacity: 0
+		}
+
+		.vue-universal-modal {
+			-webkit-overflow-scrolling: touch;
+			background-color: #000c;
+			bottom: 0;
+			left: 0;
+			overflow-y: auto;
+			overscroll-behavior: contain;
+			position: fixed;
+			right: 0;
+			text-align: left;
+			top: 0
+		}
+
+		.vue-universal-modal:not(.vue-universal-modal-latest) {
+			background: none
+		}
+
+		.vue-universal-modal-content {
+			align-items: center;
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			min-height: 100%;
+			width: 100%
+		}
+	</style>
+	<style>
+		.v-enter-active[data-v-bd5cd6ac],
+		.v-leave-active[data-v-bd5cd6ac] {
+			transition: transform .5s ease
+		}
+
+		.v-enter-from[data-v-bd5cd6ac],
+		.v-leave-to[data-v-bd5cd6ac] {
+			transform: translateX(1000px)
+		}
+	</style>
+	<style>
+		.no-contents[data-v-8933f69e] {
+			align-items: center;
+			display: flex;
+			flex-direction: column;
+			margin-top: 120px
+		}
+
+		.no-contents .title[data-v-8933f69e] {
+			font-size: 1.25rem;
+			font-weight: 700;
+			margin: 0
+		}
+
+		.no-contents p[data-v-8933f69e] {
+			margin: 2rem 0 0
+		}
+	</style>
+	<link rel="stylesheet" href="/_nuxt/entry.Cg5QcwFf.css">
+	<link rel="stylesheet" href="/_nuxt/BusApproachingsMap.BSR_nwk3.css">
+	<link rel="modulepreload" as="script" crossorigin href="/_nuxt/CN0kbyDc.js">
+	<link rel="modulepreload" as="script" crossorigin href="/_nuxt/Bt2acZAG.js">
+	<link rel="modulepreload" as="script" crossorigin href="/_nuxt/DNPT8WqM.js">
+	<link rel="modulepreload" as="script" crossorigin href="/_nuxt/C3f2giCQ.js">
+	<link rel="modulepreload" as="script" crossorigin href="/_nuxt/DNdg0F6F.js">
+	<link rel="modulepreload" as="script" crossorigin href="/_nuxt/C8OJczlE.js">
+	<link rel="modulepreload" as="script" crossorigin href="/_nuxt/CC0ygHSO.js">
+	<link rel="modulepreload" as="script" crossorigin href="/_nuxt/CKMpOwKo.js">
+	<link rel="modulepreload" as="script" crossorigin href="/_nuxt/e9ATstSA.js">
+	<link rel="modulepreload" as="script" crossorigin href="/_nuxt/Cdbp5tBM.js">
+	<link rel="modulepreload" as="script" crossorigin href="/_nuxt/B--FPmIG.js">
+	<link rel="modulepreload" as="script" crossorigin href="/_nuxt/ChoQBoJN.js">
+	<link rel="modulepreload" as="script" crossorigin href="/_nuxt/BicLqaYt.js">
+	<link rel="modulepreload" as="script" crossorigin href="/_nuxt/CDyy0k7v.js">
+	<link rel="modulepreload" as="script" crossorigin href="/_nuxt/CcBwaoht.js">
+	<link rel="modulepreload" as="script" crossorigin href="/_nuxt/CC7hLuft.js">
+	<link rel="modulepreload" as="script" crossorigin href="/_nuxt/B07twpe3.js">
+	<link rel="modulepreload" as="script" crossorigin href="/_nuxt/DVqxbsgS.js">
+	<link rel="modulepreload" as="script" crossorigin href="/_nuxt/CWBG0yNQ.js">
+	<link rel="modulepreload" as="script" crossorigin href="/_nuxt/Cak9sSSV.js">
+	<link rel="modulepreload" as="script" crossorigin href="/_nuxt/BFglTNVV.js">
+	<link rel="modulepreload" as="script" crossorigin href="/_nuxt/BoSw_Jjk.js">
+	<link rel="modulepreload" as="script" crossorigin href="/_nuxt/C9ev9l58.js">
+	<link rel="modulepreload" as="script" crossorigin href="/_nuxt/BmoDvBsy.js">
+	<link rel="modulepreload" as="script" crossorigin href="/_nuxt/C3Zvp1Ao.js">
+	<link rel="modulepreload" as="script" crossorigin href="/_nuxt/DGnFFgVF.js">
+	<link rel="modulepreload" as="script" crossorigin href="/_nuxt/tEd81-_z.js">
+	<link rel="modulepreload" as="script" crossorigin href="/_nuxt/BnTy2W7a.js">
+	<link rel="modulepreload" as="script" crossorigin href="/_nuxt/DM4NwLC2.js">
+	<link rel="modulepreload" as="script" crossorigin href="/_nuxt/0kRnSRMd.js">
+	<link rel="modulepreload" as="script" crossorigin href="/_nuxt/CIEF5Xkq.js">
+	<link rel="modulepreload" as="script" crossorigin href="/_nuxt/DfSb85NO.js">
+	<link rel="modulepreload" as="script" crossorigin href="/_nuxt/kqnKUrJT.js">
+	<link rel="modulepreload" as="script" crossorigin href="/_nuxt/-Mxqnkpo.js">
+	<link rel="modulepreload" as="script" crossorigin href="/_nuxt/Bu6K_ukz.js">
+	<link rel="modulepreload" as="script" crossorigin href="/_nuxt/BvPlT_vo.js">
+	<link rel="modulepreload" as="script" crossorigin href="/_nuxt/D91fL7Cq.js">
+	<link rel="modulepreload" as="script" crossorigin href="/_nuxt/Cy-b0CtY.js">
+	<link rel="modulepreload" as="script" crossorigin href="/_nuxt/cLNkoBx8.js">
+	<link rel="modulepreload" as="script" crossorigin href="/_nuxt/Df891hKO.js">
+	<link rel="modulepreload" as="script" crossorigin href="/_nuxt/Dvu6zdXn.js">
+	<link rel="modulepreload" as="script" crossorigin href="/_nuxt/CHn9QxHV.js">
+	<link rel="modulepreload" as="script" crossorigin href="/_nuxt/BaAimnyF.js">
+	<link rel="modulepreload" as="script" crossorigin href="/_nuxt/C3g3rMZJ.js">
+	<link rel="modulepreload" as="script" crossorigin href="/_nuxt/Bk9BqIXr.js">
+	<link rel="modulepreload" as="script" crossorigin href="/_nuxt/CSBKsd57.js">
+	<link rel="modulepreload" as="script" crossorigin href="/_nuxt/CSci1dX2.js">
+	<link rel="modulepreload" as="script" crossorigin href="/_nuxt/Csg-MqJD.js">
+	<link rel="modulepreload" as="script" crossorigin href="/_nuxt/Bd49JJw3.js">
+	<link rel="modulepreload" as="script" crossorigin href="/_nuxt/CJrR84S2.js">
+	<link rel="modulepreload" as="script" crossorigin href="/_nuxt/C5co7Waa.js">
+	<link rel="modulepreload" as="script" crossorigin href="/_nuxt/5ubWroAm.js">
+	<link rel="modulepreload" as="script" crossorigin href="/_nuxt/XNxePTCo.js">
+	<link rel="modulepreload" as="script" crossorigin href="/_nuxt/CQUW7-uu.js">
+	<link rel="modulepreload" as="script" crossorigin href="/_nuxt/DOEssQmR.js">
+	<link rel="modulepreload" as="script" crossorigin href="/_nuxt/CYnIWvcj.js">
+	<link rel="modulepreload" as="script" crossorigin href="/_nuxt/BAlOorKu.js">
+	<link rel="modulepreload" as="script" crossorigin href="/_nuxt/DW9c41y7.js">
+	<link rel="modulepreload" as="script" crossorigin href="/_nuxt/D-FilZAT.js">
+	<link rel="modulepreload" as="script" crossorigin href="/_nuxt/D0mGm8oW.js">
+	<link rel="modulepreload" as="script" crossorigin href="/_nuxt/CtvUpVkx.js">
+	<link rel="modulepreload" as="script" crossorigin href="/_nuxt/BQ089y-e.js">
+	<link rel="modulepreload" as="script" crossorigin href="/_nuxt/xAhq3t0L.js">
+	<link rel="dns-prefetch" href="https://fonts.gstatic.com/" data-hid="7475ad2">
+	<link rel="prefetch" as="script" crossorigin href="/_nuxt/SMjakKeG.js">
+	<link rel="prefetch" as="script" crossorigin href="/_nuxt/DAOraGo6.js">
+	<link rel="prefetch" as="script" crossorigin href="/_nuxt/BvYJQSUf.js">
+	<link rel="prefetch" as="script" crossorigin href="/_nuxt/HSo2izp2.js">
+	<link rel="prefetch" as="script" crossorigin href="/_nuxt/DvkPPc6I.js">
+	<link rel="prefetch" as="script" crossorigin href="/_nuxt/DDTTHiYu.js">
+	<link rel="prefetch" as="script" crossorigin href="/_nuxt/CcIob-MM.js">
+	<link rel="prefetch" as="script" crossorigin href="/_nuxt/CxR-JvBO.js">
+	<link rel="prefetch" as="script" crossorigin href="/_nuxt/BOQrnL2-.js">
+	<link rel="prefetch" as="script" crossorigin href="/_nuxt/D1CoZOqN.js">
+	<link rel="prefetch" as="script" crossorigin href="/_nuxt/DTunFBYT.js">
+	<link rel="prefetch" as="script" crossorigin href="/_nuxt/Cw6DXlhy.js">
+	<link rel="prefetch" as="script" crossorigin href="/_nuxt/DjFtO012.js">
+	<link rel="prefetch" as="script" crossorigin href="/_nuxt/BTlLWBI0.js">
+	<link rel="prefetch" as="script" crossorigin href="/_nuxt/Da7BdXbC.js">
+	<link rel="prefetch" as="script" crossorigin href="/_nuxt/D8yAw6nr.js">
+	<link rel="prefetch" as="script" crossorigin href="/_nuxt/rE2loMeS.js">
+	<link rel="prefetch" as="script" crossorigin href="/_nuxt/DhhwjwwF.js">
+	<link rel="prefetch" as="script" crossorigin href="/_nuxt/CV_525T4.js">
+	<link rel="prefetch" as="script" crossorigin href="/_nuxt/CnHNhCla.js">
+	<link rel="prefetch" as="script" crossorigin href="/_nuxt/CH4EeJTl.js">
+	<link rel="prefetch" as="script" crossorigin href="/_nuxt/Dpwe120M.js">
+	<link rel="prefetch" as="script" crossorigin href="/_nuxt/Ce7vZc97.js">
+	<link rel="prefetch" as="script" crossorigin href="/_nuxt/DLy9bBFz.js">
+	<link rel="prefetch" as="script" crossorigin href="/_nuxt/CEeioRFC.js">
+	<link rel="prefetch" as="script" crossorigin href="/_nuxt/CVuycgVp.js">
+	<link rel="prefetch" as="script" crossorigin href="/_nuxt/CMiZ7zGP.js">
+	<link rel="prefetch" as="script" crossorigin href="/_nuxt/z8DHAqxl.js">
+	<link rel="prefetch" as="script" crossorigin href="/_nuxt/DiXI6RBI.js">
+	<link rel="prefetch" as="script" crossorigin href="/_nuxt/CNne17ee.js">
+	<link rel="prefetch" as="script" crossorigin href="/_nuxt/ZzGQpsWl.js">
+	<link rel="prefetch" as="script" crossorigin href="/_nuxt/B2Ay6Txb.js">
+	<link rel="prefetch" as="script" crossorigin href="/_nuxt/CtnDLfLb.js">
+	<link rel="prefetch" as="script" crossorigin href="/_nuxt/C7J-ps_u.js">
+	<link rel="prefetch" as="script" crossorigin href="/_nuxt/D1wmcmlQ.js">
+	<link rel="prefetch" as="script" crossorigin href="/_nuxt/ZJHCj6AG.js">
+	<link rel="prefetch" as="script" crossorigin href="/_nuxt/DzFSmZgb.js">
+	<link rel="prefetch" as="script" crossorigin href="/_nuxt/D1UqyG_7.js">
+	<link rel="prefetch" as="script" crossorigin href="/_nuxt/DPLYK03W.js">
+	<link rel="prefetch" as="script" crossorigin href="/_nuxt/n-rMkwtS.js">
+	<link rel="prefetch" as="script" crossorigin href="/_nuxt/Bd-z7tb9.js">
+	<link rel="prefetch" as="script" crossorigin href="/_nuxt/5d3DsL3d.js">
+	<link rel="prefetch" as="script" crossorigin href="/_nuxt/DHpC7VB5.js">
+	<link rel="prefetch" as="script" crossorigin href="/_nuxt/D0feDq4J.js">
+	<link rel="prefetch" as="script" crossorigin href="/_nuxt/CWLzgKo7.js">
+	<link rel="prefetch" as="script" crossorigin href="/_nuxt/DVqDjPFQ.js">
+	<link rel="prefetch" as="script" crossorigin href="/_nuxt/D_4Jeg1d.js">
+	<link rel="prefetch" as="script" crossorigin href="/_nuxt/CbuKG4jo.js">
+	<link rel="prefetch" as="script" crossorigin href="/_nuxt/CxD2zKqD.js">
+	<link rel="prefetch" as="script" crossorigin href="/_nuxt/CCdy0YSB.js">
+	<link rel="prefetch" as="script" crossorigin href="/_nuxt/D91tO4Ba.js">
+	<link rel="prefetch" as="script" crossorigin href="/_nuxt/CXLCWU9L.js">
+	<link rel="prefetch" as="script" crossorigin href="/_nuxt/CJRh3iLv.js">
+	<link rel="prefetch" as="script" crossorigin href="/_nuxt/Cf7JusuY.js">
+	<link rel="prefetch" as="script" crossorigin href="/_nuxt/CS9YCYRN.js">
+	<link rel="prefetch" as="script" crossorigin href="/_nuxt/DxhEozuO.js">
+	<link rel="prefetch" as="script" crossorigin href="/_nuxt/Ffw8NG80.js">
+	<link rel="prefetch" as="script" crossorigin href="/_nuxt/MM0UrLX_.js">
+	<link rel="prefetch" as="script" crossorigin href="/_nuxt/B7uTJN6i.js">
+	<link rel="prefetch" as="script" crossorigin href="/_nuxt/DRkx11J_.js">
+	<link rel="prefetch" as="script" crossorigin href="/_nuxt/BrIwBdru.js">
+	<link rel="prefetch" as="image" type="image/svg+xml" href="/_nuxt/congestion_empty.BQpWhMWN.svg">
+	<script data-hid="60bf5ec">
+		(function(){
+        var h=document.querySelector("head");
+        var m=h.querySelector('meta[name="head:count"]');
+        if(m){m.setAttribute('content',Number(m.getAttribute('content'))+1);}
+        else{m=document.createElement('meta');m.setAttribute('name','head:count');m.setAttribute('content','1');h.append(m);}
+        var l=document.createElement('link');l.rel='stylesheet';l.href='https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Roboto:wght@400;500;700&family=Noto+Sans+SC:wght@400;500;700&family=Noto+Sans+TC:wght@400;500;700&family=Noto+Sans+KR:wght@400;500;700&family=Noto+Sans+Thai:wght@400;500;700&display=swap';h.appendChild(l);
+      })();
+	</script>
+	<link rel="icon" type="image/x-icon" href="/images/ohmitetudo/favicon.ico">
+	<link rel="apple-touch-icon" href="/images/ohmitetudo/apple-touch-icon.png">
+	<link rel="shortcut icon" href="/images/ohmitetudo/android-chrome.png">
+	<meta name="description" content="立命館大学へ向かうバスの中で、南草津駅へ接近するバスの情報を確認できます。バスの系統とのりばの他、南草津駅から立命館大学への時刻表も確認できます。">
+	<link rel="canonical"
+		href="https://app_frontend:3000/ohmitetudo/approachings?departure-busstop=00480156&arrival-busstop=00480011">
+	<script type="module" src="/_nuxt/CN0kbyDc.js" crossorigin></script>
+</head>
+
+<body><noscript>
+		<link rel="stylesheet"
+			href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Roboto:wght@400;500;700&family=Noto+Sans+SC:wght@400;500;700&family=Noto+Sans+TC:wght@400;500;700&family=Noto+Sans+KR:wght@400;500;700&family=Noto+Sans+Thai:wght@400;500;700&display=swap">
+		</noscript>
+	<div id="__nuxt">
+		<!--[-->
+		<div class="nuxt-loading-indicator"
+			style="position:fixed;top:0;right:0;left:0;pointer-events:none;width:auto;height:0px;opacity:0;background:repeating-linear-gradient(to right,#00dc82 0%,#34cdfe 50%,#0047e1 100%);background-size:Infinity% auto;transform:scaleX(0%);transform-origin:left;transition:transform 0.1s, height 0.4s, opacity 0.4s;z-index:999999;">
+			<!--[-->
+			<!---->
+			<!--]-->
+		</div>
+		<!--[-->
+		<div class="flex h-screen flex-col overflow-hidden">
+			<header class="flex justify-between border-b border-light-line" style="background-color:#FFFFFF;"><a
+					href="https://www.ohmitetudo.co.jp/bus/" rel="noopener noreferrer"
+					target="_blank"><img src="/_nuxt/logo.BRJAwTOA.png" width="200" height="50" decoding="async" alt="近江バス・湖国バス" class="my-5 ml-8 h-[50px] w-auto"></a>
+					<!---->
+			</header>
+			<nav class="flex items-center justify-between my-2">
+				<ol class="ml-4 flex text-xs">
+					<!--[-->
+					<li>
+						<div class="flex"><a href="https://www.ohmitetudo.co.jp/bus/" rel="noopener noreferrer"
+								target="_blank">近江バス・湖国バス</a><span class="mx-3">&gt;</span></div>
+					</li>
+					<li>
+						<div class="flex"><a href="/ohmitetudo?feature=busApproaching"
+								class="">バス接近情報検索</a><span class="mx-3">&gt;</span></div>
+					</li>
+					<li>
+						<!--[-->南草津駅から立命館大学のバス接近情報
+						<!--]-->
+					</li>
+					<!--]-->
+				</ol>
+				<div class="mr-4 flex items-center">
+					<ol class="flex space-x-4 text-xs">
+						<!--[-->
+						<li><a href="https://www.ohmitetudo.co.jp/bus/ride/route-price/" rel="noopener noreferrer"
+								target="_blank">路線図／運賃表</a></li>
+						<li><a href="https://ohmitetudo-delay.mobustation.jp/delay/main.aspx?c=ohmi"
+								rel="noopener noreferrer" target="_blank">遅延証明書</a></li>
+						<!--]-->
+						<li><a href="/ohmitetudo" class="">検索トップページ</a></li>
+						<li>
+							<!---->
+						</li>
+					</ol>
+					<!---->
+				</div>
+			</nav>
+			<article class="flex items-center bg-caution-background">
+				<div class="min-h-10 grow overflow-hidden whitespace-nowrap py-2">
+					<ul id="captioned-notice" class="flex w-max animate-marquee space-x-10 pl-[100vw]"
+						style="animation-duration:0s;animation-play-state:running;">
+						<!--[-->
+						<li></li>
+						<!--]-->
+					</ul>
+				</div>
+				<div class="mx-1 flex shrink-0 items-center">
+					<!----><button type="button"><img src="data:image/svg+xml,%3csvg%20width=&#39;24&#39;%20height=&#39;24&#39;%20viewBox=&#39;0%200%2024%2024&#39;%20fill=&#39;none&#39;%20xmlns=&#39;http://www.w3.org/2000/svg&#39;%3e%3cg%20clip-path=&#39;url(%23clip0_34661_15067)&#39;%3e%3cellipse%20cx=&#39;12.0002&#39;%20cy=&#39;12&#39;%20rx=&#39;12.0002&#39;%20ry=&#39;12&#39;%20fill=&#39;%23EDF0F2&#39;/%3e%3cpath%20d=&#39;M8.40234%2016.7992H10.8024V7.19922H8.40234V16.7992ZM13.2024%2016.7992H15.6024V7.19922H13.2024V16.7992Z&#39;%20fill=&#39;%23202124&#39;/%3e%3cpath%20d=&#39;M8.40234%2016.7992H10.8024V7.19922H8.40234V16.7992ZM13.2024%2016.7992H15.6024V7.19922H13.2024V16.7992Z&#39;%20fill=&#39;black&#39;%20fill-opacity=&#39;0.2&#39;/%3e%3cpath%20d=&#39;M8.40234%2016.7992H10.8024V7.19922H8.40234V16.7992ZM13.2024%2016.7992H15.6024V7.19922H13.2024V16.7992Z&#39;%20fill=&#39;black&#39;%20fill-opacity=&#39;0.2&#39;/%3e%3cpath%20d=&#39;M8.40234%2016.7992H10.8024V7.19922H8.40234V16.7992ZM13.2024%2016.7992H15.6024V7.19922H13.2024V16.7992Z&#39;%20fill=&#39;black&#39;%20fill-opacity=&#39;0.2&#39;/%3e%3cpath%20d=&#39;M8.40234%2016.7992H10.8024V7.19922H8.40234V16.7992ZM13.2024%2016.7992H15.6024V7.19922H13.2024V16.7992Z&#39;%20fill=&#39;black&#39;%20fill-opacity=&#39;0.2&#39;/%3e%3c/g%3e%3cdefs%3e%3cclipPath%20id=&#39;clip0_34661_15067&#39;%3e%3crect%20width=&#39;24.0003&#39;%20height=&#39;24&#39;%20fill=&#39;white&#39;/%3e%3c/clipPath%3e%3c/defs%3e%3c/svg%3e" height="24" width="24" decoding="async" alt="一時停止"></button>
+				</div>
+			</article>
+			<section class="flex grow overflow-hidden">
+				<section class="h-full w-[392px] flex-col overflow-scroll">
+					<!---->
+					<h1 class="mb-2 ml-4 mt-3 text-lg font-bold">バス接近情報</h1>
+					<section class="flex flex-col bg-grey grow">
+						<section class="bg-white p-4">
+							<div class="flex justify-between">
+								<div class="flex">
+									<div class="flex flex-col items-center pr-1.5">
+										<div class="m-[0.44rem] h-2.5 w-2.5 rounded-md bg-dep"></div>
+										<div class="w-px grow bg-dark-line"></div>
+										<div class="m-[0.44rem] h-2.5 w-2.5 rounded-md bg-arr"></div>
+									</div>
+									<div>
+										<div class="mb-2 flex items-center">
+											<p class="font-bold">南草津駅</p>
+											<!---->
+										</div>
+										<p class="font-bold">立命館大学</p>
+									</div>
+								</div><a
+									href="/ohmitetudo/trips?departure-busstop=00480156&amp;arrival-busstop=00480011"
+									class="flex items-center justify-center rounded border border-button bg-white px-2 text-button hover:no-underline w-35 min-w-fit h-12 text-base">発着時刻表</a>
+							</div>
+							<!---->
+							<div class="mt-4 flex justify-between"><time datetime="2025-04-10T11:57:41+09:00"
+									class="text-sm font-bold">11:57 現在</time>
+								<div class="flex flex-col items-end">
+									<button type="button" class="text-sm link mb-2 flex items-center"><img src="data:image/svg+xml,%3csvg%20width=&#39;24&#39;%20height=&#39;24&#39;%20viewBox=&#39;0%200%2024%2024&#39;%20fill=&#39;none&#39;%20xmlns=&#39;http://www.w3.org/2000/svg&#39;%3e%3cg%20clip-path=&#39;url(%23clip0_6430_4596)&#39;%3e%3cpath%20d=&#39;M17.65%206.35C16.2%204.9%2014.21%204%2012%204C7.58001%204%204.01001%207.58%204.01001%2012C4.01001%2016.42%207.58001%2020%2012%2020C15.73%2020%2018.84%2017.45%2019.73%2014H17.65C16.83%2016.33%2014.61%2018%2012%2018C8.69001%2018%206.00001%2015.31%206.00001%2012C6.00001%208.69%208.69001%206%2012%206C13.66%206%2015.14%206.69%2016.22%207.78L13%2011H20V4L17.65%206.35Z&#39;%20fill=&#39;%230066CC&#39;/%3e%3c/g%3e%3cdefs%3e%3cclipPath%20id=&#39;clip0_6430_4596&#39;%3e%3crect%20width=&#39;24&#39;%20height=&#39;24&#39;%20fill=&#39;white&#39;/%3e%3c/clipPath%3e%3c/defs%3e%3c/svg%3e" height="24" width="24" decoding="async" class="mr-1" alt="最新の情報に更新"> 最新の情報に更新</button>
+									<div class="flex items-center">
+										<label for="refresh" class="text-xs text-text-grey">1分ごとに自動更新</label><label class="relative ml-1 flex h-6 w-10 items-center"><input type="checkbox" id="refresh" class="absolute h-0 w-0"><span class="bg-inactive absolute h-6 w-10 rounded-full duration-300 ease-in"></span><span class="absolute left-[0.25rem] top-[0.25rem] h-4 w-4 rounded-full bg-white duration-300 ease-in"></span></label>
+									</div>
+								</div>
+							</div>
+						</section>
+						<section class="border-t border-light-line bg-white p-4">
+							<div class="w-full">
+								<div class="flex text-black items-center">
+									<label for="order" class="text-sm min-w-fit">表示順序</label><select name="order" id="order" class="text-sm ml-2 h-7 w-full cursor-pointer rounded border border-middle-line bg-white px-2 py-0.5"><!--[--><option value="departure_predictedDepartureTime">出発バス停の発車予測時刻順</option><option value="departure_scheduledDepartureTime">出発バス停の定刻順</option><option value="arrival_predictedDepartureTime">到着バス停の発車予測時刻順</option><option value="arrival_scheduledDepartureTime">到着バス停の定刻順</option><!--]--></select>
+								</div>
+							</div>
+						</section>
+						<section class="grow bg-grey px-4 pb-8 pt-4">
+							<small class="text-xs block text-text-grey">※運行状況により実際の時刻と異なる場合がございます</small>
+							<!---->
+							<!---->
+							<section>
+								<h2 style="display:none;" class="text-sm mt-8 font-bold">接近中のバス</h2>
+								<ul class="mt-4 space-y-4">
+									<!--[-->
+									<li><button type="button" class="w-full rounded text-left drop-shadow-md border-2 border-link bg-highlight"><div class="mx-4 mt-4 flex justify-between"><div class="flex flex-col"><span>南草津立命線（かがやき）</span><span class="font-bold">立命館大学行 [かがやき通り経由]</span></div><!----><!----><!----></div><dl class="flex items-center ml-4 mt-2 text-text-grey text-sm"><dt class="mr-1 break-all">のりば: 3</dt><dd class="mr-4 min-w-fit"><a href="/ohmitetudo/courses?busstop=00480156#pole-map" class="print:hidden">地図</a></dd></dl><!----><div class="my-3 flex w-full flex-col items-center"><div class="text-lg font-bold text-error"><!--[-->あと約<strong class="mx-1 text-2xl">18</strong>分で<span>発車</span><!--]--></div><!----><div class="text-sm mt-1"><!--[-->始発バス停発車前<!--]--></div></div><div class="mx-2 mb-2 mt-4 flex"><div class="flex flex-col items-center py-1"><div class="m-[0.44rem] h-2.5 w-2.5 rounded-md bg-dep"></div><div class="w-px grow bg-dark-line"></div><div class="m-[0.44rem] h-2.5 w-2.5 rounded-md bg-arr"></div></div><div class="w-full"><div class="flex items-center mb-1"><span class="text-sm min-w-fit">定刻</span><time datetime="2025-04-10T12:16:00+09:00" class="mx-2 text-2xl font-bold">12:16</time><!--[--><span class="text-text-grey">遅れなし</span><!--]--></div><div class="flex items-center"><span class="text-sm min-w-fit">定刻</span><time datetime="2025-04-10T12:31:00+09:00" class="mx-2 text-2xl font-bold">12:31</time><!--[--><span class="text-text-grey">遅れなし</span><!--]--></div></div></div><div class="text-sm mb-2 ml-auto mr-4 w-fit text-text-grey">予測所要時間 約15分</div><!----><!----></button>
+									</li>
+									<li><button type="button" class="w-full rounded text-left drop-shadow-md bg-white"><div class="mx-4 mt-4 flex justify-between"><div class="flex flex-col"><span>南草津立命線（パナ西）</span><span class="font-bold">立命館大学行 [パナソニック西口経由]</span></div><!----><!----><!----></div><dl class="flex items-center ml-4 mt-2 text-text-grey text-sm"><dt class="mr-1 break-all">のりば: 4</dt><dd class="mr-4 min-w-fit"><a href="/ohmitetudo/courses?busstop=00480156#pole-map" class="print:hidden">地図</a></dd></dl><!----><div class="my-3 flex w-full flex-col items-center"><div class="text-lg font-bold text-error"><!--[-->あと約<strong class="mx-1 text-2xl">24</strong>分で<span>発車</span><!--]--></div><!----><div class="text-sm mt-1"><!--[-->始発バス停発車前<!--]--></div></div><div class="mx-2 mb-2 mt-4 flex"><div class="flex flex-col items-center py-1"><div class="m-[0.44rem] h-2.5 w-2.5 rounded-md bg-dep"></div><div class="w-px grow bg-dark-line"></div><div class="m-[0.44rem] h-2.5 w-2.5 rounded-md bg-arr"></div></div><div class="w-full"><div class="flex items-center mb-1"><span class="text-sm min-w-fit">定刻</span><time datetime="2025-04-10T12:22:00+09:00" class="mx-2 text-2xl font-bold">12:22</time><!--[--><span class="text-text-grey">遅れなし</span><!--]--></div><div class="flex items-center"><span class="text-sm min-w-fit">定刻</span><time datetime="2025-04-10T12:42:00+09:00" class="mx-2 text-2xl font-bold">12:42</time><!--[--><span class="text-text-grey">遅れなし</span><!--]--></div></div></div><div class="text-sm mb-2 ml-auto mr-4 w-fit text-text-grey">予測所要時間 約20分</div><!----><!----></button>
+									</li>
+									<!--]-->
+								</ul>
+							</section>
+						</section>
+						<!---->
+						<footer class="text-xs mx-4 mb-4"><a href="/ohmitetudo/terms-of-use"
+								class="mt-10 flex items-center font-bold"
+								type="button">ご利用にあたって（免責について等）</a><small class="text-xs mt-2 text-black">Copyright© 2022 OhmiRailway Corporation. All rights reserved.</small>
+							<figure class="mt-4 flex items-center justify-end">
+								<figcaption class="mr-2 text-black">Powered by</figcaption>
+								<img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTA3IiBoZWlnaHQ9IjI0IiB2aWV3Qm94PSIwIDAgMTA3IDI0IiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8ZyBjbGlwLXBhdGg9InVybCgjY2xpcDBfNzAyMl81ODE1KSI+CjxwYXRoIGQ9Ik0xMDYuMzIzIDBIMFYyNEgxMDYuMzIzVjBaIiBmaWxsPSIjMDA2NDAwIi8+CjxwYXRoIGQ9Ik0xNS43MDQ2IDYuNjExMDRMMjEuMDIyNCAxMy4zMDU3VjguNjYxNzJDMjEuMDIyNCA4LjAxNTA5IDIwLjkyOTcgNy41NzY0NSAyMC43NDQzIDcuMzUwMzZDMjAuNDg5NSA3LjA0ODkgMjAuMDYzIDYuODk4MTcgMTkuNDY0NiA2Ljg5ODE3VjYuNjA0MjVIMjMuMDI1NlY2Ljg5ODE3QzIyLjcwODEgNi45MTk3NSAyMi4zOTY3IDYuOTk2MjUgMjIuMTA1NCA3LjEyNDI2QzIxLjkzNzYgNy4yMzA5IDIxLjgwOTcgNy4zODk4MiAyMS43NDE0IDcuNTc2NDVDMjEuNjM0MiA3LjkyNTM2IDIxLjU4OTggOC4yOTA1MSAyMS42MTAyIDguNjU0OTNWMTcuNjI4NkgyMS4zMzg5TDE0LjA0OTYgOC42NTQ5M1YxNS41MDU2QzE0LjA0OTYgMTYuMTI1MSAxNC4xOTIgMTYuNTQ1NiAxNC40NzQ3IDE2Ljc2MjdDMTQuNzUzNSAxNi45NzggMTUuMDk2OSAxNy4wOTI3IDE1LjQ0OTEgMTcuMDg4M0gxNS43MDQ2VjE3LjM4MjJIMTEuODgxM1YxNy4wODgzQzEyLjQ3MzcgMTcuMDg4MyAxMi44ODc1IDE2Ljk2MTcgMTMuMTIwMyAxNi43MjJDMTMuMzUzMiAxNi40ODIzIDEzLjQ3MDggMTYuMDc3NiAxMy40NzA4IDE1LjUwNTZWNy45MDY1NkwxMy4yNDQ3IDcuNjE5NDFDMTMuMDgyOCA3LjM5MzU1IDEyLjg3NzYgNy4yMDIxOCAxMi42NDEgNy4wNTY0NEMxMi40MDMyIDYuOTUxOSAxMi4xNDU2IDYuOTAwMjIgMTEuODg1OSA2LjkwNDk2VjYuNjExMDRIMTUuNzA0NloiIGZpbGw9IndoaXRlIi8+CjxwYXRoIGQ9Ik0yOS42OTA4IDE0LjMyMDlIMjUuODgzNEwyNS40MzEyIDE1LjM3QzI1LjMwMTIgMTUuNjQxNSAyNS4yMjQ1IDE1LjkzNTUgMjUuMjA1MSAxNi4yMzU5QzI1LjE5NzQgMTYuMzcwMyAyNS4yMjc2IDE2LjUwNDEgMjUuMjkyNCAxNi42MjJDMjUuMzU3MiAxNi43NCAyNS40NTM5IDE2LjgzNzMgMjUuNTcxNCAxNi45MDI5QzI1LjcxMzggMTYuOTg4OCAyNi4wNjY1IDE3LjA1MjEgMjYuNjI3MiAxNy4wOTUxVjE3LjM4OUgyMy4wNDU5VjE3LjA5NTFDMjMuNDA4OSAxNy4wNDgxIDIzLjc0NDkgMTYuODc4MSAyMy45OTc4IDE2LjYxMzVDMjQuMjQ5NSAxNi4zNTEyIDI0LjU1NyAxNS44MDkzIDI0LjkyMDIgMTQuOTg3OUwyOC43NzUxIDYuMzk2MjRIMjguOTI2NkwzMi44MTMyIDE1LjIzNjZDMzMuMTg0IDE2LjA3MzEgMzMuNDg5MiAxNi42MDA3IDMzLjcyODkgMTYuODE5MkMzMy45NDM1IDE2Ljk5NzcgMzQuMjExOCAxNy4wOTg5IDM0LjQ5MDggMTcuMTA2NFYxNy40MDAzSDI5LjI3NzFWMTcuMTA2NEgyOS40OTE5QzI5Ljc5NjUgMTcuMTMxOSAzMC4xMDIyIDE3LjA3MDggMzAuMzczNiAxNi45M0MzMC40MzEgMTYuODg4OSAzMC40NzcgMTYuODM0IDMwLjUwNzUgMTYuNzcwNEMzMC41Mzc5IDE2LjcwNjcgMzAuNTUxOCAxNi42MzY0IDMwLjU0NzcgMTYuNTY2QzMwLjU0NzEgMTYuNDY2MiAzMC41MzExIDE2LjM2NyAzMC41MDAzIDE2LjI3MjFDMzAuNTAwMyAxNi4yMjQ2IDMwLjQwOTggMTYuMDI1NiAzMC4yNjI5IDE1LjY3NTJMMjkuNjkwOCAxNC4zMjA5Wk0yOS40MTk1IDEzLjczM0wyNy44MTQyIDEwLjAyMDVMMjYuMTYzNyAxMy43MzNIMjkuNDE5NVoiIGZpbGw9IndoaXRlIi8+CjxwYXRoIGQ9Ik00My43MjIyIDYuNjEwOTFWNi45MDQ4M0M0My4zMDg2IDYuOTgwNTggNDIuOTM2MSA3LjIwMjk0IDQyLjY3MzIgNy41MzExMUM0Mi40NTE2IDcuNzk3OTEgNDIuMTIwNyA4LjQyMTE3IDQxLjY4MDYgOS40MDA5MUwzNy45NjgxIDE3LjYzNTNIMzcuNzA1OEwzNC4wMDkyIDkuMDY2M0MzMy41NjYgOC4wMzIyOSAzMy4yNjg0IDcuNDI5MzcgMzMuMTE2MSA3LjI1NzUzQzMyLjk2NDYgNy4wNzY2NiAzMi42Nzk4IDYuOTYzNjEgMzIuMjYxNSA2LjkxNjEzVjYuNjIyMjFIMzcuNDI3N1Y2LjkxNjEzSDM3LjI1MzdDMzYuOTI1OCA2Ljg4NzQ3IDM2LjU5NjIgNi45NDc2MSAzNi4yOTk1IDcuMDkwMjNDMzYuMjQxOCA3LjEyNTM4IDM2LjE5NDIgNy4xNzQ5IDM2LjE2MTMgNy4yMzM5NEMzNi4xMjg0IDcuMjkyOTggMzYuMTExNCA3LjM1OTUzIDM2LjExMTkgNy40MjcxMUMzNi4xMTUgNy41NDIwNCAzNi4xMzY0IDcuNjU1NzQgMzYuMTc1MiA3Ljc2Mzk5QzM2LjIxNzQgNy44OTUxMiAzNi4zNjA2IDguMjQzMzEgMzYuNjA0OCA4LjgwODU0TDM4LjkwMTkgMTQuMTc2TDQxLjAzMTcgOS4zOTg2NUM0MS4yODc5IDguODE5ODUgNDEuNDQ0NyA4LjQzMjQ4IDQxLjUwMiA4LjIzNjUzQzQxLjU1MzQgOC4wNzQ3MSA0MS41ODIzIDcuOTA2NTcgNDEuNTg3OSA3LjczNjg2QzQxLjU5MTUgNy41ODY3NyA0MS41NDcyIDcuNDM5NDYgNDEuNDYxMyA3LjMxNjMyQzQxLjM2ODEgNy4xODc4MyA0MS4yMzggNy4wOTA4MiA0MS4wODgyIDcuMDM4MjNDNDAuNzk3NiA2LjkzODA1IDQwLjQ5MTEgNi44OTIwNiA0MC4xODM4IDYuOTAyNTZWNi42MDg2NEw0My43MjIyIDYuNjEwOTFaIiBmaWxsPSJ3aGl0ZSIvPgo8cGF0aCBkPSJNNTAuNTUyNiAxNy4wOTUxVjE3LjM4OUg0NC45MTZWMTcuMDk1MUg0NS4yNzMyQzQ1LjUzNTMgMTcuMTA2OCA0NS43OTU4IDE3LjA0OTEgNDYuMDI4NCAxNi45Mjc4QzQ2LjE3NjQgMTYuODQyIDQ2LjI4OTMgMTYuNzA2NyA0Ni4zNDcyIDE2LjU0NTdDNDYuNDI4NCAxNi4yMTg0IDQ2LjQ1ODIgMTUuODgwNSA0Ni40MzU0IDE1LjU0NDFWOC40NTM3NUM0Ni40NTcxIDguMTA2ODcgNDYuNDI3NCA3Ljc1ODY4IDQ2LjM0NzIgNy40MjA0OUM0Ni4yNzE2IDcuMjY1MDkgNDYuMTQ3OSA3LjEzODIyIDQ1Ljk5NDUgNy4wNTg3NUM0NS43NzEzIDYuOTQ2MzYgNDUuNTIyOSA2Ljg5MzQxIDQ1LjI3MzIgNi45MDVINDQuOTE2VjYuNjExMDhINTAuNTUyNlY2LjkwNUg1MC4xOTUzQzQ5LjkzMzIgNi44OTIxMiA0OS42NzI0IDYuOTQ5OTEgNDkuNDQwMiA3LjA3MjMxQzQ5LjI5MTQgNy4xNTg1NiA0OS4xNzU5IDcuMjkyMzQgNDkuMTEyMyA3LjQ1MjE1QzQ5LjAzMzcgNy43Nzk4NCA0OS4wMDQ4IDguMTE3NDcgNDkuMDI2NCA4LjQ1Mzc1VjE1LjU0NDFDNDkuMDAzNCAxNS44OTExIDQ5LjAzMzkgMTYuMjM5NiA0OS4xMTY5IDE2LjU3NzNDNDkuMTk0NCAxNi43MzI5IDQ5LjMxOTUgMTYuODU5NiA0OS40NzQxIDE2LjkzOTFDNDkuNjk2NyAxNy4wNTM0IDQ5Ljk0NTQgMTcuMTA3MiA1MC4xOTUzIDE3LjA5NTFINTAuNTUyNloiIGZpbGw9IndoaXRlIi8+CjxwYXRoIGQ9Ik02MS4yOTI0IDYuNjExMVY5LjUyNzcySDYxLjAwNzVDNjAuOTAyNiA5LjAxNTM4IDYwLjcxMTUgOC41MjQ1NyA2MC40NDIzIDguMDc2MkM2MC4yMjM4IDcuNzcyOTIgNTkuOTMxMSA3LjUzMDgyIDU5LjU5MjIgNy4zNzMwNEM1OS4yNTIzIDcuMjU2NTMgNTguODkyNyA3LjIwODEzIDU4LjUzNDEgNy4yMzA2SDU3LjczMTRWMTUuNTQ0MUM1Ny43MDg5IDE1Ljg5MTMgNTcuNzQwMSAxNi4yMzk4IDU3LjgyNDEgMTYuNTc3NEM1Ny45MDEgMTYuNzMzNCA1OC4wMjYzIDE2Ljg2MDMgNTguMTgxNCAxNi45MzkxQzU4LjQwNjEgMTcuMDU0MSA1OC42NTcyIDE3LjEwNzkgNTguOTA5NCAxNy4wOTUxSDU5LjI2NjZWMTcuMzg5MUg1My42MTQyVjE3LjA5NTFINTMuOTczN0M1NC4yMzU3IDE3LjEwNjMgNTQuNDk2MSAxNy4wNDg2IDU0LjcyODkgMTYuOTI3OEM1NC44Nzc3IDE2Ljg0MTIgNTQuOTkyNSAxNi43MDY0IDU1LjA1NDUgMTYuNTQ1N0M1NS4xMzU3IDE2LjIxODUgNTUuMTY1NCAxNS44ODA1IDU1LjE0MjYgMTUuNTQ0MVY3LjIzMDZINTQuMzYyNkM1My42Mzc2IDcuMjMwNiA1My4xMSA3LjM4MTMzIDUyLjc3OTkgNy42ODI3OUM1Mi4yODgxIDguMTc3MjggNTEuOTgwMiA4LjgyNTA4IDUxLjkwNzIgOS41MTg2OEg1MS42MDQyVjYuNjAyMDVMNjEuMjkyNCA2LjYxMTFaIiBmaWxsPSJ3aGl0ZSIvPgo8cGF0aCBkPSJNNjguMDA0NiAxNy4wOTUxVjE3LjM4OUg2Mi4zNzA0VjE3LjA5NTFINjIuNzI3NkM2Mi45ODk2IDE3LjEwNjMgNjMuMjUgMTcuMDQ4NiA2My40ODI3IDE2LjkyNzhDNjMuNjMwNSAxNi44NDIzIDYzLjc0MjggMTYuNzA2OCA2My43OTkzIDE2LjU0NTdDNjMuODgwNSAxNi4yMTg0IDYzLjkxMDMgMTUuODgwNSA2My44ODc1IDE1LjU0NDFWOC40NTM3NUM2My45MDkyIDguMTA2ODcgNjMuODc5NSA3Ljc1ODY4IDYzLjc5OTMgNy40MjA0OUM2My43MjQ0IDcuMjY0NjEgNjMuNjAwNSA3LjEzNzU1IDYzLjQ0NjYgNy4wNTg3NUM2My4yMjQxIDYuOTQ2NjUgNjIuOTc2NSA2Ljg5MzcgNjIuNzI3NiA2LjkwNUg2Mi4zNzA0VjYuNjExMDhINjguMDA0NlY2LjkwNUg2Ny42NDc0QzY3LjM4NTMgNi44OTI0NiA2Ny4xMjQ2IDYuOTUwMjIgNjYuODkyMyA3LjA3MjMxQzY2Ljc0MzUgNy4xNTc5NyA2Ni42Mjg2IDcuMjkyMDMgNjYuNTY2NyA3LjQ1MjE1QzY2LjQ4NTYgNy43Nzk0NCA2Ni40NTU5IDguMTE3MzMgNjYuNDc4NSA4LjQ1Mzc1VjE1LjU0NDFDNjYuNDU1OSAxNS44OTEyIDY2LjQ4NzIgMTYuMjM5OCA2Ni41NzEyIDE2LjU3NzNDNjYuNjQ4MSAxNi43MzM0IDY2Ljc3MzQgMTYuODYwMyA2Ni45Mjg0IDE2LjkzOTFDNjcuMTUwMSAxNy4wNTM3IDY3LjM5ODIgMTcuMTA3NSA2Ny42NDc0IDE3LjA5NTFINjguMDA0NloiIGZpbGw9IndoaXRlIi8+CjxwYXRoIGQ9Ik03Ni40OTUyIDEzLjcxN0w3OS40MjA4IDYuNjEwODRIODMuODE4NFY2LjkwNDc2SDgzLjQ3MDJDODMuMjA1MSA2Ljg5MTggODIuOTQxNCA2Ljk0OTU0IDgyLjcwNiA3LjA3MjA3QzgyLjU2MjQgNy4xNTgyNCA4Mi40NTExIDcuMjg5MzYgODIuMzg5NSA3LjQ0NTEzQzgyLjMwODUgNy43NjkzNiA4Mi4yNzg3IDguMTA0MjUgODIuMzAxMyA4LjQzNzY4VjE1LjU0MzlDODIuMjc5NCAxNS44OTA3IDgyLjMwOTEgMTYuMjM4OSA4Mi4zODk1IDE2LjU3NzFDODIuNDY0MiAxNi43MzQ2IDgyLjU5MDIgMTYuODYyMSA4Mi43NDY3IDE2LjkzODlDODIuOTcwMSAxNy4wNTMxIDgzLjIxOTYgMTcuMTA2OSA4My40NzAyIDE3LjA5NDlIODMuODE4NFYxNy4zODg4SDc4LjE3OTZWMTcuMDk0OUg3OC41M0M3OC43OTYyIDE3LjEwNTggNzkuMDYwNSAxNy4wNDY1IDc5LjI5NjUgMTYuOTIzQzc5LjQ0MDkgMTYuODMzNiA3OS41NTIxIDE2LjY5OTQgNzkuNjEzIDE2LjU0MDlDNzkuNjk0MiAxNi4yMTM3IDc5LjcyNCAxNS44NzU4IDc5LjcwMTIgMTUuNTM5M1Y3LjU1NTkyTDc1LjU2NTkgMTcuMzg4OEg3NS4zNzM3TDcxLjE3NzQgNy42MjgyN1YxNS4yMTgzQzcxLjE2NjYgMTUuNTQ1MiA3MS4xODAyIDE1Ljg3MjQgNzEuMjE4MSAxNi4xOTczQzcxLjI4NjMgMTYuNDYwMSA3MS40NDY4IDE2LjY4OTcgNzEuNjcwMyAxNi44NDM5QzcxLjk5OCAxNy4wMzYxIDcyLjM3NjcgMTcuMTIzNyA3Mi43NTU2IDE3LjA5NDlWMTcuMzg4OEg2OS4wNjM0VjE3LjA5NDlINjkuMTc0MkM2OS40MDU4IDE3LjEwMjQgNjkuNjM2NSAxNy4wNjMyIDY5Ljg1MjUgMTYuOTc5NkM3MC4wMzUxIDE2LjkxMzIgNzAuMTk2NyAxNi43OTkyIDcwLjMyMDUgMTYuNjQ5NUM3MC40NDIyIDE2LjQ3NSA3MC41MjYxIDE2LjI3NzEgNzAuNTY3IDE2LjA2ODRDNzAuNTY3IDE2LjAwOTYgNzAuNTgyOCAxNS43NDA2IDcwLjU4MjggMTUuMjU5VjguNDM3NjhDNzAuNTk4NCA4LjA5NzUgNzAuNTYzMyA3Ljc1NjkxIDcwLjQ3ODggNy40MjcwNEM3MC40MDE3IDcuMjcyMzMgNzAuMjc2MyA3LjE0NjkzIDcwLjEyMTYgNy4wNjk4MUM2OS44OTc0IDYuOTU3NzEgNjkuNjQ4NCA2LjkwNDc5IDY5LjM5OCA2LjkxNjA2SDY5LjA1NjZWNi42MjIxNEg3My40NjFMNzYuNDk1MiAxMy43MTdaIiBmaWxsPSJ3aGl0ZSIvPgo8cGF0aCBkPSJNODguOTc3MyA3LjIzMDQxVjExLjYxODlIODkuMTg5OEM4OS44NzU2IDExLjYxODkgOTAuMzcxNSAxMS40MDQxIDkwLjY3NzUgMTAuOTc0NUM5MC45ODM1IDEwLjU0NSA5MS4xNzk1IDkuOTExODkgOTEuMjY1NCA5LjA3NTM0SDkxLjU2ODNWMTQuNzI3N0g5MS4yNjU0QzkxLjIyNyAxNC4yMDM4IDkxLjA5MTMgMTMuNjkxNiA5MC44NjUyIDEzLjIxNzRDOTAuNzE2IDEyLjg4NTkgOTAuNDY3IDEyLjYwOTIgOTAuMTUzIDEyLjQyNjFDODkuNzgxMiAxMi4yNzEzIDg5LjM3OTUgMTIuMjAxOCA4OC45NzczIDEyLjIyMjZWMTUuMjVDODguOTU3MiAxNS42MTQ5IDg4Ljk4MjMgMTUuOTgxIDg5LjA1MTkgMTYuMzM5OEM4OS4xMDcgMTYuNDc2OSA4OS4yMDY1IDE2LjU5MTUgODkuMzM0NSAxNi42NjU0Qzg5LjU0NTYgMTYuNzY2MyA4OS43Nzk1IDE2LjgxIDkwLjAxMjggMTYuNzkySDkwLjY1NzJDOTEuNjY0MSAxNi43OTIgOTIuNDcwNSAxNi41NTkxIDkzLjA3NjQgMTYuMDkzM0M5My42ODQ2IDE1LjYyNzYgOTQuMTE4NyAxNC45MTU0IDk0LjM4NTUgMTMuOTYzNUg5NC42NzA0TDk0LjE4NDMgMTcuMzg4OUg4NC44NjkxVjE3LjA5NDlIODUuMjI2NEM4NS40ODg0IDE3LjEwNjQgODUuNzQ4OSAxNy4wNDg3IDg1Ljk4MTUgMTYuOTI3NkM4Ni4xMjk1IDE2Ljg0MTggODYuMjQyNCAxNi43MDY1IDg2LjMwMDMgMTYuNTQ1NUM4Ni4zODAzIDE2LjIxODEgODYuNDA5MyAxNS44ODAyIDg2LjM4NjIgMTUuNTQzOVY4LjQ1MzU4Qzg2LjM5NzcgOC4xNTE1OCA4Ni4zODQ4IDcuODQ5MTQgODYuMzQ3OCA3LjU0OTJDODYuMzAyMiA3LjM3NjQyIDg2LjE5ODQgNy4yMjQ2OCA4Ni4wNTM5IDcuMTE5NjNDODUuODA5MiA2Ljk1ODA3IDg1LjUxOTIgNi44Nzg4NiA4NS4yMjY0IDYuODkzNTNIODQuODY5MVY2LjU5OTYxSDkzLjg5MDNWOS43ODUyOEg5My41ODk2QzkzLjQzODkgOS4wMDc1MSA5My4yMjI2IDguNDQ5MDcgOTIuOTQwNyA4LjEwOTkyQzkyLjYzMDIgNy43NDg5NyA5Mi4yMTk0IDcuNDg4NDcgOTEuNzYwNSA3LjM2MTU1QzkxLjIxMyA3LjI0MTMgOTAuNjUyIDcuMTkzNDEgOTAuMDkxOSA3LjIxOTExTDg4Ljk3NzMgNy4yMzA0MVoiIGZpbGw9IndoaXRlIi8+CjwvZz4KPGRlZnM+CjxjbGlwUGF0aCBpZD0iY2xpcDBfNzAyMl81ODE1Ij4KPHJlY3Qgd2lkdGg9IjEwNi4zMjMiIGhlaWdodD0iMjQiIGZpbGw9IndoaXRlIi8+CjwvY2xpcFBhdGg+CjwvZGVmcz4KPC9zdmc+Cg==" width="107" height="24" alt="NAVITIME" decoding="async"></figure>
+						</footer>
+					</section>
+				</section>
+				<section class="h-full w-[calc(100vw-392px)]"><span></span></section>
+			</section>
+			<!---->
+			<!---->
+		</div>
+		<div id="modals"></div>
+		<!--]--><span></span>
+		<!--]-->
+	</div>
+	<div id="teleports"></div>
+	<script type="application/json" id="__NUXT_DATA__" data-ssr="true">
+		[["ShallowReactive",1],{"data":2,"state":65,"once":159,"_errors":160,"serverRendered":20,"path":163,"pinia":164},["ShallowReactive",3],{"$A6d0jbHWRo":4,"$saHec0rrgd":59,"$v0Nux9y8T0":61},{"approachings":5,"arrivalId":51,"arrivalLatitude":52,"arrivalLongitude":53,"arrivalName":19,"departureId":54,"departureLatitude":55,"departureLongitude":56,"departureName":57,"updatedAt":58},[6,35],{"arrival":7,"busId":11,"courseId":12,"courseName":13,"departure":14,"destination":19,"isApproachingToOrigin":20,"latitude":21,"longitude":22,"otherBusesOnCourse":23,"predictedDuration":32,"scheduledDuration":32,"vehicleNumber":33,"vehicleType":31,"via":34},{"delayOfDeparture":8,"predictedDepartureTime":9,"scheduledDepartureTime":9,"sequence":10},"PT0S","2025-04-10T12:31:00+09:00",11,"1435-12:16","0007900505","南草津立命線（かがやき）",{"delayOfDeparture":8,"poleName":15,"predictedDepartureTime":16,"remainingTimeUntilDeparture":17,"scheduledDepartureTime":16,"sequence":18},"3","2025-04-10T12:16:00+09:00","PT18M18S",1,"立命館大学",true,35.003784,135.948191,[24],{"arrivals":25,"destination":19,"direction":26,"id":27,"latitude":28,"longitude":29,"vehicleNumber":30,"vehicleType":31},[],"southeast","818-11:37",34.98368359993157,135.96188679415286,"818","normal","PT15M","1435","かがやき通り",{"arrival":36,"busId":39,"courseId":40,"courseName":41,"departure":42,"destination":19,"isApproachingToOrigin":20,"latitude":46,"longitude":47,"otherBusesOnCourse":48,"predictedDuration":49,"scheduledDuration":49,"vehicleNumber":15,"vehicleType":31,"via":50},{"delayOfDeparture":8,"predictedDepartureTime":37,"scheduledDepartureTime":37,"sequence":38},"2025-04-10T12:42:00+09:00",13,"3-12:22","0007900545","南草津立命線（パナ西）",{"delayOfDeparture":8,"poleName":43,"predictedDepartureTime":44,"remainingTimeUntilDeparture":45,"scheduledDepartureTime":44,"sequence":18},"4","2025-04-10T12:22:00+09:00","PT24M18S",35.003914,135.947891,[],"PT20M","パナソニック西口","00480011",34.982704,135.962391,"00480156",35.003704,135.947591,"南草津駅","2025-04-10T11:57:41.63257982+09:00",{"notice":60},[],{"captions":62},[63],{"body":64},"★主要駅における乗り場は\u003Ca href=\"https://www.ohmitetudo.co.jp/bus/guide/terminal/\">こちら\u003C/a>をご確認ください。",["Reactive",66],{"$snuxt-i18n-meta":67,"$ssettings":68},{},{"acceptanceSid":69,"availableLanguages":70,"busRealtime":72,"buslocationProxyCompany":84,"busstopTimetables":85,"canSearchByBusRoute":83,"customer":91,"fareCertificates":92,"hasCourseShape":83,"map":97,"mobustationCompanyIds":120,"ownerOperatorIds":122,"packageId":124,"radiusToSearchBusstopsAroundStation":125,"searchableAddressCodes":126,"shouldNotifyCashPayment":83,"sid":143,"stationTimetables":144,"trains":146,"transfers":147},"40002173",[71],"ja",{"approaching":73,"autoRefreshInterval":82,"enableAutoRefreshByDefault":83,"needsCongestionStatus":83,"shouldNotifyVehicleNumber":83},{"availableOrders":74,"defaultOrderWhenSearchedBySection":75,"enabled":20,"searchableMethods":79},[75,76,77,78],"departure_predictedDepartureTime","departure_scheduledDepartureTime","arrival_predictedDepartureTime","arrival_scheduledDepartureTime",[80,81],"pole","section","R/PT1M",false,"omi-kokoku-bus",{"asOfDateType":86,"availableHours":87,"customizeCourses":83,"customized":83,"defaultViewOnMobile":90,"disableHourNormalization":83,"hasEverydaySchedule":83,"hasWeekendSchedule":20},"today",{"earliestHour":88,"latestHour":89},5,23,"table","ohmitetudo",{"enabled":20,"searchablePeriod":93,"targetedOperatorIDs":95},{"monthsAfter":94,"monthsBefore":18},2,[96],"00011300",{"areas":98,"initialCenterCoordinate":119},[99,104,109,114],{"initialCenterCoordinate":100,"spot":103},{"latitude":101,"longitude":102},35.00337,135.86462,"aroundOtsu",{"initialCenterCoordinate":105,"spot":108},{"latitude":106,"longitude":107},35.02234,135.96196,"aroundKusatsu",{"initialCenterCoordinate":110,"spot":113},{"latitude":111,"longitude":112},35.2721,136.26321,"aroundHikone",{"initialCenterCoordinate":115,"spot":118},{"latitude":116,"longitude":117},35.37841,136.26524,"aroundNagahama",{"latitude":106,"longitude":107},[121],"52200740",[123,96],"00000044","0079",300,[127,128,129,130,131,132,133,134,135,136,137,138,139,140,141,142],"18202","25201","25202","25203","25204","25206","25207","25210","25212","25213","25214","25383","25384","25425","25442","25443","40002172",{"availableHours":145,"disableHourNormalization":83},{"earliestHour":88,"latestHour":89},{"needsFare":20},{"availableOperatorIds":148,"defaultSearchCondition":149,"distance":157,"limitedDistanceOnlyByWalking":158},[123,96],{"mobility":150,"mode":154,"order":155,"walkingSpeed":156},[151,152,153],"bus","train","walking","departure","transfer","standard",{"enabled":83,"needsTotalDistance":83,"needsTotalDistanceByBus":83,"needsTotalDistanceByWalking":83},10000,["Set"],["ShallowReactive",161],{"$A6d0jbHWRo":162,"$saHec0rrgd":162,"$v0Nux9y8T0":162},null,"/ohmitetudo/approachings?departure-busstop=00480156&arrival-busstop=00480011",["Reactive",165],{"settings":166},{"settings":167},["Ref",168],["Reactive",68]]
+	</script>
+	<script>
+		window.__NUXT__={};window.__NUXT__.config={public:{loggerLegel:"WARN",apiBaseURL:"https://transfer-cloud.navitime.biz/apiv1/",gaiaBaseUrl:"https://mapscript.cld.navitime.jp/gaia/",gaiaShouldUseAcceptanceSID:"false",locationAdNetworkScript:"https://static.media.cld.navitime.jp/scripts/media/biz/panel/location/tag.bundle.js",i18n:{baseUrl:"",defaultLocale:"ja",defaultDirection:"ltr",strategy:"prefix_except_default",lazy:true,rootRedirect:"",routesNameSeparator:"___",defaultLocaleRouteNameSuffix:"default",skipSettingLocaleOnNavigate:false,differentDomains:false,trailingSlash:false,configLocales:[{code:"ja",iso:"ja-JP",name:"日本語",files:["locales/ja.ts","locales/ja-bochobus.ts","locales/ja-chuo-bus.ts","locales/ja-echigo-kotsu.ts","locales/ja-entetsu.ts","locales/ja-hiroden.ts","locales/ja-justline.ts","locales/ja-kan-etsu.ts","locales/ja-kanachu.ts","locales/ja-keio.ts","locales/ja-keiseibus.ts","locales/ja-kokusaibus.ts","locales/ja-miyagikotsu.ts","locales/ja-miyazaki.ts","locales/ja-nagasaki-bus.ts","locales/ja-nankaibus.ts","locales/ja-navitime.ts","locales/ja-niigata.ts","locales/ja-odakyubus.ts","locales/ja-ohmitetudo.ts","locales/ja-sankobus.ts","locales/ja-seibubus.ts","locales/ja-sotetsu.ts","locales/ja-tachikawabus.ts","locales/ja-takatsuki.ts","locales/ja-tobubus.ts","locales/ja-tokaibus.ts","locales/ja-tokushima.ts","locales/ja-tokyubus.ts","locales/ja-wakayamabus.ts","locales/ja-yokohama.ts"]},{code:"en",iso:"en-US",name:"English",files:["locales/en.ts","locales/en-chuo-bus.ts","locales/en-entetsu.ts","locales/en-justline.ts","locales/en-keio.ts","locales/en-keiseibus.ts","locales/en-miyagikotsu.ts","locales/en-miyazaki.ts","locales/en-nagasaki-bus.ts","locales/en-nankaibus.ts","locales/en-navitime.ts","locales/en-niigata.ts","locales/en-sankobus.ts","locales/en-seibubus.ts","locales/en-tobubus.ts","locales/en-tokaibus.ts","locales/en-tokushima.ts","locales/en-tokyubus.ts","locales/en-wakayamabus.ts","locales/en-yokohama.ts"]},{code:"zh-CN",iso:"zh-CN",name:"中国（简体）",files:["locales/zh-cn.ts","locales/zh-cn-chuo-bus.ts","locales/zh-cn-justline.ts","locales/zh-cn-keiseibus.ts","locales/zh-cn-miyazaki.ts","locales/zh-cn-nankaibus.ts","locales/zh-cn-navitime.ts","locales/zh-cn-niigata.ts","locales/zh-cn-tokaibus.ts","locales/zh-cn-tokushima.ts"]},{code:"zh-TW",iso:"zh-TW",name:"中國（繁體）",files:["locales/zh-tw.ts","locales/zh-tw-chuo-bus.ts","locales/zh-tw-justline.ts","locales/zh-tw-keiseibus.ts","locales/zh-tw-miyazaki.ts","locales/zh-tw-nankaibus.ts","locales/zh-tw-navitime.ts","locales/zh-tw-niigata.ts","locales/zh-tw-tokushima.ts"]},{code:"ko",iso:"ko-KR",name:"한국",files:["locales/ko.ts","locales/ko-chuo-bus.ts","locales/ko-justline.ts","locales/ko-keiseibus.ts","locales/ko-miyazaki.ts","locales/ko-nankaibus.ts","locales/ko-navitime.ts","locales/ko-niigata.ts","locales/ko-tokaibus.ts","locales/ko-tokushima.ts"]},{code:"th",iso:"th-TH",name:"ภาษาไทย",files:["locales/th.ts","locales/th-keiseibus.ts","locales/th-navitime.ts"]}],locales:{ja:{domain:""},en:{domain:""},"zh-CN":{domain:""},"zh-TW":{domain:""},ko:{domain:""},th:{domain:""}},detectBrowserLanguage:{alwaysRedirect:false,cookieCrossOrigin:false,cookieDomain:"",cookieKey:"i18n_redirected",cookieSecure:false,fallbackLocale:"",redirectOn:"root",useCookie:true},experimental:{localeDetector:"",switchLocalePathLinkSSR:false,autoImportTranslationFunctions:false}},device:{enabled:true,defaultUserAgent:"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/64.0.3282.39 Safari/537.36",refreshOnResize:true},persistedState:{storage:"sessionStorage",debug:false,cookieOptions:{sameSite:"strict"}},gtag:{enabled:true,initMode:"manual",id:"",initCommands:[],config:{},tags:[],loadingStrategy:"defer",url:"https://www.googletagmanager.com/gtag/js"},snackbar:{top:false,bottom:true,left:false,right:true,groups:true,success:"#4caf50",error:"#ff5252",warning:"#fb8c00",info:"#2196f3",duration:5000,messageClass:"",zIndex:9999,dense:false,shadow:true,reverse:false,border:"",backgroundOpacity:.12,backgroundColor:"currentColor",baseBackgroundColor:"#ffffff"}},app:{baseURL:"/",buildId:"d85b68e1-6f8f-4fff-9878-027f5760b7be",buildAssetsDir:"/_nuxt/",cdnURL:""}}
+	</script>
+</body>
+
+</html>

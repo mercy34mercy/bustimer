@@ -1,14 +1,19 @@
 package main
 
 import (
+	"net/http"
+
 	"github.com/labstack/echo/v4"
 	"github.com/shun-shun123/bus-timer/src/infrastructure"
-	"net/http"
+	"go.opentelemetry.io/contrib/instrumentation/github.com/labstack/echo/otelecho"
 )
 
 var e = echo.New()
 
 func Routing() {
+	// OpenTelemetryミドルウェアを追加
+	e.Use(otelecho.Middleware("bustimer-service"))
+
 	e.GET("/", func(c echo.Context) error {
 		return c.HTML(http.StatusOK, "<h1>Busdes! Clean Architecture API</h1>")
 	})
@@ -33,5 +38,3 @@ func Routing() {
 		return infrastructure.DebugSuccessSystemInfoRequest(cc)
 	})
 }
-
-
