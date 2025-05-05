@@ -4,24 +4,20 @@ import (
 	"context"
 	"log"
 	"os"
-	"time"
 
+	texporter "github.com/GoogleCloudPlatform/opentelemetry-operations-go/exporter/trace"
+	"go.opentelemetry.io/contrib/detectors/gcp"
 	"go.opentelemetry.io/otel"
-	"go.opentelemetry.io/otel/exporters/otlp/otlptrace"
-	"go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracegrpc"
 	"go.opentelemetry.io/otel/propagation"
 	"go.opentelemetry.io/otel/sdk/resource"
 	sdktrace "go.opentelemetry.io/otel/sdk/trace"
-	semconv "go.opentelemetry.io/otel/semconv/v1.4.0"
-	"google.golang.org/api/option"
-	"google.golang.org/grpc"
-	"google.golang.org/grpc/credentials/oauth"
+	semconv "go.opentelemetry.io/otel/semconv/v1.9.0"
 )
 
 // InitTracer はCloud Traceの初期化を行います
+// 呼び出し側はtp.Shutdown()でクリーンアップを行う必要があります
 func InitTracer() (*sdktrace.TracerProvider, error) {
 	log.Println("Starting Cloud Trace initialization...")
-	// Cloud Runでのデフォルト認証情報を使用するとGCPへの認証が自動的に行われます
 	ctx := context.Background()
 
 	// サービス名を取得（環境変数から）
@@ -33,9 +29,28 @@ func InitTracer() (*sdktrace.TracerProvider, error) {
 		log.Println("Using service name from K_SERVICE:", serviceName)
 	}
 
+	// プロジェクトIDを環境変数から取得
+	projectID := os.Getenv("PROJECT_ID")
+	if projectID == "" {
+		projectID = "your-project-id" // デフォルト値は適切なプロジェクトIDに変更してください
+		log.Println("PROJECT_ID environment variable not set, using default project ID:", projectID)
+	} else {
+		log.Println("Using project ID from environment variable:", projectID)
+	}
+
+	// Cloud Traceエクスポーターを作成
+	log.Println("Creating Cloud Trace exporter...")
+	exporter, err := texporter.New(texporter.WithProjectID(projectID))
+	if err != nil {
+		log.Printf("Failed to create exporter: %v", err)
+		return nil, err
+	}
+	log.Println("Cloud Trace exporter created successfully")
+
 	// リソース情報を設定
 	log.Println("Creating resource with service name:", serviceName)
 	res, err := resource.New(ctx,
+		resource.WithDetectors(gcp.NewDetector()),
 		resource.WithAttributes(
 			semconv.ServiceNameKey.String(serviceName),
 		),
@@ -45,15 +60,6 @@ func InitTracer() (*sdktrace.TracerProvider, error) {
 		return nil, err
 	}
 	log.Println("Resource created successfully")
-
-	// Cloud Traceエクスポーターを作成
-	log.Println("Creating Cloud Trace exporter...")
-	exporter, err := createExporter(ctx)
-	if err != nil {
-		log.Printf("Failed to create exporter: %v", err)
-		return nil, err
-	}
-	log.Println("Cloud Trace exporter created successfully")
 
 	// トレースプロバイダーを設定
 	log.Println("Setting up tracer provider...")
@@ -71,48 +77,6 @@ func InitTracer() (*sdktrace.TracerProvider, error) {
 
 	log.Println("Cloud Trace initialization completed successfully")
 	return tp, nil
-}
-
-// createExporter はCloud Traceエクスポーターを作成します
-func createExporter(ctx context.Context) (*otlptrace.Exporter, error) {
-	log.Println("Creating Cloud Trace exporter...")
-	// Cloud Run環境ではデフォルト認証情報を使用
-	opts := []option.ClientOption{}
-
-	log.Println("Attempting to create OAuth credentials...")
-	creds, err := oauth.NewApplicationDefault(ctx, "https://www.googleapis.com/auth/cloud-platform")
-	if err != nil {
-		log.Printf("Failed to create credentials: %v", err)
-		// 認証に失敗してもエクスポーターの作成は続行
-	} else {
-		log.Println("OAuth credentials created successfully")
-		opts = append(opts, option.WithGRPCDialOption(grpc.WithPerRPCCredentials(creds)))
-	}
-
-	// Cloud Traceエンドポイント
-	endpoint := os.Getenv("TRACE_EXPORTER_ENDPOINT")
-	if endpoint == "" {
-		endpoint = "cloudtrace-exporter.googleapis.com:443"
-		log.Println("TRACE_EXPORTER_ENDPOINT not set, using default endpoint:", endpoint)
-	} else {
-		log.Println("Using Cloud Trace endpoint from environment variable:", endpoint)
-	}
-
-	log.Println("Creating OTLP trace gRPC client with endpoint:", endpoint)
-	client := otlptracegrpc.NewClient(
-		otlptracegrpc.WithEndpoint(endpoint),
-		otlptracegrpc.WithDialOption(grpc.WithBlock()),
-		otlptracegrpc.WithTimeout(5*time.Second),
-	)
-
-	log.Println("Creating OTLP trace exporter...")
-	exporter, err := otlptrace.New(ctx, client)
-	if err != nil {
-		log.Printf("Failed to create OTLP trace exporter: %v", err)
-		return nil, err
-	}
-	log.Println("OTLP trace exporter created successfully")
-	return exporter, nil
 }
 
 // ShutdownTracer はトレースプロバイダーをシャットダウンします
