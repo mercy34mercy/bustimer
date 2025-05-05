@@ -19,3 +19,27 @@
 - [GCP](https://cloud.google.com/)
 - [CloudFlare](https://www.cloudflare.com/)
 - [upstash](https://upstash.com/)
+
+## Cloud Trace の設定
+
+このアプリケーションは Google Cloud Trace と統合されています。Cloud Run にデプロイする際に、以下の手順で設定してください：
+
+1. サービスアカウントに必要な権限を付与する
+```bash
+# サービスアカウントに Cloud Trace 権限を付与
+gcloud projects add-iam-policy-binding YOUR_PROJECT_ID \
+    --member=serviceAccount:YOUR_SERVICE_ACCOUNT_EMAIL \
+    --role=roles/cloudtrace.agent
+```
+
+2. Cloud Run サービスをデプロイする際に、サービスアカウントを指定する
+```bash
+gcloud run deploy bustimer \
+    --source . \
+    --platform managed \
+    --allow-unauthenticated \
+    --service-account=YOUR_SERVICE_ACCOUNT_EMAIL \
+    --region=asia-northeast1
+```
+
+3. デプロイ後、Google Cloud Console の "Cloud Trace" ページでトレースデータを確認できます。
