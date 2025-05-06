@@ -21,21 +21,43 @@ func ApproachInfoRequest(c Context) error {
 
 	startTime := time.Now()
 
-	// リクエストURLを作成
-	approachInfoUrls := c.GetApproachInfoUrls()
-	span.SetAttributes(
-		attribute.StringSlice("approachInfoUrls", approachInfoUrls),
-		attribute.Int("urlCount", len(approachInfoUrls)),
-		attribute.String("endpoint", "/bus/time/v3"),
-		attribute.String("method", "GET"),
-	)
-
+	// frとtoのクエリパラメータを取得
 	from, to := c.GetFromToQuery()
 	span.SetAttributes(
 		attribute.Int("from", int(from)),
 		attribute.Int("to", int(to)),
 		attribute.String("fromString", from.String()),
 		attribute.String("toString", to.String()),
+		attribute.String("endpoint", "/bus/time/v3"),
+		attribute.String("method", "GET"),
+	)
+
+	// キャッシュをチェック
+	if cachedData, found := GetApproachInfoFromCache(from, to); found {
+		span.SetAttributes(
+			attribute.Bool("cacheHit", true),
+			attribute.String("status", "success"),
+			attribute.Int("httpStatus", http.StatusOK),
+			attribute.Int("resultCount", len(cachedData.ApproachInfo)),
+		)
+
+		// 処理時間の計測
+		processingTime := time.Since(startTime)
+		span.SetAttributes(
+			attribute.String("processingTime", processingTime.String()),
+			attribute.Int64("processingTimeMs", processingTime.Milliseconds()),
+		)
+
+		return c.Response("ApproachInfoRequest", http.StatusOK, cachedData)
+	}
+
+	// キャッシュにない場合は取得処理を実行
+	// リクエストURLを作成
+	approachInfoUrls := c.GetApproachInfoUrls()
+	span.SetAttributes(
+		attribute.StringSlice("approachInfoUrls", approachInfoUrls),
+		attribute.Int("urlCount", len(approachInfoUrls)),
+		attribute.Bool("cacheHit", false),
 	)
 
 	// URLからデータを取得するFetcherを作成
@@ -52,6 +74,11 @@ func ApproachInfoRequest(c Context) error {
 		attribute.String("urlsFetched", fmt.Sprintf("%v", approachInfoUrls)),
 	)
 	fetchSpan.End()
+
+	// 取得したデータをキャッシュに保存
+	if len(approachInfos.ApproachInfo) > 0 {
+		SetApproachInfoToCache(from, to, approachInfos)
+	}
 
 	// 処理時間の計測
 	processingTime := time.Since(startTime)
