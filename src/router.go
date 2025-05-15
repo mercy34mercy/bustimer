@@ -13,7 +13,8 @@ var e = echo.New()
 func Routing() {
 	// OpenTelemetryミドルウェアを追加
 	e.Use(otelecho.Middleware("bustimer-service"))
-
+	// 静的ファイル配信用のルートを追加
+	e.Static("/static", "static")
 	e.GET("/", func(c echo.Context) error {
 		return c.HTML(http.StatusOK, "<h1>Busdes! Clean Architecture API</h1>")
 	})
