@@ -28,12 +28,21 @@ func Routing() {
 	// 静的ファイル用のハンドラー
 	fileServer := http.FileServer(http.FS(staticFs))
 
-	// /embedded/ パスで埋め込まれたファイルにアクセスできるように設定
+	// /static/ パスで埋め込まれたファイルにアクセスできるように設定
 	e.GET("/static/*", echo.WrapHandler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		// URLパスから"/embedded/"を削除
+		// URLパスから"/static/"を削除
 		r.URL.Path = path.Join("/", r.URL.Path[len("/static/"):])
 		fileServer.ServeHTTP(w, r)
 	})))
+
+	// /static にアクセスした場合も index.html を表示する
+	e.GET("/static", func(c echo.Context) error {
+		htmlFile, err := embeddedFS.ReadFile("static/index.html")
+		if err != nil {
+			return err
+		}
+		return c.HTML(http.StatusOK, string(htmlFile))
+	})
 
 	e.GET("/", func(c echo.Context) error {
 		return c.HTML(http.StatusOK, "<h1>Busdes! Clean Architecture API</h1>")
