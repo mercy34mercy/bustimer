@@ -47,6 +47,19 @@ func Routing() {
 	e.GET("/", func(c echo.Context) error {
 		return c.HTML(http.StatusOK, "<h1>Busdes! Clean Architecture API</h1>")
 	})
+	// ヘルスチェックエンドポイント
+	e.GET("/health", func(c echo.Context) error {
+		return c.JSON(http.StatusOK, map[string]string{
+			"status": "ok",
+		})
+	})
+	// バージョンエンドポイント
+	e.GET("/version", func(c echo.Context) error {
+		return c.JSON(http.StatusOK, map[string]string{
+			"version": "1.0.0",
+			"service": "bustimer",
+		})
+	})
 	e.GET("/bus/time/v3", func(c echo.Context) error {
 		cc := &CustomContext{c}
 		return infrastructure.ApproachInfoRequest(cc)
