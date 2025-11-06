@@ -59,8 +59,24 @@ func DebugNavitimeHTML(c Context) error {
 	url := approachInfoUrls[0]
 	log.Printf("Fetching HTML from: %s", url)
 
+	// HTTPクライアントを作成してヘッダーを設定
+	client := &http.Client{}
+	req, err := http.NewRequest("GET", url, nil)
+	if err != nil {
+		log.Printf("Failed to create request: %v", err)
+		return c.Response("DebugNavitimeHTML", http.StatusInternalServerError, map[string]string{
+			"error": fmt.Sprintf("Failed to create request: %v", err),
+		})
+	}
+
+	// ブラウザを模倣するヘッダーを追加
+	req.Header.Set("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36")
+	req.Header.Set("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8")
+	req.Header.Set("Accept-Language", "ja,en-US;q=0.9,en;q=0.8")
+	req.Header.Set("Referer", "https://transfer-cloud.navitime.biz/")
+
 	// NAVITIME APIにリクエスト
-	resp, err := http.Get(url)
+	resp, err := client.Do(req)
 	if err != nil {
 		log.Printf("HTTP GET failed: %v", err)
 		return c.Response("DebugNavitimeHTML", http.StatusInternalServerError, map[string]string{

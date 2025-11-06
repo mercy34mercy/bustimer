@@ -198,7 +198,26 @@ func (fetcher ApproachInfoFetcher) FetchApproachInfosWithContext(ctx context.Con
 
 	// HTTPリクエスト
 	_, httpSpan := fetcherTracer.Start(ctx, "HTTPRequest")
-	resp, err := http.Get(approachInfoUrl)
+
+	// HTTPクライアントを作成してヘッダーを設定
+	client := &http.Client{
+		Timeout: 30 * time.Second,
+	}
+	req, err := http.NewRequestWithContext(ctx, "GET", approachInfoUrl, nil)
+	if err != nil {
+		log.Printf("Failed to create request for %v: %v", approachInfoUrl, err)
+		httpSpan.SetAttributes(attribute.String("error", err.Error()))
+		httpSpan.End()
+		return approachInfos
+	}
+
+	// ブラウザを模倣するヘッダーを追加
+	req.Header.Set("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36")
+	req.Header.Set("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8")
+	req.Header.Set("Accept-Language", "ja,en-US;q=0.9,en;q=0.8")
+	req.Header.Set("Referer", "https://transfer-cloud.navitime.biz/")
+
+	resp, err := client.Do(req)
 	httpSpan.SetAttributes(attribute.String("url", approachInfoUrl))
 
 	if err != nil {
