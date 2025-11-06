@@ -211,7 +211,13 @@ func (fetcher ApproachInfoFetcher) FetchApproachInfosWithContext(ctx context.Con
 
 	// HTTPステータスコードをチェック
 	if resp.StatusCode != http.StatusOK {
-		log.Printf("HTTP request to %v returned status code %d", approachInfoUrl, resp.StatusCode)
+		// レスポンスボディを読み込んでログに記録
+		body, _ := io.ReadAll(resp.Body)
+		bodyPreview := string(body)
+		if len(bodyPreview) > 500 {
+			bodyPreview = bodyPreview[:500] + "..."
+		}
+		log.Printf("HTTP request to %v returned status code %d. Response body: %s", approachInfoUrl, resp.StatusCode, bodyPreview)
 		httpSpan.SetAttributes(
 			attribute.Int("statusCode", resp.StatusCode),
 			attribute.String("status", resp.Status),

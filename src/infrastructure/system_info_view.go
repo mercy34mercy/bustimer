@@ -42,9 +42,15 @@ func DebugSuccessSystemInfoRequest(c Context) error {
 
 func DebugNavitimeHTML(c Context) error {
 	// クエリパラメータからfrとtoを取得
+	fr := c.Context.QueryParam("fr")
+	to := c.Context.QueryParam("to")
+	log.Printf("Debug endpoint called with fr=%s, to=%s", fr, to)
+
 	approachInfoUrls := c.GetApproachInfoUrls()
+	log.Printf("Generated %d URLs", len(approachInfoUrls))
 
 	if len(approachInfoUrls) == 0 {
+		log.Printf("No URLs generated from fr=%s, to=%s", fr, to)
 		return c.Response("DebugNavitimeHTML", http.StatusBadRequest, map[string]string{
 			"error": "No URLs generated. Please provide fr and to query parameters.",
 		})
@@ -63,6 +69,8 @@ func DebugNavitimeHTML(c Context) error {
 	}
 	defer resp.Body.Close()
 
+	log.Printf("HTTP GET response: status=%d, statusCode=%s", resp.StatusCode, resp.Status)
+
 	// レスポンスボディを読み込み
 	body, err := io.ReadAll(resp.Body)
 	if err != nil {
@@ -72,6 +80,8 @@ func DebugNavitimeHTML(c Context) error {
 		})
 	}
 
-	// HTMLをそのまま返す
-	return c.Context.HTML(http.StatusOK, string(body))
+	log.Printf("Response body length: %d bytes", len(body))
+
+	// HTMLをそのまま返す（ステータスコードも一緒に返す）
+	return c.Context.HTMLBlob(resp.StatusCode, body)
 }
