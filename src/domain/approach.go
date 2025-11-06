@@ -57,17 +57,17 @@ func (infos ApproachInfos) GetFastThree() ApproachInfos {
 	hour := 99
 	min := 99
 	first := compareFastInfo{
-		index: 0,
+		index: -1,
 		hour: hour,
 		min: min,
 	}
 	second := compareFastInfo{
-		index: 1,
+		index: -1,
 		hour: hour,
 		min: min,
 	}
 	third := compareFastInfo{
-		index: 2,
+		index: -1,
 		hour: hour,
 		min: min,
 	}
