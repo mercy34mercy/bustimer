@@ -6,7 +6,6 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/shun-shun123/bus-timer/src/config"
 	"github.com/shun-shun123/bus-timer/src/domain"
 	"github.com/shun-shun123/bus-timer/src/slack"
 )
@@ -42,8 +41,8 @@ func DebugSuccessSystemInfoRequest(c Context) error {
 
 func DebugNavitimeHTML(c Context) error {
 	// クエリパラメータからfrとtoを取得
-	fr := c.Context.QueryParam("fr")
-	to := c.Context.QueryParam("to")
+	fr := c.QueryParam("fr")
+	to := c.QueryParam("to")
 	log.Printf("Debug endpoint called with fr=%s, to=%s", fr, to)
 
 	approachInfoUrls := c.GetApproachInfoUrls()
@@ -99,5 +98,5 @@ func DebugNavitimeHTML(c Context) error {
 	log.Printf("Response body length: %d bytes", len(body))
 
 	// HTMLをそのまま返す（ステータスコードも一緒に返す）
-	return c.Context.HTMLBlob(resp.StatusCode, body)
+	return c.HTMLBlob(resp.StatusCode, body)
 }
