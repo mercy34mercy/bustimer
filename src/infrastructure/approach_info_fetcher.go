@@ -208,6 +208,18 @@ func (fetcher ApproachInfoFetcher) FetchApproachInfosWithContext(ctx context.Con
 		return approachInfos
 	}
 	defer resp.Body.Close()
+
+	// HTTPステータスコードをチェック
+	if resp.StatusCode != http.StatusOK {
+		log.Printf("HTTP request to %v returned status code %d", approachInfoUrl, resp.StatusCode)
+		httpSpan.SetAttributes(
+			attribute.Int("statusCode", resp.StatusCode),
+			attribute.String("status", resp.Status),
+		)
+		httpSpan.End()
+		return approachInfos
+	}
+	httpSpan.SetAttributes(attribute.Int("statusCode", resp.StatusCode))
 	httpSpan.End()
 
 	// レスポンスのボディを読み込む
@@ -255,6 +267,12 @@ func (fetcher ApproachInfoFetcher) FetchApproachInfosWithContext(ctx context.Con
 
 	// 最小の長さを取得
 	min := findMinLenWithIntSlice(requiredTime, moreMin, realArrivalTime, direction, scheduledTime, delay, busstop, via)
+
+	// スクレイピング結果が空の場合、警告ログを出力
+	if min == 0 {
+		log.Printf("Warning: No bus approach info found from %v. Scraped data counts - moreMin:%d, realArrivalTime:%d, direction:%d, via:%d",
+			approachInfoUrl, len(moreMin), len(realArrivalTime), len(direction), len(via))
+	}
 
 	for i := 0; i < min; i++ {
 		info := domain.ApproachInfo{
