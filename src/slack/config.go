@@ -1,3 +1,6 @@
 package slack
 
-var webhook = "https://hooks.slack.com/services/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"
+import "os"
+
+// 環境変数からwebhookを読み込む。設定されていない場合は空文字列（通知無効）
+var webhook = os.Getenv("SLACK_WEBHOOK_URL")

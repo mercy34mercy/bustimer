@@ -36,7 +36,9 @@ func GetDgmplList(fr, to string) []string {
 }
 
 func CreateApproachInfoUrl(from, to string) string {
-	return ApproachURL + "?departure-busstop=" + from + "&arrival-busstop=" + to
+	url := ApproachURL + "?departure-busstop=" + from + "&arrival-busstop=" + to
+	log.Printf("CreateApproachInfoUrl: from=%s, to=%s, url=%s", from, to, url)
+	return url
 }
 
 func CreateTimeTableUrl(from From, to To) map[string]string {
