@@ -11,4 +11,6 @@ type Context interface {
 	Response(string, int, interface{}) error
 	GetFromToQuery() (config.From, config.To)
 	Request() context.Context
+	QueryParam(string) string
+	HTMLBlob(int, []byte) error
 }
