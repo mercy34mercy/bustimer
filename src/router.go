@@ -67,4 +67,8 @@ func Routing() {
 		cc := &CustomContext{c}
 		return infrastructure.DebugSuccessSystemInfoRequest(cc)
 	})
+	e.GET("/debug/navitime/html", func(c echo.Context) error {
+		cc := &CustomContext{c}
+		return infrastructure.DebugNavitimeHTML(cc)
+	})
 }

@@ -1,9 +1,14 @@
 package infrastructure
 
 import (
+	"fmt"
+	"io"
+	"log"
+	"net/http"
+
+	"github.com/shun-shun123/bus-timer/src/config"
 	"github.com/shun-shun123/bus-timer/src/domain"
 	"github.com/shun-shun123/bus-timer/src/slack"
-	"net/http"
 )
 
 func SystemInfoRequest(c Context) error {
@@ -33,4 +38,40 @@ func DebugSuccessSystemInfoRequest(c Context) error {
 	}
 	slack.PostMessage("DebugSuccessSystemInfoRequest(DEBUG)")
 	return c.Response("SystemInfoRequest", http.StatusOK, systemInfo)
+}
+
+func DebugNavitimeHTML(c Context) error {
+	// クエリパラメータからfrとtoを取得
+	approachInfoUrls := c.GetApproachInfoUrls()
+
+	if len(approachInfoUrls) == 0 {
+		return c.Response("DebugNavitimeHTML", http.StatusBadRequest, map[string]string{
+			"error": "No URLs generated. Please provide fr and to query parameters.",
+		})
+	}
+
+	url := approachInfoUrls[0]
+	log.Printf("Fetching HTML from: %s", url)
+
+	// NAVITIME APIにリクエスト
+	resp, err := http.Get(url)
+	if err != nil {
+		log.Printf("HTTP GET failed: %v", err)
+		return c.Response("DebugNavitimeHTML", http.StatusInternalServerError, map[string]string{
+			"error": fmt.Sprintf("HTTP GET failed: %v", err),
+		})
+	}
+	defer resp.Body.Close()
+
+	// レスポンスボディを読み込み
+	body, err := io.ReadAll(resp.Body)
+	if err != nil {
+		log.Printf("Failed to read response body: %v", err)
+		return c.Response("DebugNavitimeHTML", http.StatusInternalServerError, map[string]string{
+			"error": fmt.Sprintf("Failed to read response body: %v", err),
+		})
+	}
+
+	// HTMLをそのまま返す
+	return c.Context.HTML(http.StatusOK, string(body))
 }
