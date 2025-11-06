@@ -293,10 +293,36 @@ func (fetcher ApproachInfoFetcher) FetchApproachInfosWithContext(ctx context.Con
 	// 最小の長さを取得 (viaは除外 - オプショナルなフィールドのため)
 	min := findMinLenWithIntSlice(requiredTime, moreMin, realArrivalTime, direction, scheduledTime, delay, busstop)
 
-	// スクレイピング結果が空の場合、警告ログを出力
+	// スクレイピング結果が空の場合、警告ログを出力してHTMLをデバッグ用に保存
 	if min == 0 {
 		log.Printf("Warning: No bus approach info found from %v. Scraped data counts - moreMin:%d, realArrivalTime:%d, direction:%d, scheduledTime:%d, delay:%d, busstop:%d, via:%d, requiredTime:%d, calculated min:%d",
 			approachInfoUrl, len(moreMin), len(realArrivalTime), len(direction), len(scheduledTime), len(delay), len(busstop), len(via), len(requiredTime), min)
+
+		// HTMLの内容をチェックして、「no-contents」や「該当するバスがありません」などのメッセージがあるか確認
+		bodyStr := string(body)
+		hasNoContents := strings.Contains(bodyStr, "no-contents")
+		hasNoResultsMsg := strings.Contains(bodyStr, "該当") || strings.Contains(bodyStr, "ありません")
+		hasExpectedStructure := strings.Contains(bodyStr, "バス接近情報") && strings.Contains(bodyStr, "ohmitetudo")
+		hasBusList := strings.Contains(bodyStr, `<ul class="mt-4 space-y-4">`)
+
+		log.Printf("Debug: HTML structure check - hasNoContents:%v, hasNoResultsMsg:%v, hasExpectedStructure:%v, hasBusList:%v",
+			hasNoContents, hasNoResultsMsg, hasExpectedStructure, hasBusList)
+
+		if hasNoContents || hasNoResultsMsg {
+			log.Printf("Info: The page indicates no buses are available for this route at this time")
+		} else if !hasExpectedStructure {
+			log.Printf("Warning: The page structure is unexpected - may be an error page or the site structure has changed")
+			// デバッグ用にHTMLの一部をログ出力
+			preview := bodyStr
+			if len(preview) > 1000 {
+				preview = preview[:1000] + "..."
+			}
+			log.Printf("Debug: HTML preview (first 1000 chars): %s", preview)
+		} else if hasExpectedStructure && !hasBusList {
+			log.Printf("Info: Page structure is correct but the bus list is empty - likely no buses running at this time")
+		} else {
+			log.Printf("Warning: Unexpected scraping failure - page has structure and bus list but selectors found nothing")
+		}
 	} else {
 		log.Printf("Info: Successfully scraped %d bus approach info(s) from %v. Scraped data counts - moreMin:%d, realArrivalTime:%d, direction:%d, scheduledTime:%d, delay:%d, busstop:%d, via:%d, requiredTime:%d",
 			min, approachInfoUrl, len(moreMin), len(realArrivalTime), len(direction), len(scheduledTime), len(delay), len(busstop), len(via), len(requiredTime))
