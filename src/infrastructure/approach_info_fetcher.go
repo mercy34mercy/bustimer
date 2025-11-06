@@ -295,8 +295,11 @@ func (fetcher ApproachInfoFetcher) FetchApproachInfosWithContext(ctx context.Con
 
 	// スクレイピング結果が空の場合、警告ログを出力
 	if min == 0 {
-		log.Printf("Warning: No bus approach info found from %v. Scraped data counts - moreMin:%d, realArrivalTime:%d, direction:%d, via:%d",
-			approachInfoUrl, len(moreMin), len(realArrivalTime), len(direction), len(via))
+		log.Printf("Warning: No bus approach info found from %v. Scraped data counts - moreMin:%d, realArrivalTime:%d, direction:%d, scheduledTime:%d, delay:%d, busstop:%d, via:%d, requiredTime:%d, calculated min:%d",
+			approachInfoUrl, len(moreMin), len(realArrivalTime), len(direction), len(scheduledTime), len(delay), len(busstop), len(via), len(requiredTime), min)
+	} else {
+		log.Printf("Info: Successfully scraped %d bus approach info(s) from %v. Scraped data counts - moreMin:%d, realArrivalTime:%d, direction:%d, scheduledTime:%d, delay:%d, busstop:%d, via:%d, requiredTime:%d",
+			min, approachInfoUrl, len(moreMin), len(realArrivalTime), len(direction), len(scheduledTime), len(delay), len(busstop), len(via), len(requiredTime))
 	}
 
 	for i := 0; i < min; i++ {
