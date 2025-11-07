@@ -298,12 +298,29 @@ func (fetcher ApproachInfoFetcher) FetchApproachInfosWithContext(ctx context.Con
 		log.Printf("Warning: No bus approach info found from %v. Scraped data counts - moreMin:%d, realArrivalTime:%d, direction:%d, scheduledTime:%d, delay:%d, busstop:%d, via:%d, requiredTime:%d, calculated min:%d",
 			approachInfoUrl, len(moreMin), len(realArrivalTime), len(direction), len(scheduledTime), len(delay), len(busstop), len(via), len(requiredTime), min)
 
+		// no-contentsセクションをチェック
+		noContentFound := false
+		noContentMessage := ""
+		doc.Find(".no-contents").Each(func(i int, s *goquery.Selection) {
+			noContentFound = true
+			noContentMessage = s.Text()
+		})
+
+		if noContentFound {
+			log.Printf("Info: 'no-contents' section detected. Message: %s", noContentMessage)
+		}
+
 		// デバッグ: HTMLレスポンスの一部を出力
 		bodyPreview := string(body)
 		if len(bodyPreview) > 1000 {
 			bodyPreview = bodyPreview[:1000]
 		}
 		log.Printf("Debug: HTML response preview (first 1000 chars):\n%s", bodyPreview)
+
+		// デバッグ: 主要なセレクタの結果を確認
+		log.Printf("Debug: Checking selectors - div.text-lg.font-bold.text-error count: %d", doc.Find("div.text-lg.font-bold.text-error").Length())
+		log.Printf("Debug: Checking selectors - time count: %d", doc.Find("time").Length())
+		log.Printf("Debug: Checking selectors - button.w-full.rounded count: %d", doc.Find("button.w-full.rounded.text-left.drop-shadow-md").Length())
 	} else {
 		log.Printf("Info: Successfully scraped %d bus approach info(s) from %v. Scraped data counts - moreMin:%d, realArrivalTime:%d, direction:%d, scheduledTime:%d, delay:%d, busstop:%d, via:%d, requiredTime:%d",
 			min, approachInfoUrl, len(moreMin), len(realArrivalTime), len(direction), len(scheduledTime), len(delay), len(busstop), len(via), len(requiredTime))
